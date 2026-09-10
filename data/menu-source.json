@@ -1,0 +1,632 @@
+{
+  "source": "https://7noodles.com/menu/",
+  "capturedOn": "2026-09-10",
+  "currency": "CAD",
+  "itemCount": 70,
+  "note": "Capture of the menu on the restaurant's previous ordering platform, used to seed the menu database. Prices are integer cents. spiceLevel is 0-3, inferred from the chili markers on the source page and pending confirmation with the owner. Dietary tags are inferred from dish names and also need confirming. Descriptions were not present on the source site and are to be written as part of the content pass.",
+  "corrections": [
+    {
+      "field": "categories[drinks].nameZh",
+      "source": "饮品&甜品",
+      "captured": "饮品",
+      "reason": "Source heading duplicated 甜品 from the dessert category above it."
+    },
+    {
+      "field": "appetizers / Spicy Beef Jerky",
+      "source": "Spicy Beet Jerky",
+      "captured": "Spicy Beef Jerky",
+      "reason": "冷吃牛肉 is beef. Source English name has a typo."
+    }
+  ],
+  "categories": [
+    {
+      "slug": "dry-and-fried-noodles",
+      "nameEn": "Dry Noodles & Fried Noodles",
+      "nameZh": "干拌面&炒面",
+      "items": [
+        {
+          "slug": "signature-wanza-noodles-with-minced-pork-yellow-peas",
+          "nameEn": "Signature Wanza Noodles with Minced Pork & Yellow Peas",
+          "nameZh": "招牌干馏豌杂面",
+          "priceCents": 1600,
+          "spiceLevel": 1,
+          "tags": []
+        },
+        {
+          "slug": "double-cooked-pork-belly-noodles",
+          "nameEn": "Double-Cooked Pork Belly Noodles",
+          "nameZh": "回锅肉面",
+          "priceCents": 1700,
+          "spiceLevel": 0,
+          "tags": []
+        },
+        {
+          "slug": "dandan-noodle-with-house-made-smoked-bacon",
+          "nameEn": "Dandan Noodle with House Made Smoked Bacon",
+          "nameZh": "腊肉丁丁担担面",
+          "priceCents": 1600,
+          "spiceLevel": 1,
+          "tags": []
+        },
+        {
+          "slug": "chicken-stir-fried-noodles",
+          "nameEn": "Chicken Stir-Fried Noodles",
+          "nameZh": "鸡肉炒面",
+          "priceCents": 1900,
+          "spiceLevel": 0,
+          "tags": []
+        },
+        {
+          "slug": "beef-stir-fried-noodles",
+          "nameEn": "Beef Stir-Fried Noodles",
+          "nameZh": "哞哞炒面",
+          "priceCents": 1900,
+          "spiceLevel": 0,
+          "tags": []
+        },
+        {
+          "slug": "tossed-noodles-with-super-spicy-stir-fried-beef",
+          "nameEn": "Tossed Noodles with Super Spicy Stir-Fried Beef",
+          "nameZh": "双椒牛肉干拌面",
+          "priceCents": 1900,
+          "spiceLevel": 1,
+          "tags": []
+        },
+        {
+          "slug": "vegetable-stir-fried-noodles",
+          "nameEn": "Vegetable Stir-Fried Noodles",
+          "nameZh": "素炒面",
+          "priceCents": 1700,
+          "spiceLevel": 0,
+          "tags": ["vegetarian"]
+        },
+        {
+          "slug": "aunt-zhao-s-burning-noodles",
+          "nameEn": "Aunt Zhao's Burning Noodles",
+          "nameZh": "赵大嬢燃面",
+          "priceCents": 1500,
+          "spiceLevel": 1,
+          "tags": []
+        },
+        {
+          "slug": "chongqing-yellow-pea-noodles",
+          "nameEn": "Chongqing Yellow Pea Noodles",
+          "nameZh": "糯糯豌豆面",
+          "priceCents": 1400,
+          "spiceLevel": 1,
+          "tags": ["vegetarian"]
+        },
+        {
+          "slug": "sichuan-zajiang-noodles",
+          "nameEn": "Sichuan Zajiang Noodles",
+          "nameZh": "素椒杂酱面",
+          "priceCents": 1500,
+          "spiceLevel": 1,
+          "tags": []
+        },
+        {
+          "slug": "prawn-stir-fried-noodles",
+          "nameEn": "Prawn Stir-Fried Noodles",
+          "nameZh": "大虾炒面",
+          "priceCents": 2100,
+          "spiceLevel": 0,
+          "tags": []
+        },
+        {
+          "slug": "stir-fried-pickled-chili-pork-liver-noodles",
+          "nameEn": "Stir-Fried Pickled Chili & Pork Liver Noodles",
+          "nameZh": "泡椒猪肝拌面",
+          "priceCents": 1600,
+          "spiceLevel": 1,
+          "tags": []
+        },
+        {
+          "slug": "spicy-chicken-gizzard-noodles",
+          "nameEn": "Spicy Chicken Gizzard Noodles",
+          "nameZh": "泡椒鸡杂面",
+          "priceCents": 1600,
+          "spiceLevel": 1,
+          "tags": []
+        },
+        {
+          "slug": "vegetarian-cold-noodles",
+          "nameEn": "Vegetarian Cold Noodles",
+          "nameZh": "素凉面",
+          "priceCents": 1300,
+          "spiceLevel": 1,
+          "tags": ["vegetarian"]
+        },
+        {
+          "slug": "creamy-chicken-alfredo",
+          "nameEn": "Creamy Chicken Alfredo",
+          "nameZh": "奶油蘑菇意面",
+          "priceCents": 1900,
+          "spiceLevel": 0,
+          "tags": []
+        }
+      ]
+    },
+    {
+      "slug": "crispy-fried-skewer",
+      "nameEn": "Crispy Fried Skewer",
+      "nameZh": "乐山油炸",
+      "items": [
+        {
+          "slug": "beef-skewers-6-pcs",
+          "nameEn": "Beef Skewers (6 pcs)",
+          "nameZh": "牛肉串",
+          "priceCents": 650,
+          "spiceLevel": 1,
+          "tags": []
+        },
+        {
+          "slug": "pork-belly-skewers-8-pcs",
+          "nameEn": "Pork Belly Skewers (8 pcs)",
+          "nameZh": "猪五花",
+          "priceCents": 650,
+          "spiceLevel": 1,
+          "tags": []
+        },
+        {
+          "slug": "chicken-cartilage-skewers-3-pcs",
+          "nameEn": "Chicken Cartilage Skewers (3 pcs)",
+          "nameZh": "鸡脆骨",
+          "priceCents": 550,
+          "spiceLevel": 1,
+          "tags": []
+        },
+        {
+          "slug": "cauliflower-skewers-6-pcs",
+          "nameEn": "Cauliflower Skewers (6 pcs)",
+          "nameZh": "花菜",
+          "priceCents": 350,
+          "spiceLevel": 0,
+          "tags": ["vegetarian"]
+        },
+        {
+          "slug": "chicken-wings-skewers-2-pcs",
+          "nameEn": "Chicken Wings Skewers (2 pcs)",
+          "nameZh": "鸡翅中",
+          "priceCents": 650,
+          "spiceLevel": 1,
+          "tags": []
+        },
+        {
+          "slug": "cuttlefish-ball-skewers-3-pcs",
+          "nameEn": "Cuttlefish Ball Skewers (3 pcs)",
+          "nameZh": "花枝丸",
+          "priceCents": 550,
+          "spiceLevel": 0,
+          "tags": []
+        },
+        {
+          "slug": "vegan-sausage-2-pcs",
+          "nameEn": "Vegan Sausage (2 pcs)",
+          "nameZh": "双汇火腿肠",
+          "priceCents": 550,
+          "spiceLevel": 0,
+          "tags": ["vegan", "vegetarian"]
+        },
+        {
+          "slug": "beef-tendon-skewers-3-pcs",
+          "nameEn": "Beef Tendon Skewers (3 pcs)",
+          "nameZh": "牛蹄筋",
+          "priceCents": 650,
+          "spiceLevel": 1,
+          "tags": []
+        },
+        {
+          "slug": "corn-skewers-5-pcs",
+          "nameEn": "Corn Skewers (5 pcs)",
+          "nameZh": "玉米",
+          "priceCents": 550,
+          "spiceLevel": 0,
+          "tags": ["vegetarian"]
+        },
+        {
+          "slug": "golden-wheat-skewers-2-pcs",
+          "nameEn": "Golden Wheat Skewers (2 pcs)",
+          "nameZh": "面筋",
+          "priceCents": 550,
+          "spiceLevel": 0,
+          "tags": ["vegetarian"]
+        }
+      ]
+    },
+    {
+      "slug": "traditional-noodle-soup",
+      "nameEn": "Traditional Noodle Soup",
+      "nameZh": "传统汤面",
+      "items": [
+        {
+          "slug": "braised-beef-noodle-soup",
+          "nameEn": "Braised Beef Noodle Soup",
+          "nameZh": "川味红烧牛肉面",
+          "priceCents": 1700,
+          "spiceLevel": 1,
+          "tags": []
+        },
+        {
+          "slug": "braised-beef-and-tendon-noodle-soup",
+          "nameEn": "Braised Beef and Tendon Noodle Soup",
+          "nameZh": "富贵牛肉牛筋面",
+          "priceCents": 1900,
+          "spiceLevel": 1,
+          "tags": []
+        },
+        {
+          "slug": "hong-kong-style-beef-brisket-noodle-soup",
+          "nameEn": "Hong Kong-Style Beef Brisket Noodle Soup",
+          "nameZh": "港式清汤牛腩面",
+          "priceCents": 1900,
+          "spiceLevel": 0,
+          "tags": []
+        },
+        {
+          "slug": "braised-all-in-one-noodle-soup",
+          "nameEn": "Braised All-in-One Noodle Soup",
+          "nameZh": "至尊三合面",
+          "priceCents": 2300,
+          "spiceLevel": 1,
+          "tags": []
+        },
+        {
+          "slug": "classic-plain-street-noodles",
+          "nameEn": "Classic Plain Street Noodles",
+          "nameZh": "麻辣小面",
+          "priceCents": 1100,
+          "spiceLevel": 1,
+          "tags": ["vegetarian"]
+        },
+        {
+          "slug": "stewed-chicken-with-ginkgo-noodle-soup",
+          "nameEn": "Stewed Chicken with Ginkgo Noodle Soup",
+          "nameZh": "长生鸡汤面",
+          "priceCents": 1700,
+          "spiceLevel": 0,
+          "tags": []
+        },
+        {
+          "slug": "tomato-egg-noodle-soup",
+          "nameEn": "Tomato & Egg Noodle Soup",
+          "nameZh": "华新番茄鸡蛋面",
+          "priceCents": 1500,
+          "spiceLevel": 0,
+          "tags": ["vegetarian"]
+        },
+        {
+          "slug": "braised-beef-tendon-noodle-soup",
+          "nameEn": "Braised Beef Tendon Noodle Soup",
+          "nameZh": "川味红烧牛筋面",
+          "priceCents": 1600,
+          "spiceLevel": 1,
+          "tags": []
+        },
+        {
+          "slug": "sichuan-hot-sour-glass-noodle-with-minced-pork",
+          "nameEn": "Sichuan Hot & Sour Glass Noodle with Minced Pork",
+          "nameZh": "酸辣粉",
+          "priceCents": 1600,
+          "spiceLevel": 1,
+          "tags": []
+        },
+        {
+          "slug": "braised-pork-intestine-noodle-soup",
+          "nameEn": "Braised Pork Intestine Noodle Soup",
+          "nameZh": "弹弹肥肠面",
+          "priceCents": 1600,
+          "spiceLevel": 1,
+          "tags": []
+        },
+        {
+          "slug": "braised-beef-pork-intestine-noodle-soup",
+          "nameEn": "Braised Beef & Pork Intestine Noodle Soup",
+          "nameZh": "招财牛肉肥肠面",
+          "priceCents": 1900,
+          "spiceLevel": 1,
+          "tags": []
+        },
+        {
+          "slug": "seafood-ball-noodle-soup",
+          "nameEn": "Seafood Ball Noodle Soup",
+          "nameZh": "海鲜丸子汤面",
+          "priceCents": 1600,
+          "spiceLevel": 0,
+          "tags": []
+        }
+      ]
+    },
+    {
+      "slug": "appetizers",
+      "nameEn": "Appetizers",
+      "nameZh": "凉菜",
+      "items": [
+        {
+          "slug": "smashed-cucumber",
+          "nameEn": "Smashed Cucumber",
+          "nameZh": "爽口拍黄瓜",
+          "priceCents": 650,
+          "spiceLevel": 0,
+          "tags": ["vegetarian"]
+        },
+        {
+          "slug": "popcorn-chicken",
+          "nameEn": "Popcorn Chicken",
+          "nameZh": "盐酥鸡",
+          "priceCents": 1300,
+          "spiceLevel": 0,
+          "tags": []
+        },
+        {
+          "slug": "roasted-pepper-sauce-chicken",
+          "nameEn": "Roasted Pepper Sauce Chicken",
+          "nameZh": "红油烧椒口水鸡",
+          "priceCents": 850,
+          "spiceLevel": 1,
+          "tags": []
+        },
+        {
+          "slug": "peanut-cucumber-salad",
+          "nameEn": "Peanut & Cucumber Salad",
+          "nameZh": "花生拌黄瓜",
+          "priceCents": 650,
+          "spiceLevel": 1,
+          "tags": ["vegetarian"]
+        },
+        {
+          "slug": "bamboo-shoot-salad",
+          "nameEn": "Bamboo Shoot Salad",
+          "nameZh": "啷个那么笋",
+          "priceCents": 750,
+          "spiceLevel": 0,
+          "tags": ["vegetarian"]
+        },
+        {
+          "slug": "spicy-beef-jerky",
+          "nameEn": "Spicy Beef Jerky",
+          "nameZh": "冷吃牛肉",
+          "priceCents": 1300,
+          "spiceLevel": 3,
+          "tags": []
+        },
+        {
+          "slug": "century-egg-in-roasted-pepper-sauce",
+          "nameEn": "Century Egg in Roasted Pepper Sauce",
+          "nameZh": "烧椒皮蛋",
+          "priceCents": 850,
+          "spiceLevel": 1,
+          "tags": ["vegetarian"]
+        },
+        {
+          "slug": "spinach-peanut-salad",
+          "nameEn": "Spinach & Peanut Salad",
+          "nameZh": "菠菜花生米",
+          "priceCents": 850,
+          "spiceLevel": 0,
+          "tags": ["vegetarian"]
+        },
+        {
+          "slug": "spicy-beef-shank-with-wild-pepper",
+          "nameEn": "Spicy Beef Shank with Wild Pepper",
+          "nameZh": "鲜椒拌牛肉",
+          "priceCents": 1300,
+          "spiceLevel": 1,
+          "tags": []
+        }
+      ]
+    },
+    {
+      "slug": "wonton",
+      "nameEn": "Wonton",
+      "nameZh": "抄手",
+      "items": [
+        {
+          "slug": "wonton-in-garlic-sesame-sauce",
+          "nameEn": "Wonton in Garlic & Sesame Sauce",
+          "nameZh": "蒜泥麻酱抄手",
+          "priceCents": 1400,
+          "spiceLevel": 1,
+          "tags": []
+        },
+        {
+          "slug": "wonton-in-chicken-soup",
+          "nameEn": "Wonton in Chicken Soup",
+          "nameZh": "鸡汤鲜肉抄手",
+          "priceCents": 1400,
+          "spiceLevel": 0,
+          "tags": []
+        },
+        {
+          "slug": "wonton-in-red-chili-oil",
+          "nameEn": "Wonton in Red Chili Oil",
+          "nameZh": "红油抄手",
+          "priceCents": 1400,
+          "spiceLevel": 1,
+          "tags": []
+        },
+        {
+          "slug": "shrimp-pork-wonton-noodle-soup",
+          "nameEn": "Shrimp & Pork Wonton Noodle Soup",
+          "nameZh": "港式云吞面",
+          "priceCents": 1600,
+          "spiceLevel": 0,
+          "tags": []
+        }
+      ]
+    },
+    {
+      "slug": "dessert",
+      "nameEn": "Dessert",
+      "nameZh": "甜品",
+      "items": [
+        {
+          "slug": "brown-sugar-filled-fried-rice-cakes",
+          "nameEn": "Brown Sugar Filled Fried Rice Cakes",
+          "nameZh": "红糖流心糍粑",
+          "priceCents": 650,
+          "spiceLevel": 0,
+          "tags": ["vegetarian"]
+        },
+        {
+          "slug": "grandma-jiang-s-osmanthus-jelly",
+          "nameEn": "Grandma Jiang's Osmanthus Jelly",
+          "nameZh": "蒋三娘桂花冰粉",
+          "priceCents": 550,
+          "spiceLevel": 0,
+          "tags": ["vegetarian"]
+        },
+        {
+          "slug": "crispy-fried-milk",
+          "nameEn": "Crispy Fried Milk",
+          "nameZh": "酥壳炸鲜奶",
+          "priceCents": 650,
+          "spiceLevel": 0,
+          "tags": ["vegetarian"]
+        }
+      ]
+    },
+    {
+      "slug": "drinks",
+      "nameEn": "Drinks",
+      "nameZh": "饮品",
+      "items": [
+        {
+          "slug": "coke",
+          "nameEn": "Coke",
+          "nameZh": "可乐",
+          "priceCents": 300,
+          "spiceLevel": 0,
+          "tags": ["vegan", "vegetarian"]
+        },
+        {
+          "slug": "diet-coke",
+          "nameEn": "Diet Coke",
+          "nameZh": "呆可乐",
+          "priceCents": 300,
+          "spiceLevel": 0,
+          "tags": ["vegan", "vegetarian"]
+        },
+        {
+          "slug": "smash-pineapple-lemon-ice-tea",
+          "nameEn": "Smash Pineapple Lemon Ice Tea",
+          "nameZh": "菠打柠檬茶",
+          "priceCents": 650,
+          "spiceLevel": 0,
+          "tags": ["vegetarian"]
+        },
+        {
+          "slug": "grandma-jiang-s-milk-rice-milk",
+          "nameEn": "Grandma Jiang's Milk Rice Milk",
+          "nameZh": "蒋三娘的幕年回忆",
+          "priceCents": 650,
+          "spiceLevel": 0,
+          "tags": ["vegetarian"]
+        },
+        {
+          "slug": "sugar-free-oolong-tea",
+          "nameEn": "Sugar-Free Oolong Tea",
+          "nameZh": "无糖乌龙茶",
+          "priceCents": 400,
+          "spiceLevel": 0,
+          "tags": ["vegan", "vegetarian"]
+        },
+        {
+          "slug": "coconut-sweetie",
+          "nameEn": "Coconut Sweetie",
+          "nameZh": "菠萝吹雪",
+          "priceCents": 650,
+          "spiceLevel": 0,
+          "tags": ["vegetarian"]
+        },
+        {
+          "slug": "chinese-orange-soda",
+          "nameEn": "Chinese Orange Soda",
+          "nameZh": "北冰洋",
+          "priceCents": 450,
+          "spiceLevel": 0,
+          "tags": ["vegan", "vegetarian"]
+        },
+        {
+          "slug": "arizona",
+          "nameEn": "Arizona",
+          "nameZh": "阿拉左纳",
+          "priceCents": 550,
+          "spiceLevel": 0,
+          "tags": ["vegan", "vegetarian"]
+        },
+        {
+          "slug": "sprite",
+          "nameEn": "Sprite",
+          "nameZh": "雪碧",
+          "priceCents": 300,
+          "spiceLevel": 0,
+          "tags": ["vegan", "vegetarian"]
+        },
+        {
+          "slug": "fuse",
+          "nameEn": "Fuse",
+          "nameZh": "雀巢柠檬茶",
+          "priceCents": 350,
+          "spiceLevel": 0,
+          "tags": ["vegan", "vegetarian"]
+        },
+        {
+          "slug": "happy-baby-milk",
+          "nameEn": "Happy Baby Milk",
+          "nameZh": "旺仔牛奶",
+          "priceCents": 400,
+          "spiceLevel": 0,
+          "tags": ["vegetarian"]
+        },
+        {
+          "slug": "house-plum-juice",
+          "nameEn": "House Plum Juice",
+          "nameZh": "手作酸梅汤",
+          "priceCents": 850,
+          "spiceLevel": 0,
+          "tags": ["vegan", "vegetarian"]
+        },
+        {
+          "slug": "master-kang-iced-tea",
+          "nameEn": "Master Kang Iced Tea",
+          "nameZh": "康师傅冰红茶",
+          "priceCents": 450,
+          "spiceLevel": 0,
+          "tags": ["vegan", "vegetarian"]
+        },
+        {
+          "slug": "ovaltine",
+          "nameEn": "Ovaltine",
+          "nameZh": "回忆里的那杯高乐高",
+          "priceCents": 650,
+          "spiceLevel": 0,
+          "tags": ["vegetarian"]
+        },
+        {
+          "slug": "vitasoy",
+          "nameEn": "Vitasoy",
+          "nameZh": "维他奶",
+          "priceCents": 500,
+          "spiceLevel": 0,
+          "tags": ["vegan", "vegetarian"]
+        },
+        {
+          "slug": "wahaha-yogurt-drink-4-pack",
+          "nameEn": "Wahaha Yogurt Drink (4-pack)",
+          "nameZh": "娃哈哈哈哈",
+          "priceCents": 850,
+          "spiceLevel": 0,
+          "tags": ["vegetarian"]
+        },
+        {
+          "slug": "wonglovi",
+          "nameEn": "Wonglovi",
+          "nameZh": "王老吉",
+          "priceCents": 450,
+          "spiceLevel": 0,
+          "tags": ["vegan", "vegetarian"]
+        }
+      ]
+    }
+  ]
+}
