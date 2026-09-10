@@ -1,23 +1,118 @@
 @import "tailwindcss";
 
-/*
- * Design tokens land here in the design-system phase: colour, type scale,
- * spacing rhythm and easing curves, exposed as custom properties so the whole
- * theme is editable from one place.
- */
+/* =========================================================================
+   Palette
+
+   Drawn from the two traditional Chinese colour systems in the client's
+   references, which name their colours rather than numbering them. Those
+   names are kept because they carry the brand story into the codebase.
+
+   The palette splits in two on purpose. The traditional colours are mid
+   luminance — they are surface and display colours, and every one of them
+   fails 4.5:1 as body text. The `-text` variants are the same hue nudged
+   until they pass. Use the base for fills, panels and large display type;
+   use the `-text` variant for anything set below roughly 24px.
+   ========================================================================= */
 
 @theme {
-  --font-sans:
-    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
-    sans-serif;
+  /* Ground */
+  --color-ink: #12100e; /* warm near-black */
+  --color-ink-deep: #0a0908;
+  --color-ink-soft: #211d19;
+
+  /* 白 — rice paper */
+  --color-rice: #f2eee5;
+  --color-rice-dim: #e7e7dc;
+  --color-paper: #dad6cb;
+
+  /* 桃紅 — peach red. The primary accent. */
+  --color-peach: #c14a50;
+  --color-peach-deep: #b12959;
+  --color-peach-text: #bd4147; /* 4.52:1 on rice */
+  --color-peach-glow: #c6595e; /* 4.51:1 on ink */
+
+  /* 風入松 — wind in the pines. Olive matcha, the secondary. */
+  --color-pine: #787240;
+  --color-pine-deep: #76796e; /* 绿沉 */
+  --color-pine-text: #736e3e; /* 4.50:1 on rice */
+  --color-pine-glow: #837d46; /* 4.51:1 on ink */
+
+  /* 沉香 — agarwood. Warm neutral for secondary text and rules. */
+  --color-agar: #897367;
+  --color-agar-text: #7c685e; /* 4.54:1 on rice */
+  --color-agar-glow: #8d776a; /* 4.50:1 on ink */
+
+  /* Lantern. Dark-ground only — it sits at 1.94:1 on rice and must never
+     carry text on a light surface. */
+  --color-lantern: #d9a441; /* 8.44:1 on ink */
+  --color-lantern-text: #8d651c; /* the light-ground fallback, 4.52:1 */
+
+  /* =======================================================================
+     Type
+     ======================================================================= */
+
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+
+  /* Fluid display sizes. The wordmark is allowed to run edge to edge, so it
+     scales on viewport width rather than stepping at breakpoints. */
+  --text-hero: clamp(3.25rem, 15.5vw, 17rem);
+  --text-display: clamp(2.5rem, 7vw, 6.5rem);
+  --text-title: clamp(1.75rem, 3.6vw, 3.25rem);
+  --text-lede: clamp(1.0625rem, 1.35vw, 1.375rem);
+
+  /* =======================================================================
+     Motion
+
+     Durations and curves are tokens so the whole site can be retimed from
+     one place, and so no component invents its own easing.
+     ======================================================================= */
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-out-soft: cubic-bezier(0.33, 1, 0.68, 1);
+
+  --duration-fast: 160ms;
+  --duration-base: 320ms;
+  --duration-slow: 640ms;
+  --duration-reveal: 900ms;
 }
+
+/* =========================================================================
+   Base
+   ========================================================================= */
 
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;
+    background-color: var(--color-rice);
+    color: var(--color-ink);
   }
 
-  /* Motion is opt-out for every user who has asked the OS to reduce it. */
+  /* Chinese runs in the reader's system face until the subset build lands.
+     See src/app/fonts.ts. */
+  :lang(zh) {
+    font-family:
+      "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans SC",
+      "Noto Sans SC", sans-serif;
+  }
+
+  /* The wordmark and section titles are set tight; Archivo's default tracking
+     is too open at display sizes. */
+  .text-hero,
+  .text-display {
+    letter-spacing: -0.03em;
+    line-height: 0.86;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-peach-text);
+    outline-offset: 3px;
+  }
+
+  /* Motion is opt-out for every reader who has asked the OS to reduce it.
+     Scroll-driven sections must also check this in JS before building a
+     timeline — this rule only neutralises CSS. */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,

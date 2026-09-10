@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { clientEnv } from "@/env";
+import { archivo } from "./fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -13,13 +14,15 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0b0b0b",
+  themeColor: "#12100e",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className="h-full antialiased">
-      <body className="flex min-h-full flex-col font-sans">{children}</body>
+    <html lang="en" className={`${archivo.variable} h-full antialiased`}>
+      <body className="bg-rice text-ink flex min-h-full flex-col font-sans">
+        {children}
+      </body>
     </html>
   );
 }

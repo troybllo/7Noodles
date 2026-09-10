@@ -1,0 +1,205 @@
+/**
+ * The documented palette.
+ *
+ * The values here mirror the `@theme` block in src/app/globals.css, which is
+ * what the running site actually uses. palette.test.ts parses that file and
+ * fails if the two ever drift, so this stays a description of the truth rather
+ * than a second copy of it.
+ */
+
+export type Ground = "rice" | "ink";
+
+export type Swatch = {
+  /** Token name, matching `--color-{token}` and the Tailwind utility. */
+  token: string;
+  hex: string;
+  /** Traditional name, where the colour comes from one. */
+  chinese?: string;
+  english: string;
+  /** What this value is for. */
+  usage: string;
+  /** Grounds this colour is allowed to carry body text on. */
+  textOn: Ground[];
+};
+
+export type SwatchGroup = {
+  name: string;
+  note: string;
+  swatches: Swatch[];
+};
+
+export const GROUND_HEX: Record<Ground, string> = {
+  rice: "#f2eee5",
+  ink: "#12100e",
+};
+
+export const PALETTE: SwatchGroup[] = [
+  {
+    name: "Ground",
+    note: "Structural surfaces. Everything else sits on one of these two.",
+    swatches: [
+      {
+        token: "ink",
+        hex: "#12100e",
+        english: "Ink",
+        usage: "Primary dark ground. Warm, not neutral black.",
+        textOn: [],
+      },
+      {
+        token: "ink-deep",
+        hex: "#0a0908",
+        english: "Deep ink",
+        usage: "Full-bleed sections that need to recede behind ink panels.",
+        textOn: [],
+      },
+      {
+        token: "ink-soft",
+        hex: "#211d19",
+        english: "Soft ink",
+        usage: "Raised panels and cards on an ink ground.",
+        textOn: [],
+      },
+      {
+        token: "rice",
+        hex: "#f2eee5",
+        chinese: "白",
+        english: "Rice paper",
+        usage: "Primary light ground.",
+        textOn: ["ink"],
+      },
+      {
+        token: "rice-dim",
+        hex: "#e7e7dc",
+        english: "Dim rice",
+        usage: "Alternating band to separate two light sections.",
+        textOn: ["ink"],
+      },
+      {
+        token: "paper",
+        hex: "#dad6cb",
+        english: "Paper",
+        usage: "Rules, borders, disabled surfaces.",
+        textOn: ["ink"],
+      },
+    ],
+  },
+  {
+    name: "Peach red",
+    note: "The primary accent, and the only colour that should ever read as loud. Used sparingly is what separates this from every other Chinese restaurant site.",
+    swatches: [
+      {
+        token: "peach",
+        hex: "#c14a50",
+        chinese: "桃紅",
+        english: "Peach red",
+        usage: "Panel fills, graphic elements, display type above 24px.",
+        textOn: [],
+      },
+      {
+        token: "peach-deep",
+        hex: "#b12959",
+        english: "Deep peach",
+        usage: "Pressed states, deeper fills.",
+        textOn: ["rice"],
+      },
+      {
+        token: "peach-text",
+        hex: "#bd4147",
+        english: "Peach, text safe",
+        usage: "Body-size text and icons on a light ground.",
+        textOn: ["rice"],
+      },
+      {
+        token: "peach-glow",
+        hex: "#c6595e",
+        english: "Peach, reversed",
+        usage: "Body-size text and icons on an ink ground.",
+        textOn: ["ink"],
+      },
+    ],
+  },
+  {
+    name: "Pine",
+    note: "The secondary. Matcha olive, taken from 風入松 — wind in the pines.",
+    swatches: [
+      {
+        token: "pine",
+        hex: "#787240",
+        chinese: "風入松",
+        english: "Wind in the pines",
+        usage: "Panel fills and display type.",
+        textOn: [],
+      },
+      {
+        token: "pine-deep",
+        hex: "#76796e",
+        chinese: "绿沉",
+        english: "Deep green",
+        usage: "Cool counterweight to the warm neutrals.",
+        textOn: [],
+      },
+      {
+        token: "pine-text",
+        hex: "#736e3e",
+        english: "Pine, text safe",
+        usage: "Body-size text on a light ground.",
+        textOn: ["rice"],
+      },
+      {
+        token: "pine-glow",
+        hex: "#837d46",
+        english: "Pine, reversed",
+        usage: "Body-size text on an ink ground.",
+        textOn: ["ink"],
+      },
+    ],
+  },
+  {
+    name: "Agarwood",
+    note: "Warm neutral. Secondary text, metadata, hairlines.",
+    swatches: [
+      {
+        token: "agar",
+        hex: "#897367",
+        chinese: "沉香",
+        english: "Agarwood",
+        usage: "Hairlines and large muted type.",
+        textOn: [],
+      },
+      {
+        token: "agar-text",
+        hex: "#7c685e",
+        english: "Agarwood, text safe",
+        usage: "Secondary body text on a light ground.",
+        textOn: ["rice"],
+      },
+      {
+        token: "agar-glow",
+        hex: "#8d776a",
+        english: "Agarwood, reversed",
+        usage: "Secondary body text on an ink ground.",
+        textOn: ["ink"],
+      },
+    ],
+  },
+  {
+    name: "Lantern",
+    note: "Warm yellow, from the lantern light in the reference. Dark-ground only: it sits at 1.94:1 on rice, so it can never carry text on a light surface.",
+    swatches: [
+      {
+        token: "lantern",
+        hex: "#d9a441",
+        english: "Lantern",
+        usage: "Accent and text on ink. Glow, highlights, hover states.",
+        textOn: ["ink"],
+      },
+      {
+        token: "lantern-text",
+        hex: "#8d651c",
+        english: "Lantern, light ground",
+        usage: "The fallback when lantern is needed on rice.",
+        textOn: ["rice"],
+      },
+    ],
+  },
+];
