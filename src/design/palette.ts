@@ -120,15 +120,15 @@ export const PALETTE: SwatchGroup[] = [
   },
   {
     name: "Pine",
-    note: "The secondary. Matcha olive, taken from 風入松 — wind in the pines.",
+    note: "The secondary. Matcha olive, taken from 風入松 — wind in the pines. Retuned 1.4% darker than the reference so the same value works as a fill and as a ground for small rice-coloured text.",
     swatches: [
       {
         token: "pine",
-        hex: "#787240",
+        hex: "#736e3e",
         chinese: "風入松",
         english: "Wind in the pines",
-        usage: "Panel fills and display type.",
-        textOn: [],
+        usage: "Panel fills, display type, and grounds carrying rice-coloured body text.",
+        textOn: ["rice"],
       },
       {
         token: "pine-deep",
@@ -137,13 +137,6 @@ export const PALETTE: SwatchGroup[] = [
         english: "Deep green",
         usage: "Cool counterweight to the warm neutrals.",
         textOn: [],
-      },
-      {
-        token: "pine-text",
-        hex: "#736e3e",
-        english: "Pine, text safe",
-        usage: "Body-size text on a light ground.",
-        textOn: ["rice"],
       },
       {
         token: "pine-glow",

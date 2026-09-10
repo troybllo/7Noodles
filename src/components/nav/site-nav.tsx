@@ -42,19 +42,17 @@ function NavLink({
       style={{ top: nodeOffset(index, NAV_ITEMS.length) }}
     >
       <span
-        className={`size-3 shrink-0 rounded-full transition-transform duration-[--duration-base] ease-[--ease-out-expo] group-hover:scale-125 ${
-          active ? "bg-peach scale-125" : "bg-ink"
-        }`}
+        className={`size-3 shrink-0 rounded-full transition-transform duration-[--duration-base] ease-[--ease-out-expo] group-hover:scale-125 ${active ? "scale-125" : ""}`}
+        style={{ backgroundColor: active ? "var(--rail-accent)" : "var(--rail-strand)" }}
       />
       <span className="flex flex-col leading-tight">
         <span
-          className={`text-xs font-semibold tracking-[0.18em] uppercase transition-colors duration-[--duration-fast] ${
-            active ? "text-peach-text" : "text-ink group-hover:text-peach-text"
-          }`}
+          className="text-xs font-semibold tracking-[0.18em] uppercase"
+          style={{ color: active ? "var(--rail-accent)" : "var(--rail-label)" }}
         >
           {item.label}
         </span>
-        <span lang="zh" className="text-agar-text text-[0.7rem]">
+        <span lang="zh" className="text-[0.7rem]" style={{ color: "var(--rail-sub)" }}>
           {item.zh}
         </span>
       </span>
@@ -82,19 +80,53 @@ export function SiteNav() {
     };
   }, [open]);
 
-  const railScope = useGsap<HTMLElement>(({ gsap }) => {
+  const railScope = useGsap<HTMLElement>(({ gsap, scope }) => {
+    // Sections run full-bleed under the rail, so the rail takes its colouring
+    // from whichever one is currently behind it. Exactly one section crosses
+    // the viewport midpoint at a time, which makes that the reliable test —
+    // onEnter covers scrolling down past a section's top, onEnterBack covers
+    // scrolling up past its bottom.
+    for (const section of document.querySelectorAll<HTMLElement>("[data-nav-theme]")) {
+      const theme = section.dataset.navTheme ?? "light";
+      const apply = () => scope.setAttribute("data-rail", theme);
+
+      gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: "top 50%",
+          end: "bottom 50%",
+          onEnter: apply,
+          onEnterBack: apply,
+        },
+      });
+    }
+
     // The peach strand fills as the page scrolls, so the rail doubles as a
     // position indicator rather than only a menu.
-    gsap.to("[data-spine-progress]", {
-      strokeDashoffset: 0,
-      ease: "none",
-      scrollTrigger: {
-        trigger: document.documentElement,
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 0.4,
-      },
-    });
+    //
+    // Driven from the document's own scroll position rather than a
+    // ScrollTrigger range: a trigger spanning documentElement from "top top"
+    // to "bottom bottom" resolves to a degenerate range and never updates.
+    const strands = scope.querySelectorAll("[data-spine-progress]");
+
+    const onScroll = () => {
+      const maxScroll = Math.max(
+        1,
+        document.documentElement.scrollHeight - window.innerHeight,
+      );
+      const progress = Math.min(1, window.scrollY / maxScroll);
+      gsap.to(strands, {
+        strokeDashoffset: 1 - progress,
+        duration: 0.4,
+        ease: "none",
+        overwrite: "auto",
+      });
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => window.removeEventListener("scroll", onScroll);
   });
 
   return (
@@ -110,6 +142,7 @@ export function SiteNav() {
       <nav
         ref={railScope}
         aria-label="Primary"
+        data-rail="light"
         className="fixed top-0 left-0 z-50 hidden h-svh w-36 lg:block xl:w-44"
       >
         <NavSpine
@@ -151,7 +184,7 @@ export function SiteNav() {
         hidden={!open}
         className="bg-rice fixed inset-0 z-40 lg:hidden"
       >
-        <nav aria-label="Primary" className="relative h-full pt-20">
+        <nav aria-label="Primary" data-rail="light" className="relative h-full pt-20">
           <NavSpine
             nodes={NAV_ITEMS.length}
             activeIndex={activeIndex}

@@ -29,14 +29,16 @@ export function Hero() {
     <HeroMotion>
       <section
         id="hero"
-        className="relative flex min-h-[92svh] flex-col justify-center overflow-hidden px-6 pt-28 pb-12 md:px-10 lg:pt-16"
+        data-nav-theme="light"
+        className="relative flex min-h-[92svh] flex-col justify-center overflow-hidden px-6 pt-28 pb-12 md:px-10 lg:pt-16 lg:pr-10 lg:pl-36 xl:pl-44"
       >
         <Branch
-          className="pointer-events-none absolute -top-[6%] -right-[14%] h-[118%] w-auto opacity-95 md:-right-[4%]"
+          className="pointer-events-none absolute -top-[6%] -right-[14%] h-[112%] w-auto opacity-80 md:-right-[4%]"
           limbColor="var(--color-ink)"
         />
 
-        <div className="relative z-10">
+        {/* Establishes the container the wordmark is sized against. */}
+        <div className="@container relative z-10">
           <div className="overflow-hidden">
             <p
               data-hero-eyebrow
@@ -73,7 +75,7 @@ export function Hero() {
               </Link>
               <Link
                 href="/menu"
-                className="border-agar text-ink hover:bg-ink hover:text-rice border px-6 py-3 text-sm font-medium transition-colors duration-[--duration-fast]"
+                className="border-agar bg-rice text-ink hover:bg-ink hover:text-rice border px-6 py-3 text-sm font-medium transition-colors duration-[--duration-fast]"
               >
                 View menu
               </Link>

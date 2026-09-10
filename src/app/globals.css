@@ -31,10 +31,13 @@
   --color-peach-text: #bd4147; /* 4.52:1 on rice */
   --color-peach-glow: #c6595e; /* 4.51:1 on ink */
 
-  /* 風入松 — wind in the pines. Olive matcha, the secondary. */
-  --color-pine: #787240;
+  /* 風入松 — wind in the pines. Olive matcha, the secondary.
+     Retuned from the reference's #787240, which reads 4.24:1 against rice and
+     3.87:1 against ink — it cannot carry small text in either direction. This
+     is 1.4% darker, visually indistinguishable, and clears 4.5:1 with rice, so
+     one value serves as both fill and small-text ground. */
+  --color-pine: #736e3e; /* 4.50:1 with rice */
   --color-pine-deep: #76796e; /* 绿沉 */
-  --color-pine-text: #736e3e; /* 4.50:1 on rice */
   --color-pine-glow: #837d46; /* 4.51:1 on ink */
 
   /* 沉香 — agarwood. Warm neutral for secondary text and rules. */
@@ -54,9 +57,15 @@
   --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
 
-  /* Fluid display sizes. The wordmark is allowed to run edge to edge, so it
-     scales on viewport width rather than stepping at breakpoints. */
-  --text-hero: clamp(3.25rem, 15.5vw, 17rem);
+  /* Fluid display sizes. The wordmark runs edge to edge, so it is sized in
+     container units rather than viewport units — the column it occupies is the
+     viewport minus the rail and its padding, and sizing against the viewport
+     overflowed it. Requires an ancestor with `container-type: inline-size`.
+
+     13.3cqw is measured, not derived: "7 NOODLES" sets 7.26em wide in Archivo
+     Black at 125% width, so the fitting size is the container over 7.26, taken
+     to 96.5% so justify-between has gaps to distribute. */
+  --text-hero: clamp(2.5rem, 13.3cqw, 15rem);
   --text-display: clamp(2.5rem, 7vw, 6.5rem);
   --text-title: clamp(1.75rem, 3.6vw, 3.25rem);
   --text-lede: clamp(1.0625rem, 1.35vw, 1.375rem);
@@ -103,6 +112,35 @@
   .text-display {
     letter-spacing: -0.03em;
     line-height: 0.86;
+  }
+
+  /* The rail floats over sections of either ground, so it reads its colours
+     from variables that flip as each section passes the viewport midpoint.
+     Custom properties cannot themselves transition, but the properties that
+     consume them can, which is where the crossfade comes from. */
+  [data-rail] {
+    --rail-strand: var(--color-ink);
+    --rail-muted: var(--color-agar);
+    --rail-label: var(--color-ink);
+    --rail-sub: var(--color-agar-text);
+    --rail-accent: var(--color-peach);
+  }
+
+  [data-rail="dark"] {
+    --rail-strand: var(--color-rice);
+    --rail-muted: var(--color-agar-glow);
+    --rail-label: var(--color-rice);
+    --rail-sub: var(--color-agar-glow);
+    --rail-accent: var(--color-peach-glow);
+  }
+
+  [data-rail] path,
+  [data-rail] a,
+  [data-rail] span {
+    transition:
+      stroke var(--duration-base) var(--ease-out-soft),
+      color var(--duration-base) var(--ease-out-soft),
+      background-color var(--duration-base) var(--ease-out-soft);
   }
 
   :focus-visible {

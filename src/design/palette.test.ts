@@ -57,6 +57,30 @@ describe("palette accessibility claims", () => {
     expect(lantern?.textOn).toEqual(["ink"]);
   });
 
+  it("holds every showcase panel ground against its text colour", () => {
+    // The showcase reads as three colour panels carrying dish names and prices.
+    // If any of these slips, the section stops being legible, so it is guarded
+    // here rather than left to a manual check.
+    const panels: [string, string, string][] = [
+      ["pine", "#736e3e", "#f2eee5"],
+      ["peach-deep", "#b12959", "#f2eee5"],
+      ["rice", "#f2eee5", "#12100e"],
+    ];
+
+    for (const [name, ground, text] of panels) {
+      const ratio = contrastRatio(text, ground);
+      expect(ratio, `${name} panel is ${ratio.toFixed(2)}:1`).toBeGreaterThanOrEqual(4.5);
+    }
+  });
+
+  it("keeps the reference olive out of the palette", () => {
+    // #787240 is the colour from the client's reference. It reads 4.24:1 on
+    // rice and 3.87:1 on ink, so it cannot carry small text either way.
+    // Guarded so nobody restores it from the reference image later.
+    expect(contrastRatio("#787240", GROUND_HEX.rice)).toBeLessThan(4.5);
+    expect(swatches.some((s) => s.hex.toLowerCase() === "#787240")).toBe(false);
+  });
+
   it("still clears 3:1 for large display type in the accent families", () => {
     const grounds: Ground[] = ["rice", "ink"];
     for (const token of ["peach", "pine"]) {

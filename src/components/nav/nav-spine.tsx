@@ -33,7 +33,7 @@ export function NavSpine({ nodes, activeIndex, className }: NavSpineProps) {
       aria-hidden="true"
       className={className}
     >
-      <g vectorEffect="non-scaling-stroke" stroke="var(--color-agar)" fill="none">
+      <g vectorEffect="non-scaling-stroke" stroke="var(--rail-muted)" fill="none">
         <path
           d={siblingA.d}
           strokeWidth={1.8}
@@ -51,7 +51,7 @@ export function NavSpine({ nodes, activeIndex, className }: NavSpineProps) {
       <path
         data-spine-main
         d={main.d}
-        stroke="var(--color-ink)"
+        stroke="var(--rail-strand)"
         strokeWidth={3.5}
         strokeLinecap="round"
         vectorEffect="non-scaling-stroke"
@@ -60,7 +60,7 @@ export function NavSpine({ nodes, activeIndex, className }: NavSpineProps) {
       <path
         data-spine-progress
         d={main.d}
-        stroke="var(--color-peach)"
+        stroke="var(--rail-accent)"
         strokeWidth={3.5}
         strokeLinecap="round"
         pathLength={1}
@@ -73,7 +73,7 @@ export function NavSpine({ nodes, activeIndex, className }: NavSpineProps) {
           key={node.y}
           data-spine-limb={index}
           d={buildLimb(node)}
-          stroke={index === activeIndex ? "var(--color-peach)" : "var(--color-agar)"}
+          stroke={index === activeIndex ? "var(--rail-accent)" : "var(--rail-muted)"}
           strokeWidth={2}
           strokeLinecap="round"
           vectorEffect="non-scaling-stroke"

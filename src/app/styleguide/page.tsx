@@ -48,9 +48,7 @@ function SwatchCard({ swatch }: { swatch: Swatch }) {
         </div>
         <p className="border-paper border-t pt-2 text-xs">
           {swatch.textOn.length > 0 ? (
-            <span className="text-pine-text">
-              Body text on {swatch.textOn.join(" and ")}
-            </span>
+            <span className="text-pine">Body text on {swatch.textOn.join(" and ")}</span>
           ) : (
             <span className="text-agar-text">Surface and display only</span>
           )}

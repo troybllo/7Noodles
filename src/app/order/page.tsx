@@ -8,7 +8,11 @@ export const metadata: Metadata = {
 
 export default function OrderPage() {
   return (
-    <main id="main" className="px-6 py-32 md:px-10">
+    <main
+      id="main"
+      data-nav-theme="light"
+      className="px-6 py-32 md:px-10 lg:pr-10 lg:pl-36 xl:pl-44"
+    >
       <h1 className="text-display font-black">Order</h1>
     </main>
   );

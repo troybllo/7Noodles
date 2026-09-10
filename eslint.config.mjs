@@ -10,6 +10,9 @@ export default defineConfig([
   {
     rules: {
       "no-console": ["warn", { allow: ["warn", "error"] }],
+      // Catches code stranded after an early return, which eslint-config-next
+      // does not enable on its own.
+      "no-unreachable": "error",
       "@typescript-eslint/no-unused-vars": [
         "error",
         { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },

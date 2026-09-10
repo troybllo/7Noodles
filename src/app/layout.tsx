@@ -25,7 +25,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="bg-rice text-ink flex min-h-full flex-col font-sans">
         <SmoothScroll />
         <SiteNav />
-        <div className="flex min-h-full flex-col lg:pl-36 xl:pl-44">{children}</div>
+        <div className="flex min-h-full flex-col">{children}</div>
       </body>
     </html>
   );
