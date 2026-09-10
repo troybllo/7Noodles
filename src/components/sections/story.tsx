@@ -1,54 +1,65 @@
+import Link from "next/link";
+import { PullUp } from "@/components/motion/pull-up";
+import { ScrollRevealText } from "@/components/motion/scroll-reveal-text";
+import { PhotoSlot } from "@/components/media/photo-slot";
+import { Seal } from "@/components/brand/seal";
 import { STORY } from "@/content/story";
-import { StoryMotion } from "./story-motion";
 
 export function Story() {
   return (
-    <StoryMotion>
-      <section className="bg-ink text-rice px-6 py-28 md:px-10 md:py-40">
-        <div className="mx-auto max-w-5xl">
-          <div className="overflow-hidden">
-            <p
-              data-story-eyebrow
-              lang="zh"
-              className="text-lantern text-title font-medium"
-            >
-              {STORY.eyebrow}
-            </p>
+    <section
+      id="story"
+      className="bg-ink text-rice relative overflow-hidden px-6 py-24 md:px-10 md:py-32"
+    >
+      {/* Set vertically, the way a printed Sichuan menu would. */}
+      <p
+        aria-hidden="true"
+        lang="zh"
+        className="text-agar-glow/45 absolute top-32 left-2 hidden text-sm tracking-[0.4em] xl:block"
+        style={{ writingMode: "vertical-rl" }}
+      >
+        {STORY.vertical}
+      </p>
+
+      <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-12 lg:gap-x-12">
+        <div className="lg:col-span-5 lg:col-start-1 lg:row-start-1 lg:self-center">
+          <Seal character={STORY.sealCharacter} />
+
+          <ScrollRevealText
+            as="blockquote"
+            text={`“${STORY.quote}”`}
+            className="mt-6 text-2xl leading-[1.25] font-semibold text-balance md:text-3xl"
+          />
+
+          <div className="mt-7 flex flex-col gap-4">
+            {STORY.supporting.map((line) => (
+              <ScrollRevealText
+                key={line}
+                text={line}
+                className="text-agar-glow max-w-md text-sm leading-relaxed"
+              />
+            ))}
           </div>
 
-          <h2 className="text-display mt-6 font-black">
-            {STORY.statement.map((line) => (
-              <span key={line} className="block overflow-hidden">
-                <span data-story-line className="block">
-                  {line}
-                </span>
-              </span>
-            ))}
-          </h2>
-
-          <p data-story-lede className="text-agar-glow text-lede mt-10 max-w-2xl">
-            {STORY.lede}
-          </p>
-
-          <ul className="mt-20 grid gap-10 md:grid-cols-3 md:gap-8">
-            {STORY.facts.map((fact) => (
-              <li
-                key={fact.title}
-                data-story-fact
-                className="border-agar-glow/40 border-t pt-5"
-              >
-                <p lang="zh" className="text-lantern text-title font-medium">
-                  {fact.zh}
-                </p>
-                <h3 className="mt-2 text-sm font-semibold tracking-[0.16em] uppercase">
-                  {fact.title}
-                </h3>
-                <p className="text-agar-glow mt-3 text-sm leading-relaxed">{fact.body}</p>
-              </li>
-            ))}
-          </ul>
+          <Link
+            href={STORY.cta.href}
+            className="bg-pine text-rice hover:bg-pine-glow mt-9 inline-flex rounded-full px-6 py-3 text-sm font-medium transition-colors duration-[--duration-fast]"
+          >
+            {STORY.cta.label}
+          </Link>
         </div>
-      </section>
-    </StoryMotion>
+
+        <PullUp className="aspect-[4/3] lg:col-span-7 lg:col-start-6 lg:row-start-1">
+          <PhotoSlot label={STORY.photos.primary} />
+        </PullUp>
+
+        <PullUp
+          delay={0.12}
+          className="aspect-[4/5] lg:col-span-3 lg:col-start-2 lg:row-start-2 lg:-mt-28"
+        >
+          <PhotoSlot label={STORY.photos.secondary} />
+        </PullUp>
+      </div>
+    </section>
   );
 }

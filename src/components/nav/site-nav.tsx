@@ -4,7 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useGsap } from "@/components/motion/use-gsap";
+import { HOME_SECTIONS } from "@/content/home-sections";
 import { NavSpine } from "./nav-spine";
+import { SectionPillars } from "./section-pillars";
 import { NAV_ITEMS } from "./nav-items";
 
 /** Node i sits at (i + 1) / (items + 1) of the rail height, matching the spine. */
@@ -62,7 +64,12 @@ function NavLink({
 
 export function SiteNav() {
   const activeIndex = useActiveIndex();
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
+
+  // Pillars map the sections of the page being read, so they only mean
+  // anything on the homepage.
+  const showPillars = pathname === "/";
 
   // Body scroll is locked while the overlay is open, or the page behind it
   // scrolls under the reader's finger.
@@ -111,6 +118,7 @@ export function SiteNav() {
           className="absolute inset-0 h-full w-16 xl:w-20"
         />
         <div className="absolute inset-0 w-16 xl:w-20">
+          {showPillars ? <SectionPillars sections={HOME_SECTIONS} /> : null}
           {NAV_ITEMS.map((item, index) => (
             <NavLink
               key={item.href}

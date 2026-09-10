@@ -49,6 +49,7 @@ export function NavSpine({ nodes, activeIndex, className }: NavSpineProps) {
       </g>
 
       <path
+        data-spine-main
         d={main.d}
         stroke="var(--color-ink)"
         strokeWidth={3.5}

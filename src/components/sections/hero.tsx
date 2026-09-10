@@ -27,7 +27,10 @@ function Wordmark() {
 export function Hero() {
   return (
     <HeroMotion>
-      <section className="relative flex min-h-[92svh] flex-col justify-center overflow-hidden px-6 pt-28 pb-12 md:px-10 lg:pt-16">
+      <section
+        id="hero"
+        className="relative flex min-h-[92svh] flex-col justify-center overflow-hidden px-6 pt-28 pb-12 md:px-10 lg:pt-16"
+      >
         <Branch
           className="pointer-events-none absolute -top-[6%] -right-[14%] h-[118%] w-auto opacity-95 md:-right-[4%]"
           limbColor="var(--color-ink)"
