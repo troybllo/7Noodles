@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { clientEnv } from "@/env";
 import { SmoothScroll } from "@/components/motion/smooth-scroll";
+import { SiteNav } from "@/components/nav/site-nav";
 import { archivo } from "./fonts";
 import "./globals.css";
 
@@ -23,7 +24,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="en" className={`${archivo.variable} h-full antialiased`}>
       <body className="bg-rice text-ink flex min-h-full flex-col font-sans">
         <SmoothScroll />
-        {children}
+        <SiteNav />
+        <div className="flex min-h-full flex-col lg:pl-36 xl:pl-44">{children}</div>
       </body>
     </html>
   );
