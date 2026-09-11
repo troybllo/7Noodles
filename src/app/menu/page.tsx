@@ -8,11 +8,7 @@ export const metadata: Metadata = {
 
 export default function MenuPage() {
   return (
-    <main
-      id="main"
-      data-nav-theme="light"
-      className="px-6 py-32 md:px-10 lg:pr-10 lg:pl-36 xl:pl-44"
-    >
+    <main id="main" data-nav-theme="light" className="px-6 py-32 md:px-10">
       <h1 className="text-display font-black">Menu</h1>
     </main>
   );

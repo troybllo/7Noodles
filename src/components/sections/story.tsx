@@ -10,7 +10,7 @@ export function Story() {
     <section
       id="story"
       data-nav-theme="dark"
-      className="bg-ink text-rice relative overflow-hidden px-6 py-24 md:px-10 md:py-32 lg:pr-10 lg:pl-36 xl:pl-44"
+      className="bg-ink text-rice relative overflow-hidden px-6 py-24 md:px-10 md:py-32"
     >
       {/* Set vertically, the way a printed Sichuan menu would. */}
       <p

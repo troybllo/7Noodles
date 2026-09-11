@@ -18,7 +18,8 @@
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "verify": "pnpm typecheck && pnpm lint && pnpm format:check && pnpm test"
+    "verify": "pnpm typecheck && pnpm lint && pnpm format:check && pnpm test",
+    "fonts": "node scripts/subset-fonts.mjs"
   },
   "dependencies": {
     "gsap": "^3.15.0",
@@ -38,6 +39,7 @@
     "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.9.6",
     "prettier-plugin-tailwindcss": "^0.8.1",
+    "subset-font": "^2.7.0",
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3",
     "vitest": "^5.0.0"

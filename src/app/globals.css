@@ -45,6 +45,10 @@
   --color-agar-text: #7c685e; /* 4.54:1 on rice */
   --color-agar-glow: #8d776a; /* 4.50:1 on ink */
 
+  /* Bronze, from the poster reference's #72511E. Clears 6.23:1 against rice in
+     both directions, so it needs no derived text variant. */
+  --color-bronze: #72511e;
+
   /* Lantern. Dark-ground only — it sits at 1.94:1 on rice and must never
      carry text on a light surface. */
   --color-lantern: #d9a441; /* 8.44:1 on ink */
@@ -55,6 +59,7 @@
      ======================================================================= */
 
   --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-brush: var(--font-brush-face), "Ma Shan Zheng", cursive;
   --font-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
 
   /* Fluid display sizes. The wordmark runs edge to edge, so it is sized in
@@ -114,29 +119,29 @@
     line-height: 0.86;
   }
 
-  /* The rail floats over sections of either ground, so it reads its colours
+  /* The bar floats over sections of either ground, so it reads its colours
      from variables that flip as each section passes the viewport midpoint.
      Custom properties cannot themselves transition, but the properties that
      consume them can, which is where the crossfade comes from. */
-  [data-rail] {
-    --rail-strand: var(--color-ink);
-    --rail-muted: var(--color-agar);
-    --rail-label: var(--color-ink);
-    --rail-sub: var(--color-agar-text);
-    --rail-accent: var(--color-peach);
+  [data-bar] {
+    --bar-strand: var(--color-ink);
+    --bar-muted: var(--color-agar);
+    --bar-label: var(--color-ink);
+    --bar-sub: var(--color-agar-text);
+    --bar-accent: var(--color-peach);
   }
 
-  [data-rail="dark"] {
-    --rail-strand: var(--color-rice);
-    --rail-muted: var(--color-agar-glow);
-    --rail-label: var(--color-rice);
-    --rail-sub: var(--color-agar-glow);
-    --rail-accent: var(--color-peach-glow);
+  [data-bar="dark"] {
+    --bar-strand: var(--color-rice);
+    --bar-muted: var(--color-agar-glow);
+    --bar-label: var(--color-rice);
+    --bar-sub: var(--color-agar-glow);
+    --bar-accent: var(--color-peach-glow);
   }
 
-  [data-rail] path,
-  [data-rail] a,
-  [data-rail] span {
+  [data-bar] path,
+  [data-bar] a,
+  [data-bar] span {
     transition:
       stroke var(--duration-base) var(--ease-out-soft),
       color var(--duration-base) var(--ease-out-soft),

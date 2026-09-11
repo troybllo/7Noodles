@@ -15,6 +15,11 @@ const CLOSED_GROW = 1;
 /** The accordion only exists from this width up. Below it the panels stack. */
 const ACCORDION = "(min-width: 48rem)";
 
+/** How long the equal 2/2/2 opening holds before one panel takes over. */
+const HOLD = 1.1;
+/** How long that hand-over takes. */
+const SETTLE = 1.3;
+
 const GROUND: Record<
   ShowcaseDish["ground"],
   { panel: string; text: string; sub: string }
@@ -56,26 +61,31 @@ export function ShowcasePanels() {
     const media = g.matchMedia();
 
     media.add(ACCORDION, () => {
-      g.fromTo(
-        gsap.utils.toArray<HTMLElement>(element.children),
-        { flexGrow: 2 },
-        {
+      /*
+       * The opening state is the point of the shot: three equal panels, held
+       * long enough to register as a set, before one wins. Settling straight
+       * out of it reads as a glitch rather than a decision.
+       */
+      g.timeline({
+        scrollTrigger: { trigger: element, start: "top 78%", once: true },
+      })
+        .fromTo(
+          gsap.utils.toArray<HTMLElement>(element.children),
+          { flexGrow: 2 },
+          { flexGrow: 2, duration: HOLD },
+        )
+        .to(gsap.utils.toArray<HTMLElement>(element.children), {
           flexGrow: (i: number) => (i === 0 ? OPEN_GROW : CLOSED_GROW),
-          duration: 1.1,
+          duration: SETTLE,
           ease: "power3.inOut",
-          scrollTrigger: { trigger: element, start: "top 78%", once: true },
-        },
-      );
+        });
     });
 
     return () => media.revert();
   });
 
   return (
-    <ul
-      ref={scope}
-      className="@container flex flex-col md:h-[70svh] md:min-h-[26rem] md:flex-row"
-    >
+    <ul ref={scope} className="@container flex h-full w-full flex-col md:flex-row">
       {SHOWCASE.map((dish, index) => {
         const active = index === open;
         const tone = GROUND[dish.ground];

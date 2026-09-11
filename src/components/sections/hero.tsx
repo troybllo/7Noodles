@@ -1,26 +1,28 @@
+import Image from "next/image";
 import Link from "next/link";
-import { Branch } from "@/components/brand/branch";
+import { Seal } from "@/components/brand/seal";
+import { HERO, HERO_ARTWORK } from "@/content/hero";
 import { HeroMotion } from "./hero-motion";
 
-const WORDMARK = "7 NOODLES";
-
 /**
- * The wordmark is split per character so the entrance can stagger. Each glyph
- * is hidden from assistive technology and the whole mark is announced once,
- * otherwise it reads out letter by letter.
+ * The name is split per character so the entrance can stagger it. Each glyph
+ * is hidden from assistive technology and the whole name announced once,
+ * otherwise it is read out character by character.
  */
-function Wordmark() {
+function Name() {
   return (
-    <h1 className="text-hero font-black" style={{ fontStretch: "125%" }}>
-      <span className="sr-only">{WORDMARK}</span>
-      <span aria-hidden="true" className="flex justify-between overflow-hidden">
-        {WORDMARK.split("").map((character, index) => (
-          <span key={`${character}-${index}`} data-hero-letter className="inline-block">
-            {character === " " ? " " : character}
-          </span>
-        ))}
-      </span>
-    </h1>
+    <p
+      data-hero-name
+      lang="zh"
+      className="font-brush text-ink flex overflow-hidden text-[clamp(3.5rem,11cqw,7.5rem)] leading-[1.05]"
+    >
+      <span className="sr-only">{HERO.name}</span>
+      {[...HERO.name].map((character, index) => (
+        <span key={`${character}-${index}`} aria-hidden="true" className="block">
+          {character}
+        </span>
+      ))}
+    </p>
   );
 }
 
@@ -29,59 +31,104 @@ export function Hero() {
     <HeroMotion>
       <section
         id="hero"
-        data-nav-theme="light"
-        className="relative flex min-h-[92svh] flex-col justify-center overflow-hidden px-6 pt-28 pb-12 md:px-10 lg:pt-16 lg:pr-10 lg:pl-36 xl:pl-44"
+        data-nav-theme="dark"
+        className="relative isolate flex min-h-svh w-full items-center justify-center overflow-hidden px-5 py-24 md:px-10"
       >
-        <Branch
-          className="pointer-events-none absolute -top-[6%] -right-[14%] h-[112%] w-auto opacity-80 md:-right-[4%]"
-          limbColor="var(--color-ink)"
-        />
+        {/*
+          The artwork sits at z-0 rather than a negative z-index. A transformed
+          element establishes its own stacking context, and at a negative
+          z-index that context paints beneath its parent's background — which
+          is exactly how the painting vanished the moment the entrance tween
+          applied a scale.
 
-        {/* Establishes the container the wordmark is sized against. */}
-        <div className="@container relative z-10">
-          <div className="overflow-hidden">
-            <p
-              data-hero-eyebrow
-              lang="zh"
-              className="text-peach-text text-title font-medium"
-            >
-              恰小面
-            </p>
+          Only the image is scaled. The gradients are siblings, so they stay
+          pinned to the viewport edges instead of being zoomed along with it.
+        */}
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          <div data-hero-art className="absolute inset-0">
+            <Image
+              src={HERO_ARTWORK.src}
+              alt={HERO_ARTWORK.alt}
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
+            />
           </div>
-
-          <Wordmark />
+          {/*
+            Gradients at the edges rather than a flat wash over everything.
+            A uniform scrim heavy enough to carry the navigation crushes the
+            painting into grey silk — the whole reason for using it is lost.
+            These darken only where chrome sits: the bar at the top, the
+            credit line at the bottom.
+          */}
+          <div className="from-ink/80 absolute inset-x-0 top-0 h-44 bg-gradient-to-b to-transparent" />
+          <div className="from-ink/55 absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t to-transparent" />
+          <div className="bg-ink/12 absolute inset-0" />
         </div>
 
         <div
-          data-hero-foot
-          className="relative z-10 mt-14 flex flex-col gap-10 md:mt-20 md:flex-row md:items-end md:justify-between"
+          data-hero-card
+          className="bg-rice @container relative z-20 flex w-full max-w-4xl gap-6 p-8 shadow-2xl md:gap-10 md:p-12"
         >
-          <p className="text-agar-text max-w-xs text-sm leading-relaxed">
-            Sichuan and Chongqing noodles, hand-folded wontons and Leshan fried skewers.
-            Yonge Street, North York.
-          </p>
+          <div className="min-w-0 flex-1">
+            <div data-hero-line className="flex items-center gap-3">
+              <Seal character="七" />
+              <span className="text-agar-text text-[0.65rem] tracking-[0.28em] uppercase">
+                {HERO.tagline}
+              </span>
+            </div>
 
-          <div className="flex max-w-md flex-col gap-5 md:items-end md:text-right">
-            <p className="text-lede">
-              Broth built over days. Noodles pulled to order. Nothing here is in a hurry
-              except you.
+            <div className="mt-6">
+              <Name />
+            </div>
+
+            <p
+              data-hero-line
+              className="text-ink mt-4 text-xs font-semibold tracking-[0.42em] uppercase"
+            >
+              {HERO.latin}
             </p>
-            <div className="flex flex-wrap gap-3">
-              <Link
-                href="/order"
-                className="bg-peach text-rice hover:bg-peach-deep px-6 py-3 text-sm font-medium transition-colors duration-[--duration-fast]"
-              >
-                Order for pickup
-              </Link>
-              <Link
-                href="/menu"
-                className="border-agar bg-rice text-ink hover:bg-ink hover:text-rice border px-6 py-3 text-sm font-medium transition-colors duration-[--duration-fast]"
-              >
-                View menu
-              </Link>
+
+            <p
+              data-hero-line
+              className="text-agar-text mt-6 max-w-sm text-sm leading-relaxed"
+            >
+              {HERO.lede}
+            </p>
+
+            <div data-hero-line className="mt-8 flex flex-wrap gap-3">
+              {HERO.actions.map((action) => (
+                <Link
+                  key={action.href}
+                  href={action.href}
+                  className={
+                    action.primary
+                      ? "bg-peach text-rice hover:bg-peach-deep px-6 py-3 text-sm font-medium transition-colors duration-[--duration-fast]"
+                      : "border-agar text-ink hover:bg-ink hover:text-rice border px-6 py-3 text-sm font-medium transition-colors duration-[--duration-fast]"
+                  }
+                >
+                  {action.label}
+                </Link>
+              ))}
             </div>
           </div>
+
+          {/* Set vertically down the card's edge, as a printed menu would. */}
+          <p
+            data-hero-vertical
+            aria-hidden="true"
+            lang="zh"
+            className="text-bronze hidden shrink-0 self-start text-sm tracking-[0.42em] sm:block"
+            style={{ writingMode: "vertical-rl" }}
+          >
+            {HERO.vertical}
+          </p>
         </div>
+
+        <p className="text-rice/45 absolute right-5 bottom-5 z-20 text-[0.6rem] tracking-[0.18em] md:right-10">
+          {HERO_ARTWORK.credit}
+        </p>
       </section>
     </HeroMotion>
   );

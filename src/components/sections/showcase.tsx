@@ -1,21 +1,26 @@
 import { ShowcasePanels } from "./showcase-panels";
 
+/**
+ * Fills exactly one screen. The panels are the section — the heading overlays
+ * them rather than sitting in a band above, which is what previously left the
+ * panels as a strip inside a field of black.
+ */
 export function Showcase() {
   return (
     <section
       id="showcase"
       data-nav-theme="dark"
-      className="bg-ink-deep text-rice py-20 md:py-28"
+      className="bg-ink-deep text-rice relative w-full md:h-svh"
     >
-      <div className="px-6 md:px-10 lg:pr-10 lg:pl-36 xl:pl-44">
-        <p lang="zh" className="text-lantern text-sm tracking-[0.3em]">
+      <ShowcasePanels />
+
+      <div className="pointer-events-none absolute top-24 left-6 z-10 md:left-10">
+        <p lang="zh" className="text-lantern font-brush text-2xl">
           招牌
         </p>
-        <h2 className="text-title mt-3 font-black">What to order first</h2>
-      </div>
-
-      <div className="mt-12 pl-0 lg:pl-36 xl:pl-44">
-        <ShowcasePanels />
+        <h2 className="text-rice mt-1 text-sm font-semibold tracking-[0.2em] uppercase">
+          What to order first
+        </h2>
       </div>
     </section>
   );

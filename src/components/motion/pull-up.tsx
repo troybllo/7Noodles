@@ -23,18 +23,20 @@ export function PullUp({
   className?: string;
 }) {
   const scope = useGsap<HTMLDivElement>(({ gsap, scope: element }) => {
-    gsap.from(element.querySelector("[data-pull-up-inner]"), {
-      yPercent: 100,
-      scale: 1.12,
-      duration: 1.4,
-      delay,
-      ease: "expo.out",
-      scrollTrigger: {
-        trigger: element,
-        start: "top 88%",
-        once: true,
+    // Both ends stated: `from` alone would take its end value from the DOM at
+    // build time, which is wrong as soon as the effect runs twice.
+    gsap.fromTo(
+      element.querySelector("[data-pull-up-inner]"),
+      { yPercent: 100, scale: 1.12 },
+      {
+        yPercent: 0,
+        scale: 1,
+        duration: 1.4,
+        delay,
+        ease: "expo.out",
+        scrollTrigger: { trigger: element, start: "top 88%", once: true },
       },
-    });
+    );
   });
 
   return (

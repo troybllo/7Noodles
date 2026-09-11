@@ -73,6 +73,13 @@ describe("palette accessibility claims", () => {
     }
   });
 
+  it("carries bronze both ways without a derived variant", () => {
+    // Bronze is used as text on rice and as a ground under rice, so both
+    // directions have to clear on the one value.
+    expect(contrastRatio("#72511e", GROUND_HEX.rice)).toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio(GROUND_HEX.rice, "#72511e")).toBeGreaterThanOrEqual(4.5);
+  });
+
   it("keeps the reference olive out of the palette", () => {
     // #787240 is the colour from the client's reference. It reads 4.24:1 on
     // rice and 3.87:1 on ink, so it cannot carry small text either way.

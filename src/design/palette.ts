@@ -176,6 +176,19 @@ export const PALETTE: SwatchGroup[] = [
     ],
   },
   {
+    name: "Bronze",
+    note: "From the poster reference. The only accent that clears body-text contrast against rice without a derived variant.",
+    swatches: [
+      {
+        token: "bronze",
+        hex: "#72511e",
+        english: "Bronze",
+        usage: "Vertical Chinese columns, rules and marks on a rice ground.",
+        textOn: ["rice"],
+      },
+    ],
+  },
+  {
     name: "Lantern",
     note: "Warm yellow, from the lantern light in the reference. Dark-ground only: it sits at 1.94:1 on rice, so it can never carry text on a light surface.",
     swatches: [

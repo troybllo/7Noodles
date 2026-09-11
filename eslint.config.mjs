@@ -23,5 +23,10 @@ export default defineConfig([
       ],
     },
   },
+  {
+    // Build scripts report to the terminal; that is their output, not a leak.
+    files: ["scripts/**/*.mjs"],
+    rules: { "no-console": "off" },
+  },
   prettier,
 ]);
