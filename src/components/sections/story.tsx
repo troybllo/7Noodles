@@ -1,65 +1,77 @@
-import Link from "next/link";
-import { PullUp } from "@/components/motion/pull-up";
-import { ScrollRevealText } from "@/components/motion/scroll-reveal-text";
+import { BrushFrame } from "@/components/brand/brush-frame";
 import { PhotoSlot } from "@/components/media/photo-slot";
+import { ScrollRevealText } from "@/components/motion/scroll-reveal-text";
 import { Seal } from "@/components/brand/seal";
+import { PaintButton } from "@/components/ui/paint-button";
 import { STORY } from "@/content/story";
 
+/**
+ * Black ground, with two brush-shaped windows onto the photography — one on
+ * the right, one lower left — each painted on as the reader scrolls in.
+ *
+ * The quote fills from muted to full as it passes through the viewport, which
+ * is why it is set large: at body size the fill is a detail nobody notices, at
+ * this size it is the reason to keep reading.
+ */
 export function Story() {
   return (
     <section
       id="story"
       data-nav-theme="dark"
-      className="bg-ink text-rice relative overflow-hidden px-6 py-24 md:px-10 md:py-32"
+      className="bg-ink-deep text-rice relative overflow-hidden px-6 py-28 md:px-10 md:py-40"
     >
-      {/* Set vertically, the way a printed Sichuan menu would. */}
-      <p
-        aria-hidden="true"
-        lang="zh"
-        className="text-agar-glow/45 absolute top-32 left-2 hidden text-sm tracking-[0.4em] xl:block"
-        style={{ writingMode: "vertical-rl" }}
-      >
-        {STORY.vertical}
-      </p>
-
-      <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-12 lg:gap-x-12">
-        <div className="lg:col-span-5 lg:col-start-1 lg:row-start-1 lg:self-center">
-          <Seal character={STORY.sealCharacter} />
+      <div className="mx-auto grid max-w-[1700px] gap-12 lg:grid-cols-12 lg:gap-x-12">
+        <div className="lg:col-span-7 lg:col-start-1 lg:row-start-1">
+          <div className="flex items-center gap-4">
+            <Seal character={STORY.sealCharacter} />
+            <span lang="zh" className="text-lantern font-brush text-3xl">
+              {STORY.vertical}
+            </span>
+          </div>
 
           <ScrollRevealText
             as="blockquote"
             text={`“${STORY.quote}”`}
-            className="mt-6 text-2xl leading-[1.25] font-semibold text-balance md:text-3xl"
+            className="mt-10 text-[clamp(2rem,4.2vw,4.25rem)] leading-[1.08] font-black text-balance"
           />
 
-          <div className="mt-7 flex flex-col gap-4">
+          <div className="mt-10 flex max-w-xl flex-col gap-5">
             {STORY.supporting.map((line) => (
               <ScrollRevealText
                 key={line}
                 text={line}
-                className="text-agar-glow max-w-md text-sm leading-relaxed"
+                className="text-agar-glow text-base leading-relaxed md:text-lg"
               />
             ))}
           </div>
 
-          <Link
-            href={STORY.cta.href}
-            className="bg-pine text-rice hover:bg-pine-glow mt-9 inline-flex rounded-full px-6 py-3 text-sm font-medium transition-colors duration-[--duration-fast]"
-          >
-            {STORY.cta.label}
-          </Link>
+          <div className="mt-10">
+            <PaintButton href={STORY.cta.href}>{STORY.cta.label}</PaintButton>
+          </div>
         </div>
 
-        <PullUp className="aspect-[4/3] lg:col-span-7 lg:col-start-6 lg:row-start-1">
-          <PhotoSlot label={STORY.photos.primary} />
-        </PullUp>
-
-        <PullUp
-          delay={0.12}
-          className="aspect-[4/5] lg:col-span-3 lg:col-start-2 lg:row-start-2 lg:-mt-28"
+        <BrushFrame
+          brush="story-right"
+          className="aspect-[4/5] lg:col-span-5 lg:col-start-8 lg:row-span-2 lg:row-start-1"
         >
-          <PhotoSlot label={STORY.photos.secondary} />
-        </PullUp>
+          <PhotoSlot
+            label={STORY.photos.primary}
+            tone="bg-agar/40"
+            labelTone="text-rice/70"
+          />
+        </BrushFrame>
+
+        <BrushFrame
+          brush="story-left"
+          delay={0.25}
+          className="aspect-[4/3] lg:col-span-6 lg:col-start-1 lg:row-start-2"
+        >
+          <PhotoSlot
+            label={STORY.photos.secondary}
+            tone="bg-agar/40"
+            labelTone="text-rice/70"
+          />
+        </BrushFrame>
       </div>
     </section>
   );

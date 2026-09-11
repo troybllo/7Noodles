@@ -76,10 +76,12 @@
      viewport minus the rail and its padding, and sizing against the viewport
      overflowed it. Requires an ancestor with `container-type: inline-size`.
 
-     13.3cqw is measured, not derived: "7 NOODLES" sets 7.26em wide in Archivo
-     Black at 125% width, so the fitting size is the container over 7.26, taken
-     to 96.5% so justify-between has gaps to distribute. */
-  --text-hero: clamp(2.5rem, 13.3cqw, 15rem);
+     10.8cqw is measured, not derived. "7 NOODLES" sets 7.26em wide in Archivo
+     Black at 125% width, so glyphs occupy roughly 78% of the column at this
+     size and justify-between distributes the remaining 22% between them. That
+     gap is the tracking: sizing to fill the column instead would set the word
+     tight, which is the opposite of what this mark wants. */
+  --text-hero: clamp(2.25rem, 10.8cqw, 13rem);
   --text-display: clamp(2.5rem, 7vw, 6.5rem);
   --text-title: clamp(1.75rem, 3.6vw, 3.25rem);
   --text-lede: clamp(1.0625rem, 1.35vw, 1.375rem);
@@ -114,7 +116,12 @@
 
   /* The wordmark and section titles are set tight; Archivo's default tracking
      is too open at display sizes. */
-  .text-hero,
+  /* The wordmark is tracked apart by justify-between, so it must not also
+     carry negative letter-spacing — the two pull against each other. */
+  .text-hero {
+    line-height: 0.9;
+  }
+
   .text-display {
     letter-spacing: -0.03em;
     line-height: 0.86;

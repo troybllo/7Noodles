@@ -27,7 +27,7 @@ export const STORY = {
   ],
   cta: { label: "See the menu", href: "/menu" },
   photos: {
-    primary: "Hero bowl, overhead, steam",
-    secondary: "Hands pleating a wonton",
+    primary: "Bowl of ma-la noodles, steam, shot into the light",
+    secondary: "Hands pleating a wonton, close, overhead",
   },
 } as const;
