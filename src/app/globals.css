@@ -45,6 +45,12 @@
   --color-agar-text: #7c685e; /* 4.54:1 on rice */
   --color-agar-glow: #8d776a; /* 4.50:1 on ink */
 
+  /* Shades used behind the showcase placeholders: each panel's own colour,
+     taken down so the reserved frame reads as part of its panel. */
+  --color-pine-shade: #302e1a;
+  --color-peach-shade: #4a1125;
+  --color-rice-shade: #3a362e;
+
   /* Bronze, from the poster reference's #72511E. Clears 6.23:1 against rice in
      both directions, so it needs no derived text variant. */
   --color-bronze: #72511e;
@@ -58,8 +64,11 @@
      Type
      ======================================================================= */
 
-  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
-  --font-brush: var(--font-brush-face), "Ma Shan Zheng", cursive;
+  --font-cjk:
+    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans SC",
+    "Noto Sans SC", sans-serif;
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, var(--font-cjk), sans-serif;
+  --font-brush: var(--font-brush-face), var(--font-cjk), cursive;
   --font-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
 
   /* Fluid display sizes. The wordmark runs edge to edge, so it is sized in
@@ -101,14 +110,6 @@
     -webkit-text-size-adjust: 100%;
     background-color: var(--color-rice);
     color: var(--color-ink);
-  }
-
-  /* Chinese runs in the reader's system face until the subset build lands.
-     See src/app/fonts.ts. */
-  :lang(zh) {
-    font-family:
-      "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans SC",
-      "Noto Sans SC", sans-serif;
   }
 
   /* The wordmark and section titles are set tight; Archivo's default tracking

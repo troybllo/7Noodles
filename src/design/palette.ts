@@ -176,6 +176,34 @@ export const PALETTE: SwatchGroup[] = [
     ],
   },
   {
+    name: "Panel shades",
+    note: "Behind the showcase placeholders. Each is its own panel's colour taken down, so a reserved frame reads as part of the panel rather than a grey hole in it.",
+    swatches: [
+      {
+        token: "pine-shade",
+        hex: "#302e1a",
+        english: "Pine, shaded",
+        usage: "Placeholder ground in the pine panel.",
+        textOn: [],
+      },
+      {
+        token: "peach-shade",
+        hex: "#4a1125",
+        english: "Peach, shaded",
+        usage: "Placeholder ground in the peach panel.",
+        textOn: [],
+      },
+      {
+        token: "rice-shade",
+        hex: "#3a362e",
+        english: "Rice, shaded",
+        usage:
+          "Placeholder ground in the rice panel. Desaturated rather than simply darkened — taking rice down by lightness alone turns it brown.",
+        textOn: [],
+      },
+    ],
+  },
+  {
     name: "Bronze",
     note: "From the poster reference. The only accent that clears body-text contrast against rice without a derived variant.",
     swatches: [

@@ -22,11 +22,26 @@ const SETTLE = 1.3;
 
 const GROUND: Record<
   ShowcaseDish["ground"],
-  { panel: string; text: string; sub: string }
+  { panel: string; text: string; sub: string; shade: string }
 > = {
-  pine: { panel: "bg-pine", text: "text-rice", sub: "text-rice/75" },
-  peach: { panel: "bg-peach-deep", text: "text-rice", sub: "text-rice/75" },
-  rice: { panel: "bg-rice", text: "text-ink", sub: "text-agar-text" },
+  pine: {
+    panel: "bg-pine",
+    text: "text-rice",
+    sub: "text-rice/75",
+    shade: "bg-pine-shade",
+  },
+  peach: {
+    panel: "bg-peach-deep",
+    text: "text-rice",
+    sub: "text-rice/75",
+    shade: "bg-peach-shade",
+  },
+  rice: {
+    panel: "bg-rice",
+    text: "text-ink",
+    sub: "text-agar-text",
+    shade: "bg-rice-shade",
+  },
 };
 
 export function ShowcasePanels() {
@@ -126,7 +141,7 @@ export function ShowcasePanels() {
               */}
               <span className="block h-[58%] w-full overflow-hidden">
                 <span className="block h-full w-full md:w-[66.6cqw]">
-                  <PhotoSlot label={dish.shot} />
+                  <PhotoSlot label={dish.shot} tone={tone.shade} />
                 </span>
               </span>
 
