@@ -7,8 +7,8 @@ import { CategoriesTrack } from "./categories-track";
  *
  * Sits above the showcase in the stacking order so that, with the showcase
  * stuck to the top of the viewport, this section scrolls up over it and covers
- * it. That overlap is pure CSS — no scroll handler, nothing to jank, and it
- * degrades to ordinary stacking wherever sticky is unavailable.
+ * it. That vertical overlap is pure CSS. The horizontal hand-over between
+ * categories is in CategoriesTrack.
  */
 export function Categories() {
   return (

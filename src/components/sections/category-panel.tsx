@@ -85,8 +85,14 @@ export function CategoryPanel({ category }: PanelProps) {
   return (
     <section
       aria-labelledby={`category-${category.slug}`}
-      className="bg-rice flex h-full w-screen shrink-0 flex-col px-6 pt-24 pb-6 md:px-10 md:pt-28 md:pb-8"
+      className="bg-rice relative flex h-svh w-full flex-col px-6 pt-24 pb-6 md:px-10 md:pt-28 md:pb-8"
     >
+      <div
+        data-panel-dim
+        aria-hidden="true"
+        className="bg-ink pointer-events-none absolute inset-0 z-20 opacity-0"
+      />
+
       <div className="border-paper text-agar-text flex items-center justify-between border-b pb-3 text-[0.6rem] tracking-[0.22em] uppercase">
         <span lang="zh">菜单 · Menu</span>
         <span className="hidden md:inline">{category.nameEn}</span>
