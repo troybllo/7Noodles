@@ -15,4 +15,6 @@ export const HOME_SECTIONS: HomeSection[] = [
   { id: "hero", label: "7 Noodles" },
   { id: "story", label: "麻辣" },
   { id: "showcase", label: "招牌" },
+  { id: "categories", label: "菜单" },
+  { id: "about", label: "恰" },
 ];

@@ -1,19 +1,13 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { gsap } from "gsap";
 import { formatCad } from "@/lib/money";
 import { PhotoSlot } from "@/components/media/photo-slot";
-import { useReducedMotion } from "@/components/motion/use-reduced-motion";
-import { useGsap } from "@/components/motion/use-gsap";
+import { useExpandingPanels } from "@/components/motion/use-expanding-panels";
 import { SHOWCASE, type ShowcaseDish } from "@/content/showcase";
 
 /** Six columns: the open panel takes four, the other two take one each. */
 const OPEN_GROW = 4;
 const CLOSED_GROW = 1;
-
-/** The accordion only exists from this width up. Below it the panels stack. */
-const ACCORDION = "(min-width: 48rem)";
 
 /** How long the equal 2/2/2 opening holds before one panel takes over. */
 const HOLD = 1.1;
@@ -45,62 +39,17 @@ const GROUND: Record<
 };
 
 export function ShowcasePanels() {
-  const [open, setOpen] = useState(0);
-  const reduced = useReducedMotion();
-  const panels = useRef<(HTMLLIElement | null)[]>([]);
-
-  /**
-   * Tweens flex-grow rather than a transform. scaleX would distort the
-   * photography and the type, and counter-scaling the children back is
-   * fragile. Three panels animating a bounded layout is the cheaper trade, and
-   * `contain: layout paint` on each panel stops the recalculation escaping its
-   * own subtree.
-   */
-  const setOpenPanel = (index: number) => {
-    setOpen(index);
-    if (reduced || !window.matchMedia(ACCORDION).matches) return;
-
-    panels.current.forEach((panel, i) => {
-      if (!panel) return;
-      gsap.to(panel, {
-        flexGrow: i === index ? OPEN_GROW : CLOSED_GROW,
-        duration: 0.7,
-        ease: "power3.inOut",
-        overwrite: "auto",
-      });
-    });
-  };
-
-  // Entrance: the panels start equal and settle into the default 4/1/1.
-  const scope = useGsap<HTMLUListElement>(({ gsap: g, scope: element }) => {
-    const media = g.matchMedia();
-
-    media.add(ACCORDION, () => {
-      /*
-       * The opening state is the point of the shot: three equal panels, held
-       * long enough to register as a set, before one wins. Settling straight
-       * out of it reads as a glitch rather than a decision.
-       */
-      g.timeline({
-        scrollTrigger: { trigger: element, start: "top 78%", once: true },
-      })
-        .fromTo(
-          gsap.utils.toArray<HTMLElement>(element.children),
-          { flexGrow: 2 },
-          { flexGrow: 2, duration: HOLD },
-        )
-        .to(gsap.utils.toArray<HTMLElement>(element.children), {
-          flexGrow: (i: number) => (i === 0 ? OPEN_GROW : CLOSED_GROW),
-          duration: SETTLE,
-          ease: "power3.inOut",
-        });
-    });
-
-    return () => media.revert();
-  });
+  const { open, trackRef, panelProps } = useExpandingPanels<HTMLLIElement>(
+    SHOWCASE.length,
+    {
+      openGrow: OPEN_GROW,
+      closedGrow: CLOSED_GROW,
+      entrance: { from: 2, hold: HOLD, settle: SETTLE },
+    },
+  );
 
   return (
-    <ul ref={scope} className="@container flex h-full w-full flex-col md:flex-row">
+    <ul ref={trackRef} className="@container flex h-full w-full flex-col md:flex-row">
       {SHOWCASE.map((dish, index) => {
         const active = index === open;
         const tone = GROUND[dish.ground];
@@ -108,22 +57,14 @@ export function ShowcasePanels() {
         return (
           <li
             key={dish.slug}
-            ref={(node) => {
-              panels.current[index] = node;
-            }}
+            {...panelProps(index)}
             className="relative h-[62svh] overflow-hidden md:h-auto"
-            style={{
-              flexGrow: active ? OPEN_GROW : CLOSED_GROW,
-              flexBasis: 0,
-              contain: "layout paint",
-            }}
-            onMouseEnter={() => setOpenPanel(index)}
           >
             <button
               type="button"
               aria-expanded={active}
-              onFocus={() => setOpenPanel(index)}
-              onClick={() => setOpenPanel(index)}
+              onFocus={() => panelProps(index).onMouseEnter()}
+              onClick={() => panelProps(index).onMouseEnter()}
               className="absolute inset-0 flex h-full w-full cursor-pointer flex-col text-left"
             >
               {/*

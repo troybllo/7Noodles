@@ -10,7 +10,7 @@ export function Showcase() {
     <section
       id="showcase"
       data-nav-theme="dark"
-      className="bg-ink-deep text-rice relative w-full md:h-svh"
+      className="bg-ink-deep text-rice sticky top-0 z-0 w-full md:h-svh"
     >
       <ShowcasePanels />
 

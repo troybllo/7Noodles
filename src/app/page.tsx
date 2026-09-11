@@ -1,13 +1,21 @@
 import { Hero } from "@/components/sections/hero";
 import { Story } from "@/components/sections/story";
 import { Showcase } from "@/components/sections/showcase";
+import { Categories } from "@/components/sections/categories";
+import { AboutContact } from "@/components/sections/about-contact";
 
 export default function HomePage() {
   return (
     <main id="main">
       <Hero />
       <Story />
-      <Showcase />
+      {/* The showcase sticks while the categories scroll up over it. Both need
+          to share one positioning context for that to work. */}
+      <div className="relative">
+        <Showcase />
+        <Categories />
+      </div>
+      <AboutContact />
     </main>
   );
 }
