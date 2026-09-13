@@ -20,13 +20,13 @@ const GROUND: Record<
 > = {
   pine: {
     panel: "bg-pine",
-    text: "text-rice",
+    text: "text-ink",
     sub: "text-rice/75",
     shade: "bg-pine-shade",
   },
   peach: {
     panel: "bg-peach-deep",
-    text: "text-rice",
+    text: "text-ink",
     sub: "text-rice/75",
     shade: "bg-peach-shade",
   },
@@ -87,7 +87,7 @@ export function ShowcasePanels() {
               </span>
 
               <span
-                className={`relative block flex-1 overflow-hidden ${tone.panel} ${tone.text}`}
+                className={`relative block flex-1 overflow-hidden text-black ${tone.panel} ${tone.text}`}
               >
                 <span
                   className={`absolute inset-y-0 left-0 flex w-full flex-col justify-end gap-3 p-7 transition-opacity duration-[--duration-base] md:w-[66.6cqw] ${

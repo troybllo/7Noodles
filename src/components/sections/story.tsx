@@ -45,7 +45,7 @@ export function Story() {
             ))}
           </div>
 
-          <div className="mt-10">
+          <div className="text-rice mt-10">
             <PaintButton href={STORY.cta.href}>{STORY.cta.label}</PaintButton>
           </div>
         </div>

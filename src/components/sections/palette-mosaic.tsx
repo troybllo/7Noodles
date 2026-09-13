@@ -52,7 +52,7 @@ function Block({ token, name, tone, className }: BlockProps) {
 
   return (
     <div
-      className={`flex flex-col justify-between p-5 md:p-7 ${text} ${className ?? ""}`}
+      className={`flex flex-col justify-between p-5 text-black md:p-7 ${text} ${className ?? ""}`}
       style={{ backgroundColor: hex }}
     >
       {name ? (
@@ -102,7 +102,7 @@ export function PaletteMosaic() {
   return (
     <section
       aria-label="Colour palette"
-      className="grid w-full grid-cols-2 md:h-svh md:grid-cols-4 md:grid-rows-[1fr_1fr_0.6fr]"
+      className="grid w-full grid-cols-2 text-black md:h-svh md:grid-cols-4 md:grid-rows-[1fr_1fr_0.6fr]"
     >
       <Block
         token="rice-dim"
@@ -118,7 +118,7 @@ export function PaletteMosaic() {
       <Block
         token="agar"
         name="沉香"
-        tone="rice"
+        tone="ink"
         className="md:col-start-3 md:row-span-2 md:row-start-1 md:pt-28"
       />
 
@@ -131,14 +131,14 @@ export function PaletteMosaic() {
       <Block
         token="pine-deep"
         name="绿沉"
-        tone="rice"
-        className="md:col-start-2 md:row-start-3"
+        tone="ink"
+        className="text-black md:col-start-2 md:row-start-3"
       />
 
       <Block
         token="peach"
         name="桃红"
-        tone="rice"
+        tone="ink"
         className="col-span-2 md:col-span-2 md:col-start-3 md:row-start-3"
       />
     </section>
