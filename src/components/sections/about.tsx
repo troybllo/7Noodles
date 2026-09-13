@@ -4,14 +4,15 @@ import { PaletteMosaic } from "./palette-mosaic";
 
 /**
  * Three bands, following the brand-book spread the client referenced: the mark
- * over the room, the written history, then the palette.
+ * over the room, the written history, then the palette. Contact detail lives
+ * in its own section at the foot of the page.
  *
  * The history is three columns. The left one carries the heading and is
  * sticky and wider than the two beside it, so one idea holds steady while the
  * detail moves past — the reason the column is wide is that it is the anchor,
  * not a margin note.
  */
-export function AboutContact() {
+export function About() {
   return (
     <section id="about" data-nav-theme="dark" className="relative z-10 w-full">
       {/* The mark over the room. */}
@@ -71,41 +72,24 @@ export function AboutContact() {
             ))}
           </div>
 
-          <div className="flex flex-col gap-8 lg:col-span-3">
-            {ABOUT.contact.map((entry) => (
-              <div key={entry.label} className="flex flex-col gap-2">
-                <h3 className="text-[0.68rem] font-semibold tracking-[0.22em] uppercase">
-                  {entry.label}
-                </h3>
-                <p className="text-agar-text text-sm leading-relaxed whitespace-pre-line">
-                  {entry.body}
-                </p>
-              </div>
-            ))}
-
-            {/*
-              Markup only. No inputs and no submit control, because it cannot
-              send yet — a form that looks live and quietly drops messages is
-              worse than no form. Wiring lands with Resend.
-            */}
-            <div className="border-paper flex flex-col gap-4 border-t pt-8">
+          <div className="flex flex-col gap-10 lg:col-span-3">
+            <div className="flex flex-col gap-3">
               <h3 className="text-[0.68rem] font-semibold tracking-[0.22em] uppercase">
-                {ABOUT.form.title}
+                {ABOUT.aside.room.title}
               </h3>
-              {ABOUT.form.fields.map((field) => (
-                <label key={field} className="flex flex-col gap-1">
-                  <span className="text-agar-text text-[0.6rem] tracking-[0.2em] uppercase">
-                    {field}
-                  </span>
-                  <span
-                    aria-hidden="true"
-                    data-placeholder-field
-                    className="border-paper h-8 border-b"
-                  />
-                </label>
-              ))}
-              <p className="text-agar-text text-xs leading-relaxed">{ABOUT.form.note}</p>
+              <p className="text-agar-text text-sm leading-relaxed">
+                {ABOUT.aside.room.body}
+              </p>
             </div>
+
+            <figure className="border-paper flex flex-col gap-4 border-t pt-8">
+              <blockquote className="text-ink text-lg leading-snug font-semibold">
+                “{ABOUT.aside.quote.text}”
+              </blockquote>
+              <figcaption className="text-agar-text text-xs tracking-[0.16em] uppercase">
+                {ABOUT.aside.quote.author} · {ABOUT.aside.quote.date}
+              </figcaption>
+            </figure>
           </div>
         </div>
       </div>

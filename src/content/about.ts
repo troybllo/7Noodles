@@ -1,8 +1,7 @@
 /**
- * Brand history and contact.
+ * Brand history.
  *
- * Address, phone and hours are the restaurant's own published details. The
- * prose is PLACEHOLDER and needs replacing after the owner interview — it
+ * The prose is PLACEHOLDER and needs replacing after the owner interview — it
  * draws only on what the menu and public listings state, and invents no family
  * history. Putting a brand-history heading on the page makes that gap more
  * visible, not less. The Chinese needs a native review.
@@ -30,16 +29,22 @@ export const ABOUT = {
       body: "Grandma Jiang's osmanthus jelly. Aunt Zhao's burning noodles. Dishes here carry the names of the people they came from, which is not a marketing decision — it is how the recipes arrived.",
     },
   ],
-  /** The practical detail, in the second scrolling column. */
-  contact: [
-    { label: "Find us", body: "4664 Yonge St, Unit 13\nNorth York, Ontario\nM2N 5M1" },
-    { label: "Hours", body: "Monday to Sunday\n11:00 — 22:00" },
-    { label: "Call", body: "+1 416-992-1203" },
-    { label: "Order", body: "Pickup, ready in about 15 minutes" },
-  ],
-  form: {
-    title: "Send a message",
-    note: "The message form is not connected yet — call the restaurant to reach them today.",
-    fields: ["Name", "Email", "Message"],
+  /**
+   * The second scrolling column. Contact detail lives in the contact section
+   * now, so this is more of the story — limited to what can be verified: the
+   * room's location and hours as published, and an excerpt from a real review,
+   * attributed as it was posted. The excerpt removes one stray space from the
+   * original ("well -balanced"); the full text is in content/reviews.ts.
+   */
+  aside: {
+    room: {
+      title: "The room",
+      body: "Below street level at Yonge and Florence, open every day from eleven until ten. Easy to walk past, which is part of the point.",
+    },
+    quote: {
+      text: "The Braised Beef Noodle Soup and Wonton in Chicken Soup were both delectable, with the combination of the ingredients well-balanced with the herbs and spices and the broth.",
+      author: "Fulbert",
+      date: "April 2026",
+    },
   },
 } as const;

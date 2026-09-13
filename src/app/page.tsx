@@ -2,7 +2,9 @@ import { Hero } from "@/components/sections/hero";
 import { Story } from "@/components/sections/story";
 import { Showcase } from "@/components/sections/showcase";
 import { Categories } from "@/components/sections/categories";
-import { AboutContact } from "@/components/sections/about-contact";
+import { About } from "@/components/sections/about";
+import { Reviews } from "@/components/sections/reviews";
+import { Contact } from "@/components/sections/contact";
 
 export default function HomePage() {
   return (
@@ -15,7 +17,9 @@ export default function HomePage() {
         <Showcase />
         <Categories />
       </div>
-      <AboutContact />
+      <About />
+      <Reviews />
+      <Contact />
     </main>
   );
 }
