@@ -1,4 +1,4 @@
-import { Archivo } from "next/font/google";
+import { Archivo, Quicksand } from "next/font/google";
 import localFont from "next/font/local";
 
 /**
@@ -29,6 +29,31 @@ export const maShanZheng = localFont({
   variable: "--font-brush-face",
   display: "block",
   weight: "400",
+  style: "normal",
+});
+
+/**
+ * The wordmark face. The client's logo sets SEVEN NOODLES in a wide, rounded
+ * geometric sans; Quicksand was the closest free match when set against it,
+ * with the same soft terminals and near-circular O. It does not reproduce the
+ * logo's rounded E, which appears to be custom lettering.
+ */
+export const quicksand = Quicksand({
+  variable: "--font-quicksand",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+/**
+ * Rounded Chinese, for 恰小面 where it sits beside the Quicksand wordmark. The
+ * brush face reads as a different brand next to it. Subset to three glyphs
+ * (1.6 KB from 3.4 MB); add characters in scripts/subset-fonts.mjs first.
+ */
+export const mPlusRounded = localFont({
+  src: "../../public/fonts/m-plus-rounded-subset.woff2",
+  variable: "--font-round-cjk-face",
+  display: "block",
+  weight: "700",
   style: "normal",
 });
 

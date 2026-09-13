@@ -110,12 +110,29 @@ export function TopNav() {
         className="fixed inset-x-0 top-0 z-50 flex flex-col"
       >
         <div className="flex items-center justify-between px-6 py-5 md:px-10">
-          <Link
-            href="/"
-            className="text-sm font-black tracking-[0.22em] uppercase"
-            style={{ color: "var(--bar-label)" }}
-          >
-            7 Noodles
+          {/*
+            The client's logo, used as a mask and filled with the bar's own
+            label colour. The only version available is white on transparent,
+            which would vanish over the light sections; as a mask it takes
+            whatever colour the bar is currently using and inverts with it.
+
+            Shown at 28px from an 85px source, so it is downscaled threefold
+            and stays sharp on high-density screens.
+          */}
+          <Link href="/" aria-label="Seven Noodles, home" className="block">
+            <span
+              aria-hidden="true"
+              className="block aspect-[283/85] h-7 transition-colors duration-[--duration-base]"
+              style={{
+                backgroundColor: "var(--bar-label)",
+                maskImage: "url(/brand/logo-horizontal-light.png)",
+                WebkitMaskImage: "url(/brand/logo-horizontal-light.png)",
+                maskSize: "contain",
+                WebkitMaskSize: "contain",
+                maskRepeat: "no-repeat",
+                WebkitMaskRepeat: "no-repeat",
+              }}
+            />
           </Link>
 
           <nav aria-label="Primary" className="hidden md:block">

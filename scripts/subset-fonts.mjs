@@ -33,6 +33,17 @@ const FACES = [
      */
     glyphs: "恰小面招牌麻辣",
   },
+  {
+    family: "M PLUS Rounded 1c",
+    // The closest free match for the rounded monoline 恰小面 in the client's
+    // logo. Pinned for the same reason as the brush face.
+    url: "https://fonts.gstatic.com/s/mplusrounded1c/v22/VdGBAYIAV6gnpUpoWwNkYvrugw9RuM064ZsK.ttf",
+    file: "m-plus-rounded-subset.woff2",
+    /**
+     *   恰小面  the restaurant's name, as it sits over the hero
+     */
+    glyphs: "恰小面",
+  },
 ];
 
 async function build({ family, url, file, glyphs }) {

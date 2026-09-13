@@ -1,98 +1,94 @@
-import Image from "next/image";
-import { Seal } from "@/components/brand/seal";
 import { PaintButton } from "@/components/ui/paint-button";
-import { HERO, HERO_ARTWORK } from "@/content/hero";
+import { CONTACT } from "@/content/contact";
+import { HERO } from "@/content/hero";
+import { HeroMarquee } from "./hero-marquee";
 import { HeroMotion } from "./hero-motion";
 
 /**
- * The wordmark is split per character with the glyphs pushed apart by
- * `justify-between`. That is the tracking, and because it distributes whatever
- * space is left over, the word spans the full column at any width instead of
- * needing a letter-spacing value tuned per breakpoint.
+ * The hero, after the Framer prototype: three rows of dish photography moving
+ * in alternating directions behind a centred wordmark.
  *
- * The whole mark is announced once; the individual glyphs are hidden, or it is
- * read out letter by letter.
+ * The text layer ignores the pointer except where it has something to click,
+ * so hovering anywhere over the grid still reaches the tiles beneath.
  */
-function Wordmark() {
-  return (
-    <h1 data-hero-word className="text-hero font-black" style={{ fontStretch: "125%" }}>
-      <span className="sr-only">{HERO.latin}</span>
-      <span aria-hidden="true" className="flex justify-between overflow-hidden">
-        {[...HERO.latin.toUpperCase()].map((character, index) => (
-          <span key={`${character}-${index}`} data-hero-letter className="inline-block">
-            {character === " " ? " " : character}
-          </span>
-        ))}
-      </span>
-    </h1>
-  );
-}
-
 export function Hero() {
   return (
     <HeroMotion>
       <section
         id="hero"
-        data-nav-theme="light"
-        className="bg-rice relative flex min-h-svh w-full flex-col justify-center overflow-hidden px-6 pt-32 pb-16 md:px-10"
+        data-nav-theme="dark"
+        className="bg-ink-deep relative isolate h-svh min-h-[40rem] w-full overflow-hidden"
       >
-        <div className="@container mx-auto w-full max-w-[1700px]">
-          <div className="flex items-start justify-between gap-8">
-            <div className="overflow-hidden">
-              <p
-                data-hero-name
-                lang="zh"
-                className="font-brush text-ink text-[clamp(2.5rem,6cqw,5.5rem)] leading-none"
+        <HeroMarquee />
+
+        {/* The bar sits over the top row; without this its labels vanish
+            against a bright tile. */}
+        <div
+          aria-hidden="true"
+          className="from-ink-deep/85 pointer-events-none absolute inset-x-0 top-0 z-10 h-32 bg-gradient-to-b to-transparent"
+        />
+
+        {/* A soft pool of dark behind the type, so it reads over any tile. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-10"
+          style={{
+            background:
+              "radial-gradient(ellipse 55% 45% at 50% 50%, rgba(10,9,8,0.72), rgba(10,9,8,0.15) 70%, transparent)",
+          }}
+        />
+
+        <div className="pointer-events-none relative z-20 flex h-full flex-col items-center justify-center px-6 text-center">
+          <p
+            data-hero-rise
+            lang="zh"
+            className="font-round-cjk text-rice/90 text-[clamp(1.5rem,2.6vw,2.5rem)] leading-none"
+          >
+            {HERO.nameZh}
+          </p>
+
+          <h1
+            data-hero-rise
+            className="font-round text-rice mt-4 text-[clamp(2.25rem,7.2vw,7.5rem)] leading-[0.95] font-semibold tracking-[0.14em]"
+          >
+            {HERO.wordmark}
+          </h1>
+
+          <p
+            data-hero-rise
+            className="text-rice/80 mt-6 max-w-md text-sm leading-relaxed md:text-base"
+          >
+            {HERO.lede}
+          </p>
+
+          <div
+            data-hero-rise
+            className="pointer-events-auto mt-8 flex flex-wrap items-center justify-center gap-6"
+          >
+            {HERO.actions.map((action) => (
+              <PaintButton
+                key={action.href}
+                href={action.href}
+                primary={action.primary}
+                tone="rice"
               >
-                {HERO.name}
-              </p>
-            </div>
-            <div data-hero-line className="shrink-0">
-              <Seal character="七" />
-            </div>
-          </div>
-
-          <div className="mt-6">
-            <Wordmark />
-          </div>
-
-          <div className="mt-10 flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
-            <div className="flex max-w-md flex-col gap-6">
-              <p data-hero-line className="text-agar-text text-sm leading-relaxed">
-                {HERO.lede}
-              </p>
-              <div data-hero-line className="flex flex-wrap items-center gap-6">
-                {HERO.actions.map((action) => (
-                  <PaintButton
-                    key={action.href}
-                    href={action.href}
-                    primary={action.primary}
-                  >
-                    {action.label}
-                  </PaintButton>
-                ))}
-              </div>
-            </div>
-
-            {/* The painting is a contained strip here, not the ground. */}
-            <div
-              data-hero-art
-              className="relative aspect-[16/7] w-full overflow-hidden lg:max-w-2xl"
-            >
-              <Image
-                src={HERO_ARTWORK.src}
-                alt={HERO_ARTWORK.alt}
-                fill
-                priority
-                sizes="(min-width: 1024px) 42rem, 100vw"
-                className="object-cover"
-              />
-              <p className="text-rice/70 absolute right-3 bottom-2 text-[0.6rem] tracking-[0.16em]">
-                {HERO_ARTWORK.credit}
-              </p>
-            </div>
+                {action.label}
+              </PaintButton>
+            ))}
           </div>
         </div>
+
+        <address
+          data-hero-rise
+          className="bg-ink-deep/85 text-rice/85 absolute bottom-6 left-6 z-20 flex flex-col gap-3 px-5 py-4 text-sm not-italic backdrop-blur-sm md:left-10"
+        >
+          <span>{CONTACT.hoursSummary}</span>
+          <span className="leading-snug">
+            {CONTACT.address.street}
+            <br />
+            {CONTACT.address.locality}, {CONTACT.address.region}
+          </span>
+        </address>
       </section>
     </HeroMotion>
   );

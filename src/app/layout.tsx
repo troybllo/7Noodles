@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { clientEnv } from "@/env";
 import { SmoothScroll } from "@/components/motion/smooth-scroll";
 import { TopNav } from "@/components/nav/top-nav";
-import { archivo, maShanZheng } from "./fonts";
+import { archivo, mPlusRounded, maShanZheng, quicksand } from "./fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -23,7 +23,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${archivo.variable} ${maShanZheng.variable} h-full antialiased`}
+      className={`${archivo.variable} ${maShanZheng.variable} ${quicksand.variable} ${mPlusRounded.variable} h-full antialiased`}
     >
       <body className="bg-rice text-ink flex min-h-full flex-col font-sans">
         <SmoothScroll />

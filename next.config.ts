@@ -17,6 +17,15 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   images: {
     formats: ["image/avif", "image/webp"],
+    // Required from Next.js 16. Without an allowlist the optimiser will encode
+    // any quality a URL asks for, which is free work for anyone scripting it.
+    qualities: [75, 90],
+    // Only our own photography and brand assets are optimised. Omitting
+    // `search` would let arbitrary query strings mint new cached variants.
+    localPatterns: [
+      { pathname: "/photos/**", search: "" },
+      { pathname: "/brand/**", search: "" },
+    ],
   },
   async headers() {
     return [{ source: "/:path*", headers: [...securityHeaders] }];

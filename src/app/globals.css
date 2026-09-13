@@ -69,6 +69,8 @@
     "Noto Sans SC", sans-serif;
   --font-sans: var(--font-archivo), ui-sans-serif, system-ui, var(--font-cjk), sans-serif;
   --font-brush: var(--font-brush-face), var(--font-cjk), cursive;
+  --font-round: var(--font-quicksand), ui-rounded, system-ui, sans-serif;
+  --font-round-cjk: var(--font-round-cjk-face), var(--font-cjk), sans-serif;
   --font-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
 
   /* Fluid display sizes. The wordmark runs edge to edge, so it is sized in
@@ -97,6 +99,31 @@
   --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
   --ease-out-soft: cubic-bezier(0.33, 1, 0.68, 1);
 
+  /* Continuous marquee. Each track holds its content twice, so moving it by
+     exactly half its width lands on an identical frame and the loop has no
+     seam. Pure keyframes: they run on the compositor with no JavaScript
+     ticker, and the global reduced-motion rule below stops them. */
+  --animate-marquee-left: marquee-left 80s linear infinite;
+  --animate-marquee-right: marquee-right 80s linear infinite;
+
+  @keyframes marquee-left {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
+  @keyframes marquee-right {
+    from {
+      transform: translate3d(-50%, 0, 0);
+    }
+    to {
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
   --duration-fast: 160ms;
   --duration-base: 320ms;
   --duration-slow: 640ms;
@@ -106,6 +133,41 @@
 /* =========================================================================
    Base
    ========================================================================= */
+
+@layer components {
+  /* Hero grid hover: the tile under the pointer lifts to full strength and
+     every other tile falls back, with no JavaScript state. Opacity rather
+     than a brightness filter so it stays on the compositor. */
+  /* Resting strength is low because the client's photography is high-key —
+     white bowls on pink and pale wood. At half strength it still read far
+     brighter than the prototype and fought the headline. */
+  .hero-tile {
+    opacity: 0.34;
+    transition: opacity var(--duration-slow) var(--ease-out-soft);
+  }
+
+  /* :not(:hover) keeps the dimming rule off the hovered tile entirely, rather
+     than relying on the lift rule to win. :has() takes the specificity of its
+     argument, so the dimming selector outranks a plain :hover and an earlier
+     version left the hovered tile dim with everything else. */
+  .hero-grid:has(.hero-tile:hover) .hero-tile:not(:hover) {
+    opacity: 0.14;
+  }
+
+  .hero-tile:hover {
+    opacity: 1;
+  }
+
+  /* Pausing a row on hover is done with a hover: utility on the track, not
+     here. The marquee utility sets the `animation` shorthand, which resets
+     animation-play-state, and utilities always beat this layer — a pause rule
+     written here silently never applied. */
+
+  /* Soft fade at both ends of the review row. */
+  .marquee-fade {
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  }
+}
 
 @layer base {
   html {
