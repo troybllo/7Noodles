@@ -92,7 +92,12 @@ export function TopNav() {
         ScrollTrigger.removeEventListener("refresh", refresh);
       };
     },
-    [showProgress],
+    // Re-run on every navigation, not only when crossing to or from the
+    // homepage. The bar stays mounted across client-side route changes, and
+    // triggers built for one page's sections would otherwise keep reading the
+    // previous page's elements, leaving the bar coloured for a page the reader
+    // has already left.
+    [pathname, showProgress],
   );
 
   return (
