@@ -1,10 +1,11 @@
 import {
   Archivo,
-  Courier_Prime,
   Fredoka,
+  Gochi_Hand,
   Kalam,
   Quicksand,
-  Titan_One,
+  Roboto_Mono,
+  Rubik,
 } from "next/font/google";
 import localFont from "next/font/local";
 
@@ -66,46 +67,56 @@ export const hanRounded = localFont({
 });
 
 /**
- * The handmade redesign's faces, matched against the approved hero mockup.
+ * The handmade redesign's faces, each matched against the approved hero
+ * mockup by overlaying rendered candidates on its lettering.
  *
- * Titan One sets the poster display lettering ("7 NOODLES"): heavy, with the
- * softened corners of the mockup's type. Kalam is the handwriting for taglines
- * and notes. Courier Prime is the typewriter face on buttons and labels.
- * Fredoka is the rounded, chunky navigation.
+ *   Rubik Bold      poster lettering ("7 NOODLES"), worn and roughened in CSS
+ *   Kalam           handwritten lines, such as the hero's tagline
+ *   Gochi Hand      small handwritten capitals in notes and callouts
+ *   Roboto Mono     the typewritten label on buttons
+ *   Fredoka         the rounded, chunky navigation
  */
-export const titanOne = Titan_One({
-  variable: "--font-titan-one",
-  weight: "400",
+export const rubik = Rubik({
+  variable: "--font-rubik",
+  weight: "700",
   subsets: ["latin"],
   display: "swap",
 });
 
 export const kalam = Kalam({
   variable: "--font-kalam",
-  weight: ["400", "700"],
+  weight: "400",
   subsets: ["latin"],
   display: "swap",
 });
 
-export const courierPrime = Courier_Prime({
-  variable: "--font-courier-prime",
-  weight: ["400", "700"],
+export const gochiHand = Gochi_Hand({
+  variable: "--font-gochi-hand",
+  weight: "400",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+export const robotoMono = Roboto_Mono({
+  variable: "--font-roboto-mono",
+  weight: "400",
   subsets: ["latin"],
   display: "swap",
 });
 
 export const fredoka = Fredoka({
   variable: "--font-fredoka",
+  weight: "700",
   subsets: ["latin"],
   display: "swap",
 });
 
 /**
- * Handwritten Chinese for notes and callouts, subset to the glyphs the site
- * sets; add characters in scripts/subset-fonts.mjs first.
+ * Brush handwriting in Chinese, for notes and callouts, subset to the glyphs
+ * the site sets; add characters in scripts/subset-fonts.mjs first.
  */
-export const zcoolKuaiLe = localFont({
-  src: "../../public/fonts/zcool-kuaile-subset.woff2",
+export const zhiMangXing = localFont({
+  src: "../../public/fonts/zhi-mang-xing-subset.woff2",
   variable: "--font-hand-cjk-face",
   display: "swap",
   weight: "400",

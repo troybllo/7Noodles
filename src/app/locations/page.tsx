@@ -1,17 +1,18 @@
 import type { Metadata } from "next";
 import { PageTransition } from "@/components/motion/page-transition";
+import { Contact } from "@/components/sections/contact";
 
 export const metadata: Metadata = {
-  title: "Contact",
+  title: "Locations",
   description:
     "Find 7 Noodles at 4664 Yonge St Unit 13, North York. Opening hours, directions and how to reach us.",
 };
 
-export default function ContactPage() {
+export default function LocationsPage() {
   return (
-    <PageTransition id="contact">
-      <main id="main" data-nav-theme="light" className="px-6 py-32 md:px-10">
-        <h1 className="text-display font-black">Contact</h1>
+    <PageTransition id="locations">
+      <main id="main" className="bg-ink-deep pt-16">
+        <Contact />
       </main>
     </PageTransition>
   );

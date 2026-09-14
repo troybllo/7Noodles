@@ -5,14 +5,15 @@ import { SmoothScroll } from "@/components/motion/smooth-scroll";
 import { TopNav } from "@/components/nav/top-nav";
 import {
   archivo,
-  courierPrime,
   fredoka,
+  gochiHand,
   hanRounded,
   kalam,
   maShanZheng,
   quicksand,
-  titanOne,
-  zcoolKuaiLe,
+  robotoMono,
+  rubik,
+  zhiMangXing,
 } from "./fonts";
 import "./globals.css";
 
@@ -39,11 +40,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         maShanZheng,
         quicksand,
         hanRounded,
-        titanOne,
+        rubik,
         kalam,
-        courierPrime,
+        gochiHand,
+        robotoMono,
         fredoka,
-        zcoolKuaiLe,
+        zhiMangXing,
       ]
         .map((font) => font.variable)
         .concat("h-full antialiased")

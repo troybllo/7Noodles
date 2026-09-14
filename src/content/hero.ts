@@ -21,12 +21,14 @@ export const PHOTOS = {
 
 export type Callout = {
   zh: string;
-  en: string;
+  /** The English note, one entry per handwritten line. */
+  en: readonly string[];
 };
 
 export const HERO = {
   title: "7 Noodles",
-  tagline: "Authentic Chongqing noodles, Bird's Eye Chili, Erjingtiao.",
+  /** Set on two handwritten lines, broken where the mockup breaks them. */
+  tagline: ["Authentic Chongqing noodles,", "Bird\u2019s Eye Chili, Erjingtiao."],
   action: { label: "Order Now", href: "/order" },
   dish: {
     nameZh: "豌杂",
@@ -41,8 +43,8 @@ export const HERO = {
       rim: { top: 113 / 846, bottom: 809 / 846 },
     },
     callouts: {
-      upper: { zh: "秘制肉沫", en: "Signature pork sauce" },
-      lower: { zh: "糯糯豌豆", en: "Slow-cooked yellow pea" },
+      upper: { zh: "秘制肉沫", en: ["Signature", "pork sauce"] },
+      lower: { zh: "糯糯豌豆", en: ["Slow-cooked", "yellow pea"] },
     } satisfies Record<string, Callout>,
   },
 } as const;

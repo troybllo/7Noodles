@@ -80,20 +80,20 @@ const FACES = [
     glyphs: unique(`恰小面菜单${CATEGORY_GLYPHS}`),
   },
   {
-    family: "ZCOOL KuaiLe",
+    family: "Zhi Mang Xing",
     /**
-     * Handwritten Chinese, for notes and callouts drawn over photographs. SIL
-     * OFL 1.1.
+     * Brush handwriting for notes and callouts drawn over photographs, matched
+     * against the approved hero mockup. SIL OFL 1.1.
      *
      * Taken from the google/fonts repository at a pinned commit and
-     * checksummed: the file Google's CSS API serves for this family is a
-     * partial subset that lacks most of these characters.
+     * checksummed: the files Google's CSS API serves for Chinese faces are
+     * partial subsets.
      */
     source: {
-      url: "https://raw.githubusercontent.com/google/fonts/a606d6f3181c62b792c8c1463d309c6a8abb8a12/ofl/zcoolkuaile/ZCOOLKuaiLe-Regular.ttf",
-      sha256: "812a6fc1fe54b6d73a419245c32dfeba8aa33104d5be90d1cf6af082007cb71d",
+      url: "https://raw.githubusercontent.com/google/fonts/b12c22f97f4769802373d8de6a0f4115eabb9a24/ofl/zhimangxing/ZhiMangXing-Regular.ttf",
+      sha256: "644e0cae9b40f0b10ab729a01bd32032e3973bac22be3dccae01bf6ae7fde969",
     },
-    file: "zcool-kuaile-subset.woff2",
+    file: "zhi-mang-xing-subset.woff2",
     /**
      *   秘制肉沫 糯糯豌豆  the hero's callouts (src/content/hero.ts)
      */

@@ -1,188 +1,119 @@
 /**
  * Generates the paper textures and painted chilli slices.
  *
- * Nothing here is photographed or licensed: every file is drawn from seeded
- * noise, so the output is identical on every run and owned outright.
+ * The paper's surface comes from ambientCG's Paper003, a scanned sheet of
+ * creased paper released under CC0 (public domain; see
+ * public/textures/PROVENANCE.md). Only its normal map is used: the site's own
+ * colour is lit through the scanned creases, so the folds are real but the
+ * colour and grain are ours. Fine fibre grain and a few pale flecks are laid
+ * over it from seeded noise.
  *
- * Paper is built as a height field of facets rather than from an SVG lighting
- * filter. Filter noise lit from one side reads as a uniform stipple; crumpled
- * paper is a set of flat planes, each tilted a little, meeting at creases. So:
+ * The chilli slices and the worn-print mask are drawn from seeded noise, so
+ * every run produces identical files.
  *
- *   Two layers of Voronoi facets on a torus (the tile wraps, so it repeats with
- *   no seam), each facet given a random tilt and shaded by a single light.
- *
- *   Shading blurred with a wrapping box blur until the planes soften into
- *   folds, while the crease lines are taken from the unblurred distance field,
- *   so they stay crisp — lit on one side of the fold and shadowed on the other.
- *
- *   A fine tooth multiplied over the top.
- *
- * Run with `pnpm textures`. Output is committed; CI never regenerates it.
+ * Run with `pnpm textures`. Needs the network once, to fetch the pinned and
+ * checksummed source, and bsdtar to unpack it. Output is committed; CI never
+ * regenerates it.
  */
 
+import { execFile } from "node:child_process";
+import { createHash } from "node:crypto";
 import { statSync } from "node:fs";
-import { mkdir } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { promisify } from "node:util";
 import { Resvg } from "@resvg/resvg-js";
 import sharp from "sharp";
 
 const OUT_DIR = join(import.meta.dirname, "..", "public", "textures");
 const TILE = 1200;
 
-/** Park–Miller, so every run draws the same facets. */
+/** Park–Miller, so every run draws the same slices. */
 function random(seed) {
   let state = seed;
   return () => (state = (state * 16807) % 2147483647) / 2147483647;
 }
 
-/**
- * One layer of facets. Returns each pixel's shading under a light from the
- * upper left, and its distance to the nearest facet edge.
- */
-function facets(count, seed, tilt) {
-  const rand = random(seed);
-  const cells = Math.ceil(Math.sqrt(count));
-  const cell = TILE / cells;
-  const grid = Array.from({ length: cells * cells }, () => []);
+const PAPER_SOURCE = {
+  url: "https://ambientcg.com/get?file=Paper003_2K-JPG.zip",
+  sha256: "7939efd9c04e3da41341386730ad657034ed19dafc2211bad80e6f5182e89a2c",
+  normalMap: "Paper003_2K-JPG_NormalGL.jpg",
+};
 
-  for (let i = 0; i < count; i += 1) {
-    const x = rand() * TILE;
-    const y = rand() * TILE;
-    const angle = rand() * Math.PI * 2;
-    const lean = tilt * (0.3 + rand() * 0.7);
-    const nx = Math.cos(angle) * lean;
-    const ny = Math.sin(angle) * lean;
-    const length = Math.hypot(nx, ny, 1);
-    grid[Math.floor(y / cell) * cells + Math.floor(x / cell)].push({
-      x,
-      y,
-      nx: nx / length,
-      ny: ny / length,
-      nz: 1 / length,
+/** The scanned paper's normal map, resized to the tile, as raw RGB. */
+async function loadNormalMap() {
+  const response = await fetch(PAPER_SOURCE.url);
+  if (!response.ok) throw new Error(`${response.status} fetching ${PAPER_SOURCE.url}`);
+  const body = Buffer.from(await response.arrayBuffer());
+  const actual = createHash("sha256").update(body).digest("hex");
+  if (actual !== PAPER_SOURCE.sha256) {
+    throw new Error(`Paper source checksum mismatch (got ${actual})`);
+  }
+
+  const dir = await mkdtemp(join(tmpdir(), "textures-"));
+  try {
+    await writeFile(join(dir, "source.zip"), body);
+    await promisify(execFile)("bsdtar", ["-xf", "source.zip", PAPER_SOURCE.normalMap], {
+      cwd: dir,
     });
+    return await sharp(await readFile(join(dir, PAPER_SOURCE.normalMap)))
+      .resize(TILE, TILE)
+      .raw()
+      .toBuffer();
+  } finally {
+    await rm(dir, { recursive: true, force: true });
   }
-
-  const light = [-0.55, -0.62, 0.56];
-  const lightLength = Math.hypot(...light);
-  const [lx, ly, lz] = light.map((v) => v / lightLength);
-
-  const shade = new Float32Array(TILE * TILE);
-  const edge = new Float32Array(TILE * TILE);
-  const half = TILE / 2;
-
-  for (let y = 0; y < TILE; y += 1) {
-    const cy = Math.floor(y / cell);
-    for (let x = 0; x < TILE; x += 1) {
-      const cx = Math.floor(x / cell);
-      let nearest = Infinity;
-      let second = Infinity;
-      let facet = null;
-
-      for (let oy = -2; oy <= 2; oy += 1) {
-        for (let ox = -2; ox <= 2; ox += 1) {
-          const gx = (cx + ox + cells) % cells;
-          const gy = (cy + oy + cells) % cells;
-          for (const point of grid[gy * cells + gx]) {
-            let dx = Math.abs(point.x - x);
-            let dy = Math.abs(point.y - y);
-            if (dx > half) dx = TILE - dx;
-            if (dy > half) dy = TILE - dy;
-            const distance = dx * dx + dy * dy;
-            if (distance < nearest) {
-              second = nearest;
-              nearest = distance;
-              facet = point;
-            } else if (distance < second) {
-              second = distance;
-            }
-          }
-        }
-      }
-
-      const index = y * TILE + x;
-      shade[index] = facet.nx * lx + facet.ny * ly + facet.nz * lz;
-      edge[index] = Math.sqrt(second) - Math.sqrt(nearest);
-    }
-  }
-
-  return { shade, edge };
 }
 
-/** Three passes of a wrapping box blur each way: close to Gaussian, and seamless. */
-function soften(field, sigma) {
-  const radius = Math.max(1, Math.round(Math.sqrt(4 * sigma * sigma + 1) / 2));
-  const width = radius * 2 + 1;
-  const a = Float32Array.from(field);
-  const b = new Float32Array(TILE * TILE);
-
-  for (let pass = 0; pass < 3; pass += 1) {
-    for (let y = 0; y < TILE; y += 1) {
-      let sum = 0;
-      for (let k = -radius; k <= radius; k += 1) sum += a[y * TILE + ((k + TILE) % TILE)];
-      for (let x = 0; x < TILE; x += 1) {
-        b[y * TILE + x] = sum / width;
-        sum +=
-          a[y * TILE + ((x + radius + 1) % TILE)] -
-          a[y * TILE + ((x - radius + TILE) % TILE)];
-      }
-    }
-    for (let x = 0; x < TILE; x += 1) {
-      let sum = 0;
-      for (let k = -radius; k <= radius; k += 1) sum += b[((k + TILE) % TILE) * TILE + x];
-      for (let y = 0; y < TILE; y += 1) {
-        a[y * TILE + x] = sum / width;
-        sum +=
-          b[((y + radius + 1) % TILE) * TILE + x] -
-          b[((y - radius + TILE) % TILE) * TILE + x];
-      }
-    }
-  }
-
-  return a;
+/** A seamless noise layer, rendered through an SVG filter. */
+function noise(filter) {
+  return new Resvg(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${TILE}" height="${TILE}"><filter id="n" x="0" y="0" width="100%" height="100%">${filter}</filter><rect width="100%" height="100%" filter="url(#n)"/></svg>`,
+  )
+    .render()
+    .asPng();
 }
 
-/** Fine paper tooth, a multiply layer between `floor` and white. */
-function tooth(floor, seed) {
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${TILE}" height="${TILE}">
-  <filter id="tooth" x="0" y="0" width="100%" height="100%">
-    <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="${seed}" stitchTiles="stitch"/>
-    <feColorMatrix values="${1 - floor} 0 0 0 ${floor}  ${1 - floor} 0 0 0 ${floor}  ${1 - floor} 0 0 0 ${floor}  0 0 0 0 1"/>
-  </filter>
-  <rect width="100%" height="100%" filter="url(#tooth)"/>
-</svg>`;
-  return new Resvg(svg).render().asPng();
-}
-
-async function paper({ name, base, relief, crease, seed, toothFloor }) {
-  const big = facets(60, seed, 0.5);
-  const small = facets(380, seed + 12, 0.35);
-  const bigSoft = soften(big.shade, 16);
-  const smallSoft = soften(small.shade, 6);
+/**
+ * One paper colour lit through the scanned creases from the upper left.
+ * `relief` sets how deep the folds read; `grainFloor` how dark the fibre grain
+ * can multiply; `flecks` the strength of the pale fibres.
+ */
+async function paper(normals, { name, base, relief, grainFloor, flecks }) {
+  const light = [-0.45, 0.55, 0.7];
+  const length = Math.hypot(...light);
+  const [lx, ly, lz] = light.map((v) => v / length);
 
   const pixels = Buffer.alloc(TILE * TILE * 3);
   for (let i = 0; i < TILE * TILE; i += 1) {
-    // A fold catches light on one side of its crease and falls into shadow on
-    // the other; which side is decided by the facet's own shading.
-    const bigLine = Math.max(0, 1 - big.edge[i] / 1.3);
-    const smallLine = Math.max(0, 1 - small.edge[i] / 0.9);
-    const light =
-      (0.78 * bigSoft[i] + 0.22 * smallSoft[i] - 0.9) * relief +
-      1.02 +
-      (big.shade[i] > 0.93 ? 1 : -1) * bigLine * crease +
-      (small.shade[i] > 0.95 ? 1 : -1) * smallLine * crease * 0.46;
-
+    const nx = normals[i * 3] / 127.5 - 1;
+    const ny = normals[i * 3 + 1] / 127.5 - 1;
+    const nz = normals[i * 3 + 2] / 127.5 - 1;
+    const shade = 1 + (nx * lx + ny * ly + nz * lz - 0.72) * relief;
     for (let c = 0; c < 3; c += 1) {
-      pixels[i * 3 + c] = Math.max(0, Math.min(255, base[c] * light));
+      pixels[i * 3 + c] = Math.max(0, Math.min(255, base[c] * shade));
     }
   }
 
-  const surface = await sharp(pixels, { raw: { width: TILE, height: TILE, channels: 3 } })
+  const grain = noise(
+    `<feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="3" seed="9" stitchTiles="stitch"/><feColorMatrix values="${1 - grainFloor} 0 0 0 ${grainFloor}  ${1 - grainFloor} 0 0 0 ${grainFloor}  ${1 - grainFloor} 0 0 0 ${grainFloor}  0 0 0 0 1"/>`,
+  );
+  const pale = noise(
+    `<feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="21" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 0.86  0 0 0 0 0.84  ${3.2 * flecks} 0 0 0 ${-1.9 * flecks}"/>`,
+  );
+
+  const lit = await sharp(pixels, { raw: { width: TILE, height: TILE, channels: 3 } })
     .png()
     .toBuffer();
   const file = join(OUT_DIR, `${name}.webp`);
-  await sharp(surface)
-    .composite([{ input: tooth(toothFloor, seed + 5), blend: "multiply" }])
-    .webp({ quality: 80 })
+  await sharp(lit)
+    .composite([
+      { input: grain, blend: "multiply" },
+      { input: pale, blend: "screen" },
+    ])
+    // High quality: at lower settings WebP smooths the fibre grain away.
+    .webp({ quality: 88 })
     .toFile(file);
 
   console.log(`${name}: ${TILE}px tile, ${(statSync(file).size / 1024).toFixed(1)} KB`);
@@ -249,11 +180,11 @@ async function chiliSlice({ name, seed, squash, seeds }) {
     <!-- The skin: a glossy ring, hollow inside, as a sliced chilli is. -->
     <ellipse cx="${c}" cy="${c}" rx="122" ry="${122 * squash}" fill="#c8261f" mask="url(#hollow)"/>
     <ellipse cx="${c}" cy="${c}" rx="122" ry="${122 * squash}" fill="none" stroke="#7d0f13" stroke-width="5" opacity="0.7"/>
-    <!-- Translucent flesh lining the ring, and the pale core. -->
-    <ellipse cx="${c}" cy="${c}" rx="96" ry="${96 * squash}" fill="none" stroke="#f08a5d" stroke-width="10" opacity="0.75"/>
-    <ellipse cx="${c}" cy="${c}" rx="30" ry="${30 * squash}" fill="#f7d6a2" opacity="0.9"/>
-    <g fill="#f8e7b4" stroke="#d9b56e" stroke-width="1.2">${seedMarks}</g>
-    <path d="M ${c - 84} ${c - 62 * squash} q 44 -38 104 -34" stroke="#ffd2c0" stroke-width="8" stroke-linecap="round" fill="none" opacity="0.6"/>
+    <!-- The hollow inside, faintly tinted, and the pale core. -->
+    <ellipse cx="${c}" cy="${c}" rx="96" ry="${96 * squash}" fill="#d2452f" opacity="0.35"/>
+    <ellipse cx="${c}" cy="${c}" rx="30" ry="${30 * squash}" fill="#e98a62" opacity="0.4"/>
+    <g fill="#f4d19a" opacity="0.8">${seedMarks}</g>
+    <path d="M ${c - 84} ${c - 62 * squash} q 44 -38 104 -34" stroke="#ffc9b0" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.35"/>
   </g>
 </svg>`;
   const file = join(OUT_DIR, `${name}.webp`);
@@ -265,21 +196,20 @@ async function chiliSlice({ name, seed, squash, seeds }) {
 
 await mkdir(OUT_DIR, { recursive: true });
 
-await paper({
+const normals = await loadNormalMap();
+await paper(normals, {
   name: "paper-red",
-  base: [172, 38, 33],
-  relief: 0.42,
-  crease: 0.13,
-  seed: 17,
-  toothFloor: 0.72,
+  base: [158, 36, 31],
+  relief: 2.2,
+  grainFloor: 0.55,
+  flecks: 0.42,
 });
-await paper({
+await paper(normals, {
   name: "paper-cream",
   base: [243, 234, 216],
-  relief: 0.12,
-  crease: 0.05,
-  seed: 41,
-  toothFloor: 0.9,
+  relief: 0.9,
+  grainFloor: 0.88,
+  flecks: 0,
 });
 await printSpeckle();
 await chiliSlice({ name: "chili-slice-a", seed: 5, squash: 1, seeds: 7 });

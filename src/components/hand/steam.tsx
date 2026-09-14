@@ -13,7 +13,13 @@ const WISPS = [
  * keyframe on the compositor). Under reduced motion each loop runs once, instantly,
  * and ends faded out, so the steam is simply not shown.
  */
-export function Steam({ className }: { className?: string }) {
+export function Steam({
+  className,
+  style,
+}: {
+  className?: string;
+  style?: React.CSSProperties;
+}) {
   return (
     <svg
       aria-hidden="true"
@@ -22,6 +28,7 @@ export function Steam({ className }: { className?: string }) {
       stroke="currentColor"
       strokeLinecap="round"
       className={`overflow-visible ${className ?? ""}`}
+      style={style}
     >
       {WISPS.map((wisp) => (
         <path

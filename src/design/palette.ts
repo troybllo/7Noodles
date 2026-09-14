@@ -64,10 +64,24 @@ export const PALETTE: SwatchGroup[] = [
       },
       {
         token: "cream",
-        hex: "#f3ead8",
+        hex: "#f6f5e9",
         english: "Cream",
-        usage: "Type, buttons and brushwork on red paper and on ink.",
+        usage: "Buttons, handwriting and notes on red paper and on ink.",
         textOn: ["red-paper", "ink"],
+      },
+      {
+        token: "parchment",
+        hex: "#e3ccb2",
+        english: "Parchment",
+        usage: "Poster lettering and brush characters on red paper.",
+        textOn: ["red-paper"],
+      },
+      {
+        token: "mist",
+        hex: "#dad8d8",
+        english: "Mist",
+        usage: "Navigation labels on red paper, a shade quieter than the headline.",
+        textOn: ["red-paper"],
       },
       {
         token: "cream-paper",

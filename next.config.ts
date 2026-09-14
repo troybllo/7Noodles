@@ -30,6 +30,10 @@ const nextConfig: NextConfig = {
       { pathname: "/textures/**", search: "" },
     ],
   },
+  async redirects() {
+    // Contact became Locations when the navigation took the mockup's labels.
+    return [{ source: "/contact", destination: "/locations", permanent: true }];
+  },
   async headers() {
     return [{ source: "/:path*", headers: [...securityHeaders] }];
   },

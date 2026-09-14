@@ -2,35 +2,58 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useRef, useState } from "react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useEffect, useRef, useState } from "react";
 import { useGsap } from "@/components/motion/use-gsap";
-import { HOME_SECTIONS } from "@/content/home-sections";
 import { HandUnderline } from "@/components/hand/hand-underline";
-import { NAV_ITEMS } from "./nav-items";
+import { isCurrent, NAV_ITEMS, type NavItem } from "./nav-items";
+
+/** A hand-drawn chevron, as a thick rounded tick under the baseline. */
+function Chevron({ open }: { open: boolean }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 14 8"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2.6}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={`h-[0.62em] w-[1.3em] transition-transform duration-[--duration-base] ease-[--ease-out-expo] ${open ? "rotate-180" : ""}`}
+    >
+      <path d="M1.5 1.8 Q 7 7.4 12.5 1.6" />
+    </svg>
+  );
+}
+
+const LABEL =
+  "font-nav relative flex items-center gap-[0.6em] font-bold uppercase [text-shadow:0_0.08em_0.12em_rgb(40_6_4/0.55)]";
 
 /**
- * Temporary top navigation, replacing the left rail.
+ * The site's navigation bar, after the approved hero mockup.
  *
- * Fixed and overlaying content rather than occupying a column, so every
- * section below it reaches the full width of the viewport.
+ * On large screens it is laid out in the same design units as the hero
+ * (`--u`, one pixel of the 1074 x 600 mockup), so the logo and every label sit
+ * exactly where the mockup puts them at any width. Below that, it becomes a
+ * logo and a Menu button opening a full-screen menu on red paper.
+ *
+ * Items with children open a small menu: on hover for a mouse, on click or
+ * Enter for everyone, closing on Escape, on a click elsewhere, or when a link
+ * is followed.
  *
  * Colour comes from the `[data-bar]` custom properties, which flip as each
- * section passes the viewport midpoint — the same mechanism the rail used, and
- * the reason sections still declare `data-nav-theme`.
+ * section declaring `data-nav-theme` passes the middle of the viewport.
  */
 export function TopNav() {
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
-  const ticks = useRef<(HTMLSpanElement | null)[]>([]);
-
-  const showProgress = pathname === "/";
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const bar = useRef<HTMLDivElement>(null);
 
   const scope = useGsap<HTMLElement>(
-    ({ gsap, scope: bar }) => {
+    ({ gsap, scope: header }) => {
       for (const section of document.querySelectorAll<HTMLElement>("[data-nav-theme]")) {
         const theme = section.dataset.navTheme ?? "light";
-        const apply = () => bar.setAttribute("data-bar", theme);
+        const apply = () => header.setAttribute("data-bar", theme);
 
         gsap.timeline({
           scrollTrigger: {
@@ -42,64 +65,43 @@ export function TopNav() {
           },
         });
       }
-
-      if (!showProgress) return;
-
-      /*
-       * The pillars, carried over from the rail: one tick per section, lighting
-       * as the reader reaches it.
-       *
-       * Progress is read from the document directly. A ScrollTrigger spanning
-       * documentElement from "top top" to "bottom bottom" resolves to a
-       * degenerate range and emits no progress at all, which is how this
-       * silently did nothing the first time it was built.
-       */
-      let fractions: number[] = [];
-
-      const measure = () => {
-        const maxScroll = Math.max(
-          1,
-          document.documentElement.scrollHeight - window.innerHeight,
-        );
-        fractions = HOME_SECTIONS.map((section) => {
-          const element = document.getElementById(section.id);
-          return element ? Math.min(1, element.offsetTop / maxScroll) : 0;
-        });
-      };
-
-      const light = () => {
-        const maxScroll = Math.max(
-          1,
-          document.documentElement.scrollHeight - window.innerHeight,
-        );
-        const progress = window.scrollY / maxScroll;
-        fractions.forEach((fraction, index) => {
-          const tick = ticks.current[index];
-          if (tick) tick.dataset.reached = String(progress >= fraction - 0.01);
-        });
-      };
-
-      const refresh = () => {
-        measure();
-        light();
-      };
-
-      refresh();
-      window.addEventListener("scroll", light, { passive: true });
-      ScrollTrigger.addEventListener("refresh", refresh);
-
-      return () => {
-        window.removeEventListener("scroll", light);
-        ScrollTrigger.removeEventListener("refresh", refresh);
-      };
     },
-    // Re-run on every navigation, not only when crossing to or from the
-    // homepage. The bar stays mounted across client-side route changes, and
-    // triggers built for one page's sections would otherwise keep reading the
-    // previous page's elements, leaving the bar coloured for a page the reader
-    // has already left.
-    [pathname, showProgress],
+    // Re-run on every navigation: the bar stays mounted across client-side
+    // route changes, and triggers built for one page's sections would keep
+    // reading the previous page's elements.
+    [pathname],
   );
+
+  // While a menu is open, Escape or a press outside the bar closes it.
+  useEffect(() => {
+    if (!openMenu) return;
+
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpenMenu(null);
+    };
+    const onPointer = (event: PointerEvent) => {
+      if (!bar.current?.contains(event.target as Node)) setOpenMenu(null);
+    };
+
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("pointerdown", onPointer);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("pointerdown", onPointer);
+    };
+  }, [openMenu]);
+
+  const closeAll = () => {
+    setOpenMenu(null);
+    setMobileOpen(false);
+  };
+
+  const hoverOpen = (item: NavItem) => (event: React.PointerEvent) => {
+    if (event.pointerType === "mouse") setOpenMenu(item.label);
+  };
+  const hoverClose = (event: React.PointerEvent) => {
+    if (event.pointerType === "mouse") setOpenMenu(null);
+  };
 
   return (
     <>
@@ -113,24 +115,30 @@ export function TopNav() {
       <header
         ref={scope}
         data-bar="light"
-        className="fixed inset-x-0 top-0 z-50 flex flex-col"
+        className="frame-stage fixed inset-x-0 top-0 z-50"
         // Named so page transitions leave the bar in place; see globals.css.
         style={{ viewTransitionName: "site-nav" }}
       >
-        <div className="flex items-center justify-between px-6 py-5 md:px-10">
+        <div
+          ref={bar}
+          data-nav-bar
+          className="frame relative mx-auto flex items-center justify-between px-6 py-4 lg:block lg:h-[calc(var(--u)*90)] lg:w-[calc(var(--u)*1074)] lg:p-0"
+        >
           {/*
             The client's logo, used as a mask and filled with the bar's own
-            label colour. The only version available is white on transparent,
-            which would vanish over the light sections; as a mask it takes
-            whatever colour the bar is currently using and inverts with it.
-
-            Shown at up to 48px from an 85px source, so it stays sharp on
-            high-density screens.
+            label colour, so it inverts with the bar over light sections.
+            The file's artwork sits inside a small margin, so the box is placed
+            to land the drawn logo on the mockup's 211 x 52 at (69, 35).
           */}
-          <Link href="/" aria-label="Seven Noodles, home" className="block">
+          <Link
+            href="/"
+            aria-label="Seven Noodles, home"
+            onClick={closeAll}
+            className="block lg:absolute lg:top-[calc(var(--u)*26.5)] lg:left-[calc(var(--u)*58.7)]"
+          >
             <span
               aria-hidden="true"
-              className="block aspect-[283/85] h-9 transition-colors duration-[--duration-base] md:h-12"
+              className="block aspect-[283/85] h-11 transition-colors duration-[--duration-base] lg:h-[calc(var(--u)*69.2)]"
               style={{
                 backgroundColor: "var(--bar-label)",
                 maskImage: "url(/brand/logo-horizontal-light.png)",
@@ -143,28 +151,86 @@ export function TopNav() {
             />
           </Link>
 
-          <nav aria-label="Primary" className="hidden md:block">
-            <ul className="flex items-center gap-9">
+          <nav
+            aria-label="Primary"
+            className="hidden lg:absolute lg:top-[calc(var(--u)*43)] lg:left-[calc(var(--u)*365)] lg:block"
+          >
+            <ul className="flex items-center gap-[calc(var(--u)*38)] text-[calc(var(--u)*14.5)]">
               {NAV_ITEMS.map((item, index) => {
-                const active =
-                  item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+                const current = isCurrent(item, pathname);
+                const menuId = `nav-menu-${index}`;
+                const open = openMenu === item.label;
 
                 return (
-                  <li key={item.href}>
-                    <Link
-                      href={item.href}
-                      aria-current={active ? "page" : undefined}
-                      className="group font-nav relative block py-1 text-[1.05rem] font-semibold tracking-[0.04em] uppercase"
-                      style={{ color: "var(--bar-label)" }}
-                    >
-                      {item.label}
-                      {/* Drawn under the current page, and drawn on when hovered. */}
-                      <HandUnderline
-                        seed={index * 13 + 5}
-                        drawn={active}
-                        className="absolute inset-x-0 -bottom-1 h-2"
-                      />
-                    </Link>
+                  <li
+                    key={item.label}
+                    className="relative"
+                    onPointerEnter={item.children ? hoverOpen(item) : undefined}
+                    onPointerLeave={item.children ? hoverClose : undefined}
+                  >
+                    {item.children ? (
+                      <button
+                        type="button"
+                        aria-expanded={open}
+                        aria-controls={menuId}
+                        onClick={() => setOpenMenu(open ? null : item.label)}
+                        className={`group ${LABEL}`}
+                        style={{ color: "var(--bar-label)" }}
+                      >
+                        {item.label}
+                        <Chevron open={open} />
+                        <HandUnderline
+                          seed={index * 13 + 5}
+                          drawn={current}
+                          className="absolute inset-x-0 -bottom-[0.45em] h-[0.5em]"
+                        />
+                      </button>
+                    ) : (
+                      <Link
+                        href={item.href}
+                        aria-current={current ? "page" : undefined}
+                        onClick={closeAll}
+                        className={`group ${LABEL}`}
+                        style={{ color: "var(--bar-label)" }}
+                      >
+                        {item.label}
+                        <HandUnderline
+                          seed={index * 13 + 5}
+                          drawn={current}
+                          className="absolute inset-x-0 -bottom-[0.45em] h-[0.5em]"
+                        />
+                      </Link>
+                    )}
+
+                    {item.children ? (
+                      <div
+                        id={menuId}
+                        hidden={!open}
+                        // The padding bridges the gap under the label, so the
+                        // pointer can travel down without the menu closing.
+                        className="absolute top-full left-[-1.2em] pt-[1.1em]"
+                      >
+                        <ul className="paper-cream text-ink min-w-[15em] rounded-[0.9em] px-[0.4em] py-[0.5em] text-[1.05em] shadow-[0_0.8em_2em_rgb(40_6_4/0.35)]">
+                          {item.children.map((child, childIndex) => (
+                            <li key={child.href + child.label}>
+                              <Link
+                                href={child.href}
+                                onClick={closeAll}
+                                className="group font-nav relative block rounded-[0.5em] px-[0.8em] py-[0.55em] font-bold whitespace-nowrap"
+                              >
+                                <span className="relative">
+                                  {child.label}
+                                  <HandUnderline
+                                    seed={index * 29 + childIndex * 7 + 3}
+                                    className="text-chili absolute inset-x-0 -bottom-[0.35em] h-[0.45em]"
+                                  />
+                                </span>
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : null}
                   </li>
                 );
               })}
@@ -173,53 +239,66 @@ export function TopNav() {
 
           <button
             type="button"
-            onClick={() => setOpen((value) => !value)}
-            aria-expanded={open}
+            onClick={() => setMobileOpen((value) => !value)}
+            aria-expanded={mobileOpen}
             aria-controls="mobile-nav"
-            className="font-nav text-sm font-semibold tracking-[0.06em] uppercase md:hidden"
+            className="font-nav text-sm font-bold tracking-[0.06em] uppercase lg:hidden"
             style={{ color: "var(--bar-label)" }}
           >
-            {open ? "Close" : "Menu"}
+            {mobileOpen ? "Close" : "Menu"}
           </button>
         </div>
-
-        {showProgress ? (
-          <div
-            aria-hidden="true"
-            className="flex h-px w-full items-center gap-1 px-6 md:px-10"
-          >
-            {HOME_SECTIONS.map((section, index) => (
-              <span
-                key={section.id}
-                ref={(node) => {
-                  ticks.current[index] = node;
-                }}
-                data-reached="false"
-                className="h-px flex-1 bg-[var(--bar-muted)] opacity-40 transition-all duration-[--duration-slow] ease-[--ease-out-expo] data-[reached=true]:bg-[var(--bar-accent)] data-[reached=true]:opacity-100"
-              />
-            ))}
-          </div>
-        ) : null}
       </header>
 
       <div
         id="mobile-nav"
-        hidden={!open}
-        className="paper-red text-cream fixed inset-0 z-40 flex flex-col justify-center gap-7 px-8 md:hidden"
+        hidden={!mobileOpen}
+        className="paper-red text-cream fixed inset-0 z-40 overflow-y-auto px-8 pt-28 pb-12 lg:hidden"
       >
-        {NAV_ITEMS.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            onClick={() => setOpen(false)}
-            className="flex items-baseline gap-4"
-          >
-            <span className="font-poster text-5xl leading-none">{item.label}</span>
-            <span lang="zh" className="font-hand-cjk text-cream/80 text-xl">
-              {item.zh}
-            </span>
-          </Link>
-        ))}
+        <ul className="flex flex-col gap-7">
+          {NAV_ITEMS.map((item) => (
+            <li key={item.label}>
+              {item.children ? (
+                <>
+                  <p className="flex items-baseline gap-3">
+                    <span className="font-poster text-parchment text-4xl uppercase">
+                      {item.label}
+                    </span>
+                    <span lang="zh" className="text-cream/80 text-lg">
+                      {item.zh}
+                    </span>
+                  </p>
+                  <ul className="mt-2 flex flex-col gap-1.5 pl-1">
+                    {item.children.map((child) => (
+                      <li key={child.href + child.label}>
+                        <Link
+                          href={child.href}
+                          onClick={closeAll}
+                          className="font-nav text-cream text-lg font-bold"
+                        >
+                          {child.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              ) : (
+                <Link
+                  href={item.href}
+                  onClick={closeAll}
+                  className="flex items-baseline gap-3"
+                >
+                  <span className="font-poster text-parchment text-4xl uppercase">
+                    {item.label}
+                  </span>
+                  <span lang="zh" className="text-cream/80 text-lg">
+                    {item.zh}
+                  </span>
+                </Link>
+              )}
+            </li>
+          ))}
+        </ul>
       </div>
     </>
   );
