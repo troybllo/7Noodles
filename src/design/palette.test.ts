@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { contrastRatio, parseHex } from "@/lib/contrast";
+import { DRAGON_STRENGTH } from "./backdrop";
 import { GROUND_HEX, PALETTE, type Ground } from "./palette";
 
 const css = readFileSync(new URL("../app/globals.css", import.meta.url), "utf8");
@@ -158,6 +159,30 @@ describe("palette accessibility claims", () => {
       ["contact detail, rice on panel", "#f2eee5", "#12100e", 4.5],
       ["contact labels, agar-glow on panel", "#8d776a", "#12100e", 4.5],
       ["story call to action, rice on ink-deep", "#f2eee5", "#0a0908", 4.5],
+    ];
+
+    for (const [name, text, ground, floor] of pairs) {
+      const ratio = contrastRatio(text, ground);
+      expect(ratio, `${name} is ${ratio.toFixed(2)}:1`).toBeGreaterThanOrEqual(floor);
+    }
+  });
+
+  it("keeps menu text readable over the dragon's darkest strokes", () => {
+    /*
+     * The dragon sits behind the menu as a tinted ink layer. Measuring against
+     * the bare ground would miss the worst case: where the ink is fully opaque,
+     * the ground is darkened (or, on the overview, lightened) by the backdrop's
+     * whole strength. Every pairing is checked there.
+     */
+    const riceUnder = blend("#12100e", DRAGON_STRENGTH.rice, "#f2eee5");
+    const darkUnder = blend("#f2eee5", DRAGON_STRENGTH.dark, "#0a0908");
+
+    const pairs: [string, string, string, number][] = [
+      ["dish names, prices and tags", "#12100e", riceUnder, 4.5],
+      ["category title in Chinese, large", "#bd4147", riceUnder, 3],
+      ["overview tabs", "#f2eee5", darkUnder, 4.5],
+      ["overview current tab", "#d9a441", darkUnder, 4.5],
+      ["overview title in Chinese, large", "#d9a441", darkUnder, 3],
     ];
 
     for (const [name, text, ground, floor] of pairs) {
