@@ -20,10 +20,17 @@ import { ACCORDION_QUERY } from "@/components/motion/use-expanding-panels";
  * over it, which is the difference between a slide and a stack.
  *
  * **The default layout is normal flow** — panels are block-level and stack
- * vertically. The absolute stacking is applied here, by GSAP, and only when
+ * vertically (side by side in a swiping row on phones). The absolute stacking is applied here, by GSAP, and only when
  * GSAP actually runs. Making it the default would hide three of the four
  * panels from anyone with reduced motion, since `useGsap` skips entirely.
  */
+/**
+ * Scroll distance for each hand-over, as a fraction of the viewport height.
+ * A full screen per category made the run feel like a wall to scroll through;
+ * at a little over half, each hand-over still has room to be seen.
+ */
+const HANDOVER_SCROLL = 0.6;
+
 export function CategoriesTrack({ children }: { children: ReactNode }) {
   const scope = useGsap<HTMLDivElement>(({ gsap, scope: element }) => {
     const media = gsap.matchMedia();
@@ -49,7 +56,7 @@ export function CategoriesTrack({ children }: { children: ReactNode }) {
         scrollTrigger: {
           trigger: element,
           start: "top top",
-          end: () => `+=${handovers * window.innerHeight}`,
+          end: () => `+=${handovers * window.innerHeight * HANDOVER_SCROLL}`,
           pin: true,
           scrub: 0.7,
           anticipatePin: 1,
@@ -89,7 +96,16 @@ export function CategoriesTrack({ children }: { children: ReactNode }) {
   });
 
   return (
-    <div ref={scope} className="relative w-full">
+    <div
+      ref={scope}
+      // On phones the categories sit side by side and swipe, each snapping into
+      // place with the next one peeking in, so the run costs one screen of
+      // scrolling rather than four. From the accordion breakpoint up, the
+      // pinned overlap above takes over.
+      tabIndex={0}
+      aria-label="Categories, swipe to see more"
+      className="relative flex w-full snap-x snap-mandatory [scrollbar-width:none] gap-3 overflow-x-auto overscroll-x-contain md:block md:overflow-visible md:focus-visible:outline-none"
+    >
       {children}
     </div>
   );

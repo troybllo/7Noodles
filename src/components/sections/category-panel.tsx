@@ -26,7 +26,7 @@ function Plate({
   return (
     <figure className={`flex flex-col gap-2 ${className ?? ""}`}>
       <div className="min-h-0 flex-1">
-        <PhotoSlot label={dish.shot} tone="bg-paper" labelTone="text-agar-text" />
+        <PhotoSlot label={dish.shot} tone="bg-paper" labelTone="text-agar-text" compact />
       </div>
       <figcaption className="flex flex-col leading-tight">
         <span lang="zh" className="text-ink text-[0.7rem]">
@@ -85,7 +85,7 @@ export function CategoryPanel({ category }: PanelProps) {
   return (
     <section
       aria-labelledby={`category-${category.slug}`}
-      className="bg-rice relative flex h-svh w-full flex-col px-6 pt-24 pb-6 md:px-10 md:pt-28 md:pb-8"
+      className="bg-rice relative flex w-[86%] shrink-0 snap-start flex-col px-6 pt-20 pb-12 first:ml-0 md:h-svh md:w-full md:px-10 md:pt-28 md:pb-8"
     >
       <div
         data-panel-dim
@@ -101,8 +101,8 @@ export function CategoryPanel({ category }: PanelProps) {
         </span>
       </div>
 
-      <div className="relative mt-5 min-h-0 flex-1">
-        <header className="absolute top-0 left-0 z-10 max-w-sm">
+      <div className="relative mt-5 md:min-h-0 md:flex-1">
+        <header className="relative z-10 max-w-sm md:absolute md:top-0 md:left-0">
           <h3
             id={`category-${category.slug}`}
             lang="zh"
@@ -118,7 +118,7 @@ export function CategoryPanel({ category }: PanelProps) {
           </p>
         </header>
 
-        <div className="grid h-full grid-cols-12 grid-rows-10 gap-x-4 gap-y-3">
+        <div className="mt-6 grid grid-cols-12 gap-x-4 gap-y-3 md:mt-0 md:h-full md:grid-rows-10">
           {category.dishes.map((dish, index) => (
             <Plate
               key={dish.nameZh}
@@ -129,14 +129,14 @@ export function CategoryPanel({ category }: PanelProps) {
 
           {/* Below the accordion breakpoint the collage becomes a plain grid;
               absolute placement at phone width is unreadable. */}
-          <div className="col-span-12 row-span-10 grid grid-cols-2 gap-4 self-end md:hidden">
+          <div className="col-span-12 grid grid-cols-2 gap-3 md:hidden">
             {category.dishes.slice(0, 4).map((dish) => (
-              <Plate key={dish.nameZh} dish={dish} className="aspect-[4/5]" />
+              <Plate key={dish.nameZh} dish={dish} className="aspect-[4/3]" />
             ))}
           </div>
         </div>
 
-        <footer className="absolute right-0 bottom-0 flex max-w-xs flex-col gap-1 text-right">
+        <footer className="mt-6 flex max-w-xs flex-col gap-1 md:absolute md:right-0 md:bottom-0 md:mt-0 md:text-right">
           <span className="text-agar-text text-[0.6rem] tracking-[0.22em] uppercase">
             招牌 · Signature
           </span>

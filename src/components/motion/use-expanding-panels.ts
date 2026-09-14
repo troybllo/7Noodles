@@ -23,7 +23,7 @@ type Options = {
 };
 
 /**
- * The expanding-panel mechanic, shared by the showcase and the contact band.
+ * The expanding-panel mechanic behind the showcase.
  *
  * Tweens `flex-grow` rather than a transform. `scaleX` would distort the
  * photography and the type, and counter-scaling the children back is fragile.
@@ -91,14 +91,22 @@ export function useExpandingPanels<T extends HTMLElement = HTMLLIElement>(
     [count],
   );
 
-  /** Props every panel needs, so a caller cannot forget the containment. */
+  /**
+   * Props every panel needs, so a caller cannot forget the containment.
+   *
+   * The zero flex-basis that makes the grow values divide the row is a class
+   * scoped to the accordion's breakpoint, not an inline style. Below it the
+   * panels stack in a column whose height comes from its content, and a zero
+   * basis there collapses every panel to nothing — which is how the showcase
+   * once vanished on phones.
+   */
   const panelProps = (index: number) => ({
     ref: (node: T | null) => {
       panels.current[index] = node;
     },
+    className: "md:basis-0",
     style: {
       flexGrow: index === open ? openGrow : closedGrow,
-      flexBasis: 0,
       contain: "layout paint" as const,
     },
     onMouseEnter: () => setOpenPanel(index),

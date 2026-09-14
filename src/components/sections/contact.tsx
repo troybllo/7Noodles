@@ -27,7 +27,7 @@ export function Contact() {
       <div className="grid gap-3 lg:h-[calc(100svh-7rem)] lg:min-h-[40rem] lg:grid-cols-12 lg:grid-rows-2">
         {/* The large tile. */}
         <div
-          className={`${PANEL} relative min-h-[26rem] overflow-hidden lg:col-span-6 lg:row-span-2`}
+          className={`${PANEL} relative min-h-[18rem] overflow-hidden lg:col-span-6 lg:row-span-2`}
         >
           <Image
             src={PHOTOS.noodleSoup}

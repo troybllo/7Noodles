@@ -67,14 +67,15 @@ function Block({ token, name, tone, className }: BlockProps) {
         Set at the large-text threshold, not as fine print. Three of these
         grounds cannot carry small body text in any colour.
       */}
-      <dl className="mt-6 flex flex-col gap-0.5 text-[1.175rem] leading-snug font-semibold tabular-nums">
-        <div className="flex gap-2">
+      <dl className="mt-4 flex flex-col gap-0.5 text-[1.175rem] leading-snug font-semibold tabular-nums md:mt-6">
+        {/* Phones show the hex alone; the full breakdown needs the width. */}
+        <div className="hidden gap-2 md:flex">
           <dt className="sr-only">RGB</dt>
           <dd>
             R:{r} G:{g} B:{b}
           </dd>
         </div>
-        <div className="flex gap-2">
+        <div className="hidden gap-2 md:flex">
           <dt className="sr-only">CMYK, nominal</dt>
           <dd>
             C:{c} M:{m} Y:{y} K:{k}
@@ -103,7 +104,7 @@ export function PaletteMosaic() {
     <section
       aria-label="Colour palette"
       data-nav-theme="light"
-      className="grid w-full grid-cols-2 text-black md:h-svh md:grid-cols-4 md:grid-rows-[1fr_1fr_0.6fr]"
+      className="grid w-full grid-cols-2 text-black md:h-[78svh] md:grid-cols-4 md:grid-rows-[1fr_1fr_0.6fr]"
     >
       <Block
         token="rice-dim"

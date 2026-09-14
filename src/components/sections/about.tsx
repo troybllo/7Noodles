@@ -16,7 +16,7 @@ export function About() {
   return (
     <section id="about" data-nav-theme="dark" className="relative z-10 w-full">
       {/* The mark over the room. */}
-      <div className="bg-ink-deep relative isolate flex min-h-[80svh] items-center justify-center overflow-hidden">
+      <div className="bg-ink-deep relative isolate flex min-h-[55svh] items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0 grid grid-cols-1 md:grid-cols-2">
           <PhotoSlot label="Room from the doorway, low light" tone="bg-ink-soft" />
           <PhotoSlot label="Pass and kitchen, steam, night" tone="bg-ink" />
@@ -48,20 +48,22 @@ export function About() {
       {/* Brand history. */}
       <div
         data-nav-theme="light"
-        className="bg-rice text-ink px-6 py-20 md:px-10 md:py-28"
+        className="bg-rice text-ink px-6 py-16 md:px-10 md:py-20"
       >
         <div className="mx-auto grid max-w-[1700px] gap-10 lg:grid-cols-12 lg:gap-x-16">
           <div className="lg:sticky lg:top-28 lg:col-span-5 lg:self-start">
             <p lang="zh" className="font-brush text-peach-text text-4xl leading-none">
               {ABOUT.headingZh}
             </p>
-            <h2 className="text-display mt-4 font-black">{ABOUT.heading}</h2>
+            <h2 className="mt-4 text-[clamp(2.25rem,4.5vw,4.25rem)] leading-[1.02] font-black">
+              {ABOUT.heading}
+            </h2>
             <p className="text-agar-text mt-6 max-w-sm text-base leading-relaxed">
               {ABOUT.lede}
             </p>
           </div>
 
-          <div className="flex flex-col gap-10 lg:col-span-4">
+          <div className="flex flex-col gap-8 lg:col-span-4">
             {ABOUT.story.map((entry) => (
               <div key={entry.title} className="flex flex-col gap-3">
                 <h3

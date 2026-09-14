@@ -58,7 +58,7 @@ export function ShowcasePanels() {
           <li
             key={dish.slug}
             {...panelProps(index)}
-            className="relative h-[62svh] overflow-hidden md:h-auto"
+            className={`relative h-[46svh] overflow-hidden md:h-auto ${panelProps(index).className}`}
           >
             <button
               type="button"
