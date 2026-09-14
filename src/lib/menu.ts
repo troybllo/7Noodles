@@ -23,6 +23,13 @@ const itemSchema = z.object({
   priceCents: z.number().int().nonnegative(),
   spiceLevel: z.number().int().min(0).max(3),
   tags: z.array(tagSchema),
+  /**
+   * Written by the kitchen, never by us: ingredients matter to anyone with an
+   * allergy. Absent for every dish today, and each page shows these sections
+   * only once they exist.
+   */
+  description: z.string().min(1).optional(),
+  ingredients: z.array(z.string().min(1)).min(1).optional(),
 });
 
 const categorySchema = z.object({
@@ -73,4 +80,31 @@ export function getCategories(): MenuCategory[] {
 
 export function getCategory(slug: string): MenuCategory | undefined {
   return categories.find((category) => category.slug === slug);
+}
+
+/**
+ * A dish, found through the category it belongs to. A dish addressed under the
+ * wrong category is not found, so every dish has exactly one address.
+ */
+export function getDish(
+  categorySlug: string,
+  dishSlug: string,
+): { category: MenuCategory; item: MenuItem } | undefined {
+  const category = getCategory(categorySlug);
+  const item = category?.items.find((candidate) => candidate.slug === dishSlug);
+  return category && item ? { category, item } : undefined;
+}
+
+/**
+ * The dishes after this one in its category, wrapping round to the start, and
+ * never the dish itself.
+ */
+export function getMoreDishes(
+  category: MenuCategory,
+  item: MenuItem,
+  count = 3,
+): MenuItem[] {
+  const index = category.items.findIndex((candidate) => candidate.slug === item.slug);
+  const others = [...category.items.slice(index + 1), ...category.items.slice(0, index)];
+  return others.slice(0, count);
 }

@@ -58,7 +58,7 @@ export default async function CategoryPage({ params }: PageProps<"/menu/[categor
 
         <InkRevealGrid className="mt-16 grid grid-cols-2 gap-x-5 gap-y-12 lg:grid-cols-3 lg:gap-x-10 lg:gap-y-16">
           {category.items.map((item) => (
-            <DishCard key={item.slug} item={item} />
+            <DishCard key={item.slug} item={item} categorySlug={category.slug} />
           ))}
         </InkRevealGrid>
       </div>

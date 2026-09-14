@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import source from "../../data/menu-source.json";
-import { getCategories, getCategory } from "./menu";
+import { getCategories, getCategory, getDish, getMoreDishes } from "./menu";
 
 describe("menu data layer", () => {
   const categories = getCategories();
@@ -40,5 +40,27 @@ describe("menu data layer", () => {
   it("finds a category by slug and nothing for an unknown one", () => {
     expect(getCategory("wonton")?.nameZh).toBe("抄手");
     expect(getCategory("not-a-category")).toBeUndefined();
+  });
+
+  it("finds a dish only under its own category", () => {
+    const wonton = getCategory("wonton");
+    const dessert = getCategory("dessert");
+    const dish = wonton?.items[0];
+    if (!wonton || !dessert || !dish) throw new Error("fixture categories missing");
+
+    expect(getDish("wonton", dish.slug)?.item.slug).toBe(dish.slug);
+    expect(getDish("dessert", dish.slug)).toBeUndefined();
+    expect(getDish("wonton", "not-a-dish")).toBeUndefined();
+  });
+
+  it("suggests other dishes from the same category, never the dish itself", () => {
+    for (const category of categories) {
+      for (const item of category.items) {
+        const more = getMoreDishes(category, item);
+        expect(more.map((m) => m.slug)).not.toContain(item.slug);
+        expect(more).toHaveLength(Math.min(3, category.items.length - 1));
+        expect(new Set(more.map((m) => m.slug)).size).toBe(more.length);
+      }
+    }
   });
 });

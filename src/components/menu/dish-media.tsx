@@ -18,9 +18,15 @@ const CAN_HOVER = "(hover: hover) and (pointer: fine)";
 export function DishMedia({
   media,
   label,
+  sizes = "(min-width: 1024px) 30vw, 50vw",
+  preload = false,
 }: {
   media: DishMediaData | undefined;
   label: string;
+  /** `sizes` for the photograph; the default fits a card in the dish grid. */
+  sizes?: string;
+  /** Preload the photograph, for a dish page's hero where it is the LCP image. */
+  preload?: boolean;
 }) {
   const video = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
@@ -54,7 +60,8 @@ export function DishMedia({
             src={media.photo.src}
             alt={media.photo.alt}
             fill
-            sizes="(min-width: 1024px) 30vw, 50vw"
+            sizes={sizes}
+            preload={preload}
             quality={75}
             className="object-cover"
           />
