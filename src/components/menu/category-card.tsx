@@ -1,63 +1,80 @@
 import Image from "next/image";
 import Link from "next/link";
 import { PhotoSlot } from "@/components/media/photo-slot";
-import { formatCad } from "@/lib/money";
 import type { MenuCategory } from "@/lib/menu";
 import { CATEGORY_COVERS } from "@/content/menu-media";
+import { TILE_SCRIM } from "@/design/backdrop";
+
+type CategoryCardProps = {
+  category: MenuCategory;
+  /** Extra grid classes, for a tile that spans a short last row. */
+  className?: string;
+};
 
 /**
- * A category on the menu overview, linking through to its dishes.
+ * A category on the menu overview: one photograph, and the whole of it is the
+ * link through to that category's dishes.
  *
- * Hovering raises a blurred panel inviting the click, after the reference. The
- * same panel appears on keyboard focus: a card that only explains itself to a
- * mouse says nothing to someone tabbing through the page.
+ * The name sits on the picture over a scrim rather than in a caption beneath,
+ * so the grid reads as images. Hovering raises a blurred panel inviting the
+ * click; the same panel appears on keyboard focus, because a tile that only
+ * explains itself to a mouse says nothing to someone tabbing through the page.
  */
-export function CategoryCard({ category }: { category: MenuCategory }) {
+export function CategoryCard({ category, className }: CategoryCardProps) {
   const cover = CATEGORY_COVERS[category.slug];
-  const range =
-    category.minPriceCents === category.maxPriceCents
-      ? formatCad(category.minPriceCents)
-      : `${formatCad(category.minPriceCents)} – ${formatCad(category.maxPriceCents)}`;
+  const dishes = `${category.itemCount} ${category.itemCount === 1 ? "dish" : "dishes"}`;
 
   return (
     <Link
       href={`/menu/${category.slug}`}
-      className="group border-rice/12 bg-ink-deep focus-visible:outline-lantern relative flex flex-col border outline-offset-[-2px]"
+      className={`group bg-ink-soft focus-visible:outline-lantern relative block aspect-[4/3] overflow-hidden outline-offset-[-3px] ${className ?? ""}`}
     >
-      <div data-ink className="relative aspect-[4/3] overflow-hidden">
-        <div className="absolute inset-0 transition-transform duration-[--duration-slow] ease-[--ease-out-expo] group-hover:scale-[1.04]">
+      <div data-ink className="absolute inset-0">
+        <div className="absolute inset-0 transition-transform duration-[--duration-slow] ease-[--ease-out-expo] group-hover:scale-[1.05]">
           {cover ? (
             <Image
               src={cover.src}
-              alt={cover.alt}
+              alt=""
               fill
-              sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+              sizes="(min-width: 1024px) 34vw, (min-width: 640px) 50vw, 100vw"
               quality={75}
               className="object-cover"
             />
           ) : (
-            <PhotoSlot label={`${category.nameEn} — category cover`} tone="bg-ink-soft" />
+            <PhotoSlot
+              label={`${category.nameEn} — category cover`}
+              labelPosition="top"
+              tone="bg-ink-soft"
+            />
           )}
-        </div>
-
-        {/* The invitation to click. */}
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <span className="bg-ink/70 text-rice border-rice/20 scale-90 border px-6 py-3 text-xs tracking-[0.24em] uppercase opacity-0 backdrop-blur-md transition-[opacity,transform] duration-[--duration-base] ease-[--ease-out-expo] group-hover:scale-100 group-hover:opacity-100 group-focus-visible:scale-100 group-focus-visible:opacity-100">
-            View dishes →
-          </span>
         </div>
       </div>
 
-      <div className="flex flex-col gap-2 p-5">
-        <p lang="zh" className="font-round-cjk text-lantern text-2xl leading-none">
-          {category.nameZh}
-        </p>
-        <h2 className="font-round text-rice text-xl leading-snug font-semibold">
-          {category.nameEn}
-        </h2>
-        <p className="text-rice text-sm">
-          {category.itemCount} {category.itemCount === 1 ? "dish" : "dishes"} · {range}
-        </p>
+      <div
+        aria-hidden="true"
+        className="absolute inset-0"
+        style={{
+          background: `linear-gradient(to top, rgb(10 9 8 / ${TILE_SCRIM.base}) 0%, rgb(10 9 8 / ${TILE_SCRIM.underText}) 42%, transparent 78%)`,
+        }}
+      />
+
+      {/* The invitation to click. */}
+      <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+        <span className="bg-ink/70 text-rice border-rice/20 scale-90 border px-6 py-3 text-xs tracking-[0.24em] uppercase opacity-0 backdrop-blur-md transition-[opacity,transform] duration-[--duration-base] ease-[--ease-out-expo] group-hover:scale-100 group-hover:opacity-100 group-focus-visible:scale-100 group-focus-visible:opacity-100">
+          View dishes →
+        </span>
+      </div>
+
+      <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 md:p-6">
+        <div className="flex flex-col gap-2">
+          <p lang="zh" className="font-round-cjk text-lantern text-2xl leading-none">
+            {category.nameZh}
+          </p>
+          <h2 className="font-round text-rice text-xl leading-snug font-semibold">
+            {category.nameEn}
+          </h2>
+        </div>
+        <p className="text-rice shrink-0 text-sm">{dishes}</p>
       </div>
     </Link>
   );

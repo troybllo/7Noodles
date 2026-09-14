@@ -4,6 +4,7 @@ import { CategoryTabs } from "@/components/menu/category-tabs";
 import { DishCard } from "@/components/menu/dish-card";
 import { DragonBackdrop } from "@/components/menu/dragon-backdrop";
 import { InkRevealGrid } from "@/components/menu/ink-reveal-grid";
+import { MenuOrnaments } from "@/components/menu/menu-ornaments";
 import { getCategories, getCategory } from "@/lib/menu";
 
 /** Every category is prerendered; anything else is a 404, not an empty menu. */
@@ -38,11 +39,12 @@ export default async function CategoryPage({ params }: PageProps<"/menu/[categor
       className="bg-rice text-ink relative isolate min-h-svh px-6 pt-32 pb-28 md:px-10"
     >
       <DragonBackdrop tone="rice" />
+      <MenuOrnaments tone="rice" />
 
-      <div className="mx-auto max-w-[1400px]">
+      <div className="relative mx-auto max-w-[1400px]">
         <CategoryTabs categories={getCategories()} active={category.slug} tone="light" />
 
-        <header className="mt-14 text-center">
+        <header className="mx-auto mt-14 max-w-2xl text-center">
           <p lang="zh" className="font-round-cjk text-peach-text text-3xl leading-none">
             {category.nameZh}
           </p>

@@ -18,22 +18,25 @@ type CategoryTabsProps = {
  * On narrow screens the row scrolls sideways instead of wrapping into a block.
  */
 export function CategoryTabs({ categories, active, tone }: CategoryTabsProps) {
+  // Every tab carries its own solid ground. The lanterns and the plum branch
+  // can pass behind the row, and text on a pill never depends on what is behind.
   const base =
     tone === "dark"
-      ? "border-rice/25 text-rice hover:border-rice/60"
-      : "border-ink/20 text-ink hover:border-ink/60";
+      ? "border-rice/25 bg-ink-deep text-rice hover:border-rice/60"
+      : "border-ink/20 bg-rice text-ink hover:border-ink/60";
   // On the light pages the current tab is a filled pill rather than peach text:
-  // small peach text measured 3.76:1 over the dragon's darkest strokes, while a
-  // pill with its own ground is unaffected by whatever sits behind it.
+  // small peach text measured 3.76:1 over the dragon's darkest strokes.
   const current =
-    tone === "dark" ? "border-lantern text-lantern" : "border-ink bg-ink text-rice";
+    tone === "dark"
+      ? "border-lantern bg-ink-deep text-lantern"
+      : "border-ink bg-ink text-rice";
 
   return (
     <nav
       aria-label="Menu categories"
       className="-mx-6 overflow-x-auto px-6 md:mx-0 md:px-0"
     >
-      <ul className="flex w-max gap-2 md:mx-auto md:flex-wrap md:justify-center">
+      <ul className="flex w-max gap-2 md:w-auto md:flex-wrap md:justify-center">
         {categories.map((category) => {
           const isActive = category.slug === active;
           return (

@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { contrastRatio, parseHex } from "@/lib/contrast";
-import { DRAGON_STRENGTH } from "./backdrop";
+import { DRAGON_STRENGTH, TILE_SCRIM } from "./backdrop";
 import { GROUND_HEX, PALETTE, type Ground } from "./palette";
 
 const css = readFileSync(new URL("../app/globals.css", import.meta.url), "utf8");
@@ -187,6 +187,21 @@ describe("palette accessibility claims", () => {
 
     for (const [name, text, ground, floor] of pairs) {
       const ratio = contrastRatio(text, ground);
+      expect(ratio, `${name} is ${ratio.toFixed(2)}:1`).toBeGreaterThanOrEqual(floor);
+    }
+  });
+
+  it("keeps category names readable on their photographs", () => {
+    // Worst case: the scrim over a pure white cover, at the height of the name.
+    const underName = blend("#0a0908", TILE_SCRIM.underText, "#ffffff");
+
+    const pairs: [string, string, number][] = [
+      ["English name and dish count, rice", "#f2eee5", 4.5],
+      ["Chinese name, lantern, large and bold", "#d9a441", 3],
+    ];
+
+    for (const [name, text, floor] of pairs) {
+      const ratio = contrastRatio(text, underName);
       expect(ratio, `${name} is ${ratio.toFixed(2)}:1`).toBeGreaterThanOrEqual(floor);
     }
   });
