@@ -60,11 +60,8 @@ function Block({ token, name, tone, className }: BlockProps) {
         <span />
       )}
 
-      {/*
-        Set at the large-text threshold, not as fine print. Three of these
-        grounds cannot carry small body text in any colour.
-      */}
-      <dl className="mt-4 flex flex-col gap-0.5 text-[1.175rem] leading-snug font-semibold tabular-nums md:mt-6">
+      {/* Typewritten, like the values in a printed colour book. */}
+      <dl className="mt-4 flex flex-col gap-0.5 font-mono text-[1.1rem] leading-snug md:mt-6">
         {/* Phones show the hex alone; the full breakdown needs the width. */}
         <div className="hidden gap-2 md:flex">
           <dt className="sr-only">RGB</dt>

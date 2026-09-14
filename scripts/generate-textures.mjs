@@ -212,6 +212,13 @@ await paper(normals, {
   grainFloor: 0.88,
   flecks: 0,
 });
+await paper(normals, {
+  name: "paper-ink",
+  base: [30, 26, 23],
+  relief: 0.7,
+  grainFloor: 0.78,
+  flecks: 0.12,
+});
 await printSpeckle();
 await chiliSlice({ name: "chili-slice-a", seed: 5, squash: 1, seeds: 7 });
 await chiliSlice({ name: "chili-slice-b", seed: 13, squash: 0.82, seeds: 5 });

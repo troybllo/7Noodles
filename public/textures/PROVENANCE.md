@@ -3,7 +3,7 @@
 Everything in this directory is produced by `pnpm textures`
 (scripts/generate-textures.mjs). Regenerate rather than edit.
 
-## paper-red.webp, paper-cream.webp
+## paper-red.webp, paper-cream.webp, paper-ink.webp
 
 | | |
 |---|---|

@@ -2,6 +2,7 @@ import Image from "next/image";
 import type { CSSProperties } from "react";
 import { ChiliDoodles } from "@/components/hand/chili-doodles";
 import { HandArrow } from "@/components/hand/hand-arrow";
+import { StampedText } from "@/components/hand/stamped-text";
 import { Steam } from "@/components/hand/steam";
 import { PaperButton } from "@/components/ui/paper-button";
 import { HERO, type Callout } from "@/content/hero";
@@ -109,19 +110,6 @@ export function Hero() {
         data-nav-theme="red"
         className="paper-red frame-stage text-cream relative isolate min-h-[100dvh] overflow-hidden"
       >
-        {/* Roughens the edges of the poster lettering, as if printed by hand. */}
-        <svg aria-hidden="true" className="absolute h-0 w-0">
-          <filter id="hero-rough-edges" x="-5%" y="-10%" width="110%" height="120%">
-            <feTurbulence
-              type="fractalNoise"
-              baseFrequency="0.9"
-              numOctaves="2"
-              seed="4"
-            />
-            <feDisplacementMap in="SourceGraphic" scale="2.2" />
-          </filter>
-        </svg>
-
         <ChiliDoodles className="-z-10 text-[#d0615a] opacity-30" />
 
         <div className="frame relative mx-auto flex min-h-[100dvh] flex-col px-6 pt-28 pb-16 lg:block lg:h-[calc(var(--u)*600)] lg:min-h-0 lg:w-[calc(var(--u)*1074)] lg:p-0">
@@ -166,20 +154,8 @@ export function Hero() {
                 { text: numeral, from: "left" },
                 { text: word, from: "right" },
               ].map(({ text, from }) => (
-                <span key={text} data-slide={from} className="relative inline-block">
-                  {/* The stamped shadow: the word again in ink, dropped down and left. */}
-                  <span
-                    className="print-worn text-ink absolute inset-0 translate-x-[-0.036em] translate-y-[0.17em]"
-                    style={{ filter: "url(#hero-rough-edges)" }}
-                  >
-                    {text}
-                  </span>
-                  <span
-                    className="print-worn relative"
-                    style={{ filter: "url(#hero-rough-edges)" }}
-                  >
-                    {text}
-                  </span>
+                <span key={text} data-slide={from} className="inline-block">
+                  <StampedText>{text}</StampedText>
                 </span>
               ))}
             </span>
@@ -197,7 +173,9 @@ export function Hero() {
           </p>
 
           <div data-pop className={`mt-8 lg:mt-0 ${AT}`} style={at(70, 404)}>
-            <PaperButton href={HERO.action.href}>{HERO.action.label}</PaperButton>
+            <PaperButton href={HERO.action.href} size="hero">
+              {HERO.action.label}
+            </PaperButton>
           </div>
 
           {/* The dish, a 450 x 450 box in mockup pixels. Everything inside is

@@ -242,6 +242,12 @@
     background-size: 1200px 1200px;
   }
 
+  .paper-ink {
+    background-color: var(--color-ink);
+    background-image: url(/textures/paper-ink.webp);
+    background-size: 1200px 1200px;
+  }
+
   /* Display type printed in worn ink: the letters show through a speckle mask. */
   .print-worn {
     mask-image: url(/textures/print-speckle.webp);

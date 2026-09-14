@@ -4,7 +4,6 @@ import { Showcase } from "@/components/sections/showcase";
 import { Categories } from "@/components/sections/categories";
 import { About } from "@/components/sections/about";
 import { Reviews } from "@/components/sections/reviews";
-import { Contact } from "@/components/sections/contact";
 import { PageTransition } from "@/components/motion/page-transition";
 
 export default function HomePage() {
@@ -21,7 +20,6 @@ export default function HomePage() {
         </div>
         <About />
         <Reviews />
-        <Contact />
       </main>
     </PageTransition>
   );

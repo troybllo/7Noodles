@@ -48,12 +48,17 @@ const FACES = [
     file: "ma-shan-zheng-subset.woff2",
     /**
      * Every character set in this face, anywhere on the site.
-     *   恰小面  the restaurant's name, the hero mark
-     *   招牌    the showcase eyebrow
-     *   麻辣    the story section
-     *   豌杂    the dish named over the hero's bowl
+     *   恰小面 豌杂        the restaurant's name, and the dish over the hero's bowl
+     *   招牌 麻辣鲜香      the showcase and story marks
+     *   菜单 川味 品牌故事 食客  menu, about and reviews headings
+     *   白墨纸红          the colour mosaic's swatch names
+     *   and every category name on the menu, derived above. Dish names stay
+     *   in the reader's system face: they are small, and one of them (嬢) is
+     *   a character this face does not have.
      */
-    glyphs: "恰小面招牌麻辣豌杂",
+    glyphs: unique(
+      `恰小面招牌麻辣鲜香豌杂菜单川味品牌故事食客白墨纸红${CATEGORY_GLYPHS}`,
+    ),
   },
   {
     family: "Resource Han Rounded CN Bold",

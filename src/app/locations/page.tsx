@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function LocationsPage() {
   return (
     <PageTransition id="locations">
-      <main id="main" className="bg-ink-deep pt-16">
+      <main id="main" data-nav-theme="dark" className="paper-ink pt-16">
         <Contact />
       </main>
     </PageTransition>

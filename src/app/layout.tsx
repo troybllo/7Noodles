@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { clientEnv } from "@/env";
 import { InkOrigin } from "@/components/motion/ink-origin";
 import { SmoothScroll } from "@/components/motion/smooth-scroll";
+import { HandFilters } from "@/components/hand/hand-filters";
 import { SiteFooter } from "@/components/nav/site-footer";
 import { TopNav } from "@/components/nav/top-nav";
 import {
@@ -53,6 +54,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         .join(" ")}
     >
       <body className="bg-rice text-ink flex min-h-full flex-col font-sans">
+        <HandFilters />
         <SmoothScroll />
         <InkOrigin />
         <TopNav />

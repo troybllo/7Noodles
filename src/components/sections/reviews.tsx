@@ -1,4 +1,6 @@
 import { Seal } from "@/components/brand/seal";
+import { StampedText } from "@/components/hand/stamped-text";
+import { TapedFrame } from "@/components/hand/taped-frame";
 import { REVIEWS, type Review } from "@/content/reviews";
 
 function Stars({ rating }: { rating: number }) {
@@ -14,6 +16,7 @@ function Stars({ rating }: { rating: number }) {
           aria-hidden="true"
           viewBox="0 0 20 20"
           className={`size-4 ${i < rating ? "fill-current" : "fill-ink/15"}`}
+          style={{ filter: "url(#rough-edges)" }}
         >
           <path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 14.9l-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z" />
         </svg>
@@ -22,30 +25,34 @@ function Stars({ rating }: { rating: number }) {
   );
 }
 
+/** Each note turns a little differently, as notes pinned by hand do. */
+const TILTS = [-2, 1.5, -1, 2.5, -1.5, 1, -2.5, 2] as const;
+
 /**
- * One review. Cards share a fixed height so a one-word review does not
- * collapse the row, and the longest one is set to fit rather than truncated —
- * cutting a customer's words short would be editing them.
+ * One review, as a note taped up on the wall. Notes share a fixed height so a
+ * one-word review does not collapse the row, and the longest one is set to fit
+ * rather than truncated — cutting a customer's words short would be editing
+ * them.
  *
  * No portrait. There are none, and a stock face beside a real name would be a
  * fabrication; the initial sits in a seal instead.
  */
-function Card({ review }: { review: Review }) {
+function Card({ review, index }: { review: Review; index: number }) {
   return (
-    <li className="bg-cream flex h-[25rem] w-[22rem] shrink-0 flex-col items-center justify-between px-8 py-9 text-center">
-      <p className="text-ink my-auto text-[0.95rem] leading-relaxed font-semibold">
-        {review.text}
-      </p>
-      <div className="mt-6 flex flex-col items-center gap-3">
-        <Stars rating={review.rating} />
-        <Seal character={review.name.charAt(0).toUpperCase()} />
-        <div className="flex flex-col gap-0.5">
-          <span className="text-ink text-sm font-semibold">{review.name}</span>
-          <span className="text-ink text-[0.65rem] tracking-[0.16em] uppercase">
-            {review.date}
-          </span>
+    <li className="w-[22rem] shrink-0 py-6">
+      <TapedFrame tape="top" tilt={TILTS[index % TILTS.length] ?? 0} className="text-sm">
+        <div className="flex h-[23rem] flex-col items-center justify-between px-7 py-8 text-center">
+          <p className="font-hand text-ink my-auto text-lg leading-snug">{review.text}</p>
+          <div className="mt-6 flex flex-col items-center gap-3">
+            <Stars rating={review.rating} />
+            <Seal character={review.name.charAt(0).toUpperCase()} />
+            <div className="flex flex-col gap-0.5">
+              <span className="font-nav text-ink text-base font-bold">{review.name}</span>
+              <span className="text-ink/70 font-mono text-xs">{review.date}</span>
+            </div>
+          </div>
         </div>
-      </div>
+      </TapedFrame>
     </li>
   );
 }
@@ -70,25 +77,34 @@ export function Reviews() {
     >
       <div className="px-6 md:px-10">
         <div className="mx-auto max-w-[1700px]">
-          <p className="text-chili text-xs font-semibold tracking-[0.22em] uppercase">
-            <span lang="zh">食客</span> · Reviews
+          <p className="font-hand-caps text-ink flex items-baseline gap-3 text-lg tracking-[0.06em] uppercase">
+            <span lang="zh" className="font-brush text-chili text-4xl">
+              食客
+            </span>
+            Reviews
           </p>
-          <h2 className="font-round text-ink mt-4 max-w-2xl text-[clamp(2rem,4vw,3.75rem)] leading-[1.05] font-semibold">
-            What people say after the first bowl.
+          <h2 className="font-poster mt-4 max-w-3xl text-[clamp(2rem,4vw,3.75rem)] leading-[1.05]">
+            <StampedText tone="text-ink" shadow="text-chili">
+              What people say after the first bowl.
+            </StampedText>
           </h2>
         </div>
       </div>
 
       <div className="marquee-fade mt-14 overflow-hidden motion-reduce:overflow-x-auto">
-        <div className="animate-marquee-left flex w-max gap-5 pr-5 hover:[animation-play-state:paused] motion-reduce:animate-none">
-          <ul className="flex gap-5">
-            {REVIEWS.map((review) => (
-              <Card key={`${review.name}-${review.date}`} review={review} />
+        <div className="animate-marquee-left flex w-max gap-8 pr-8 hover:[animation-play-state:paused] motion-reduce:animate-none">
+          <ul className="flex gap-8">
+            {REVIEWS.map((review, index) => (
+              <Card key={`${review.name}-${review.date}`} review={review} index={index} />
             ))}
           </ul>
-          <ul aria-hidden="true" className="flex gap-5 motion-reduce:hidden">
-            {REVIEWS.map((review) => (
-              <Card key={`copy-${review.name}-${review.date}`} review={review} />
+          <ul aria-hidden="true" className="flex gap-8 motion-reduce:hidden">
+            {REVIEWS.map((review, index) => (
+              <Card
+                key={`copy-${review.name}-${review.date}`}
+                review={review}
+                index={index}
+              />
             ))}
           </ul>
         </div>

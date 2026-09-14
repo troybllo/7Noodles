@@ -1,3 +1,5 @@
+import { HandUnderline } from "@/components/hand/hand-underline";
+import { TapedFrame } from "@/components/hand/taped-frame";
 import { PhotoSlot } from "@/components/media/photo-slot";
 import type { Category } from "@/content/categories";
 
@@ -15,30 +17,39 @@ import type { Category } from "@/content/categories";
 
 type PanelProps = { category: Category };
 
-/** A photograph with its dish name set beneath, as the reference captions them. */
+/** A slight, uneven turn for each photograph, so the collage looks pressed on by hand. */
+const TILTS = [-2, 1.5, -1, 2, -1.5, 1] as const;
+
+/** A photograph taped to the page with its dish name written beneath. */
 function Plate({
   dish,
+  index,
   className,
 }: {
   dish: Category["dishes"][number];
+  index: number;
   className?: string;
 }) {
   return (
     <figure className={`flex flex-col gap-2 ${className ?? ""}`}>
-      <div className="min-h-0 flex-1">
-        <PhotoSlot
-          label={dish.shot}
-          tone="bg-ink/[0.07]"
-          labelTone="text-ink/60"
-          compact
-        />
-      </div>
+      <TapedFrame
+        tape="top"
+        tilt={TILTS[index % TILTS.length] ?? 0}
+        className="min-h-0 flex-1 text-[0.7rem]"
+      >
+        <div className="h-full">
+          <PhotoSlot
+            label={dish.shot}
+            tone="bg-ink/[0.07]"
+            labelTone="text-ink/60"
+            compact
+          />
+        </div>
+      </TapedFrame>
       <figcaption className="flex flex-col leading-tight">
-        <span lang="zh" className="text-ink text-[0.7rem]">
+        <span className="font-hand text-ink text-sm">{dish.nameEn}</span>
+        <span lang="zh" className="text-ink/70 text-[0.7rem]">
           {dish.nameZh}
-        </span>
-        <span className="text-ink/70 text-[0.62rem] tracking-[0.1em] uppercase">
-          {dish.nameEn}
         </span>
       </figcaption>
     </figure>
@@ -98,12 +109,24 @@ export function CategoryPanel({ category }: PanelProps) {
         className="bg-ink pointer-events-none absolute inset-0 z-20 opacity-0"
       />
 
-      <div className="border-ink/15 text-ink/70 flex items-center justify-between border-b pb-3 text-[0.6rem] tracking-[0.22em] uppercase">
-        <span lang="zh">菜单 · Menu</span>
-        <span className="hidden md:inline">{category.nameEn}</span>
-        <span>
-          {category.index} <span className="text-ink/40">— 04</span>
+      <div className="text-ink relative flex items-center justify-between pb-3">
+        <span className="font-hand-caps flex items-baseline gap-2 text-sm tracking-[0.06em] uppercase">
+          <span lang="zh" className="font-brush text-chili text-lg">
+            菜单
+          </span>
+          Menu
         </span>
+        <span className="font-hand-caps hidden text-sm tracking-[0.06em] uppercase md:inline">
+          {category.nameEn}
+        </span>
+        <span className="font-mono text-xs">
+          {category.index} <span className="text-ink/50">/ 04</span>
+        </span>
+        <HandUnderline
+          seed={Number(category.index) * 11}
+          drawn
+          className="text-ink/30 absolute inset-x-0 bottom-0 h-2"
+        />
       </div>
 
       <div className="relative mt-5 md:min-h-0 md:flex-1">
@@ -115,10 +138,10 @@ export function CategoryPanel({ category }: PanelProps) {
           >
             {category.nameZh}
           </h3>
-          <p className="text-ink mt-3 text-[clamp(1rem,1.5vw,1.5rem)] leading-tight font-black">
+          <p className="font-poster text-ink mt-3 text-[clamp(1.1rem,1.7vw,1.75rem)] leading-tight">
             {category.nameEn}
           </p>
-          <p className="text-ink/70 mt-3 max-w-[22ch] text-xs leading-relaxed">
+          <p className="font-hand text-ink/80 mt-3 max-w-[24ch] text-base leading-snug">
             {category.note}
           </p>
         </header>
@@ -128,6 +151,7 @@ export function CategoryPanel({ category }: PanelProps) {
             <Plate
               key={dish.nameZh}
               dish={dish}
+              index={index}
               className={`hidden md:flex ${layout[index] ?? ""}`}
             />
           ))}
@@ -135,15 +159,20 @@ export function CategoryPanel({ category }: PanelProps) {
           {/* Below the accordion breakpoint the collage becomes a plain grid;
               absolute placement at phone width is unreadable. */}
           <div className="col-span-12 grid grid-cols-2 gap-3 md:hidden">
-            {category.dishes.slice(0, 4).map((dish) => (
-              <Plate key={dish.nameZh} dish={dish} className="aspect-[4/3]" />
+            {category.dishes.slice(0, 4).map((dish, index) => (
+              <Plate
+                key={dish.nameZh}
+                dish={dish}
+                index={index}
+                className="aspect-[4/3]"
+              />
             ))}
           </div>
         </div>
 
         <footer className="mt-6 flex max-w-xs flex-col gap-1 md:absolute md:right-0 md:bottom-0 md:mt-0 md:text-right">
-          <span className="text-ink/70 text-[0.6rem] tracking-[0.22em] uppercase">
-            招牌 · Signature
+          <span className="font-hand-caps text-chili text-sm tracking-[0.06em] uppercase">
+            Signature
           </span>
           {category.signature.map((line) => (
             <span key={line} lang="zh" className="text-ink text-xs">

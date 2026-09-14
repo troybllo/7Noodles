@@ -163,8 +163,8 @@ export function TopNav() {
         {/* The compact bar's surface, faded in once the page has scrolled. */}
         <div
           aria-hidden="true"
-          className={`pointer-events-none absolute inset-0 opacity-0 backdrop-blur-md transition-opacity group-data-[compact=true]/nav:opacity-100 ${SETTLE}`}
-          style={{ background: "var(--bar-surface)", boxShadow: "var(--bar-edge)" }}
+          className={`pointer-events-none absolute inset-0 bg-transparent opacity-0 backdrop-blur-md transition-opacity group-data-[compact=true]/nav:opacity-100 ${SETTLE}`}
+          style={{ boxShadow: "var(--bar-edge)" }}
         />
 
         <div

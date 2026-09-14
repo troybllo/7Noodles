@@ -2,7 +2,7 @@
  * A carved seal mark (印章).
  *
  * Traditional seals print as a red block with the character reversed out of
- * it, which is why the fill is peach and the glyph is rice rather than the
+ * it, which is why the fill is red and the glyph is cream rather than the
  * other way round. Sits slightly off-axis because a hand-pressed seal never
  * lands square.
  */
@@ -16,7 +16,7 @@ export function Seal({
   return (
     <span
       aria-hidden="true"
-      className={`bg-peach text-rice inline-flex size-11 rotate-[-4deg] items-center justify-center rounded-[3px] text-xl leading-none font-medium select-none ${className ?? ""}`}
+      className={`bg-peach text-cream inline-flex size-11 rotate-[-4deg] items-center justify-center rounded-[3px] text-xl leading-none font-medium select-none ${className ?? ""}`}
       lang="zh"
     >
       {character}

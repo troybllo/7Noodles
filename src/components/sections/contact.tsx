@@ -1,12 +1,14 @@
 import Image from "next/image";
-import Link from "next/link";
+import { StampedText } from "@/components/hand/stamped-text";
+import { PaperButton } from "@/components/ui/paper-button";
 import { CONTACT } from "@/content/contact";
 import { PHOTOS } from "@/content/hero";
 
-const PANEL = "rounded-xl border border-rice/10 bg-ink";
+const PANEL = "rounded-xl border border-cream/10 paper-ink";
 
 /**
- * The foot of the page: a dark bento grid, after the client's reference.
+ * Where to find the restaurant: a bento grid on ink paper, after the client's
+ * reference.
  *
  * Every detail comes from content/contact.ts, so this section, the hero card
  * and the structured data cannot disagree. The reference's email and social
@@ -22,7 +24,7 @@ export function Contact() {
       id="contact"
       data-nav-theme="dark"
       aria-labelledby="contact-heading"
-      className="bg-ink-deep text-rice relative z-10 w-full px-3 pt-24 pb-3 md:px-4"
+      className="paper-ink text-cream relative z-10 w-full px-3 pt-24 pb-3 md:px-4"
     >
       <div className="grid gap-3 lg:h-[calc(100svh-7rem)] lg:min-h-[40rem] lg:grid-cols-12 lg:grid-rows-2">
         {/* The large tile. */}
@@ -40,25 +42,25 @@ export function Contact() {
           <div className="from-ink-deep/85 absolute inset-0 bg-gradient-to-t via-transparent to-transparent" />
           <h2
             id="contact-heading"
-            className="font-round text-rice absolute bottom-6 left-6 text-[clamp(3rem,7vw,7rem)] leading-none font-light tracking-[0.08em] md:bottom-8 md:left-8"
+            className="font-poster absolute bottom-6 left-6 text-[clamp(3rem,7vw,7rem)] leading-none uppercase md:bottom-8 md:left-8"
           >
-            CONTACT
+            <StampedText>Find us</StampedText>
           </h2>
         </div>
 
         {/* Opening hours. */}
         <div className={`${PANEL} flex flex-col p-6 lg:col-span-3`}>
-          <h3 className="text-center text-xs font-semibold tracking-[0.3em] uppercase">
+          <h3 className="font-hand-caps text-center text-lg tracking-[0.06em] uppercase">
             Opening hours
           </h3>
           <dl className="mt-6 flex flex-1 flex-col justify-between gap-2 text-sm">
             {CONTACT.hours.map((row) => (
               <div
                 key={row.day}
-                className="border-rice/10 flex items-baseline justify-between border-b border-dashed pb-2 last:border-b-0"
+                className="border-cream/15 flex items-baseline justify-between border-b border-dashed pb-2 last:border-b-0"
               >
-                <dt className="text-rice/70">{row.day}</dt>
-                <dd className="tabular-nums">
+                <dt className="text-cream/75">{row.day}</dt>
+                <dd className="font-mono">
                   {row.open} — {row.close}
                 </dd>
               </div>
@@ -105,38 +107,38 @@ export function Contact() {
             className="absolute inset-0 h-full w-full border-0"
             style={{ filter: "grayscale(1) invert(0.92) contrast(0.9) brightness(0.95)" }}
           />
-          <Link
-            href={CONTACT.map.directionsHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-ink/90 border-rice/15 hover:bg-ink-deep absolute right-3 bottom-3 rounded-full border px-4 py-2 text-xs tracking-[0.18em] uppercase transition-colors"
-          >
-            Get directions
-            <span className="sr-only"> (opens Google Maps in a new tab)</span>
-          </Link>
+          <div className="absolute right-3 bottom-3">
+            <PaperButton href={CONTACT.map.directionsHref} size="sm" external>
+              Get directions
+            </PaperButton>
+          </div>
         </div>
 
         {/* Get in touch. */}
         <div className={`${PANEL} flex flex-col p-6 lg:col-span-3`}>
-          <h3 className="text-center text-xs font-semibold tracking-[0.3em] uppercase">
+          <h3 className="font-hand-caps text-center text-lg tracking-[0.06em] uppercase">
             Get in touch
           </h3>
           <dl className="mt-6 flex flex-col gap-5 text-sm">
             <div className="flex justify-between gap-6">
-              <dt className="text-rice/70 text-xs tracking-[0.2em] uppercase">Address</dt>
+              <dt className="font-hand-caps text-cream/75 text-sm tracking-[0.06em] uppercase">
+                Address
+              </dt>
               <dd className="text-right leading-relaxed">
                 {CONTACT.address.street}
                 <br />
                 {CONTACT.address.locality}, {CONTACT.address.region}
                 <br />
                 {CONTACT.address.postalCode}
-                <span className="text-rice/70 mt-1 block text-xs">
+                <span className="font-hand text-parchment mt-2 block text-base">
                   {CONTACT.address.note}
                 </span>
               </dd>
             </div>
-            <div className="border-rice/10 flex justify-between gap-6 border-t pt-5">
-              <dt className="text-rice/70 text-xs tracking-[0.2em] uppercase">Phone</dt>
+            <div className="border-cream/15 flex justify-between gap-6 border-t border-dashed pt-5">
+              <dt className="font-hand-caps text-cream/75 text-sm tracking-[0.06em] uppercase">
+                Phone
+              </dt>
               <dd>
                 <a
                   href={CONTACT.phone.href}

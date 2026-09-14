@@ -98,13 +98,19 @@ export function ShowcasePanels() {
                     active ? "md:opacity-100 md:delay-150" : "md:opacity-0"
                   }`}
                 >
-                  <span lang="zh" className="text-title leading-none font-medium">
+                  <span lang="zh" className="text-title leading-none font-bold">
                     {dish.nameZh}
                   </span>
-                  <span className="flex flex-col gap-0.5 text-sm">
-                    <span className="font-semibold">{dish.nameEn}</span>
-                    <span className={tone.sub}>{dish.family}</span>
-                    <span className={`${tone.sub} tabular-nums`}>
+                  <span className="flex flex-col gap-1">
+                    <span className="font-poster text-xl leading-tight md:text-2xl">
+                      {dish.nameEn}
+                    </span>
+                    <span
+                      className={`font-hand-caps text-sm tracking-[0.06em] uppercase ${tone.sub}`}
+                    >
+                      {dish.family}
+                    </span>
+                    <span className="font-mono text-base">
                       {formatCad(dish.priceCents)}
                     </span>
                   </span>
@@ -118,7 +124,7 @@ export function ShowcasePanels() {
                 >
                   <span
                     lang="zh"
-                    className="text-lg font-medium tracking-[0.22em] whitespace-nowrap"
+                    className="text-lg font-bold tracking-[0.22em] whitespace-nowrap"
                     style={{ writingMode: "vertical-rl" }}
                   >
                     {dish.nameZh}
