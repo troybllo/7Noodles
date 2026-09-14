@@ -273,3 +273,99 @@
     }
   }
 }
+
+/* =========================================================================
+   Page transitions
+
+   The page being left sinks back into shadow while the new one spreads over
+   it through a growing blot of ink (/brushes/ink-bloom.png), centred on the
+   point the reader pressed (set by InkOrigin, the centre by default). A dish
+   photograph shared by both pages flies to its new place on top.
+
+   The bloom's disc reaches about 34% of the image from its centre. At 420vmax
+   that radius is roughly 143vmax, which clears the viewport's diagonal (at
+   most ~141vmax) from any corner, so the new page is whole when it ends.
+   ======================================================================= */
+
+@property --ink-bloom {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+/* The navigation bar is one fixed reference point: it never sinks or blooms. */
+::view-transition-group(site-nav) {
+  animation: none;
+  z-index: 100;
+}
+::view-transition-old(site-nav) {
+  display: none;
+}
+::view-transition-new(site-nav) {
+  animation: none;
+}
+
+/* Everything outside a page's own content holds still. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+
+::view-transition-old(.ink-out) {
+  animation: ink-sink 900ms cubic-bezier(0.33, 1, 0.68, 1) both;
+  transform-origin: var(--ink-x, 50vw) var(--ink-y, 50vh);
+}
+
+::view-transition-new(.ink-in) {
+  animation: ink-bloom 950ms cubic-bezier(0.55, 0, 0.3, 1) both;
+  mask-image: url(/brushes/ink-bloom.png);
+  mask-repeat: no-repeat;
+  mask-size: var(--ink-bloom) var(--ink-bloom);
+  mask-position: calc(var(--ink-x, 50vw) - var(--ink-bloom) / 2)
+    calc(var(--ink-y, 50vh) - var(--ink-bloom) / 2);
+}
+
+::view-transition-group(.morph) {
+  animation-duration: 700ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+::view-transition-image-pair(.morph) {
+  animation-name: morph-soften;
+  animation-duration: 700ms;
+}
+
+@keyframes ink-sink {
+  to {
+    transform: scale(0.97);
+    filter: brightness(0.5);
+  }
+}
+
+@keyframes ink-bloom {
+  from {
+    --ink-bloom: 0px;
+  }
+  to {
+    --ink-bloom: 420vmax;
+  }
+}
+
+@keyframes morph-soften {
+  35% {
+    filter: blur(2px);
+  }
+}
+
+/* Clicks during the transition reach the live page, not the overlay. */
+::view-transition {
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+}

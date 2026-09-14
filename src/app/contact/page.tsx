@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PageTransition } from "@/components/motion/page-transition";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -8,8 +9,10 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <main id="main" data-nav-theme="light" className="px-6 py-32 md:px-10">
-      <h1 className="text-display font-black">Contact</h1>
-    </main>
+    <PageTransition id="contact">
+      <main id="main" data-nav-theme="light" className="px-6 py-32 md:px-10">
+        <h1 className="text-display font-black">Contact</h1>
+      </main>
+    </PageTransition>
   );
 }

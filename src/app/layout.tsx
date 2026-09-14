@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { clientEnv } from "@/env";
+import { InkOrigin } from "@/components/motion/ink-origin";
 import { SmoothScroll } from "@/components/motion/smooth-scroll";
 import { TopNav } from "@/components/nav/top-nav";
 import { archivo, hanRounded, maShanZheng, quicksand } from "./fonts";
@@ -27,6 +28,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="bg-rice text-ink flex min-h-full flex-col font-sans">
         <SmoothScroll />
+        <InkOrigin />
         <TopNav />
         <div className="flex min-h-full flex-col">{children}</div>
       </body>

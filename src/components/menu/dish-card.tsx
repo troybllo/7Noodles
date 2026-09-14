@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ViewTransition } from "react";
 import { formatCad } from "@/lib/money";
 import type { MenuItem } from "@/lib/menu";
 import { DISH_MEDIA } from "@/content/menu-media";
@@ -27,9 +28,13 @@ export function DishCard({
         href={`/menu/${categorySlug}/${item.slug}`}
         className="group focus-visible:outline-peach-text flex flex-col outline-offset-4"
       >
-        <div data-ink>
-          <DishMedia media={DISH_MEDIA[item.slug]} label={item.nameEn} />
-        </div>
+        {/* Shares its name with the dish page's hero, so the photograph flies
+            into place when the card is opened. */}
+        <ViewTransition name={`dish-${item.slug}`} share="morph" default="none">
+          <div data-ink>
+            <DishMedia media={DISH_MEDIA[item.slug]} label={item.nameEn} />
+          </div>
+        </ViewTransition>
 
         <div className="mt-4 flex items-baseline justify-between gap-4">
           <h3 className="font-round text-ink text-lg leading-snug font-semibold decoration-1 underline-offset-4 group-hover:underline">
