@@ -57,7 +57,7 @@ export function Contact() {
                 key={row.day}
                 className="border-rice/10 flex items-baseline justify-between border-b border-dashed pb-2 last:border-b-0"
               >
-                <dt className="text-agar-glow">{row.day}</dt>
+                <dt className="text-rice/70">{row.day}</dt>
                 <dd className="tabular-nums">
                   {row.open} — {row.close}
                 </dd>
@@ -123,26 +123,24 @@ export function Contact() {
           </h3>
           <dl className="mt-6 flex flex-col gap-5 text-sm">
             <div className="flex justify-between gap-6">
-              <dt className="text-agar-glow text-xs tracking-[0.2em] uppercase">
-                Address
-              </dt>
+              <dt className="text-rice/70 text-xs tracking-[0.2em] uppercase">Address</dt>
               <dd className="text-right leading-relaxed">
                 {CONTACT.address.street}
                 <br />
                 {CONTACT.address.locality}, {CONTACT.address.region}
                 <br />
                 {CONTACT.address.postalCode}
-                <span className="text-agar-glow mt-1 block text-xs">
+                <span className="text-rice/70 mt-1 block text-xs">
                   {CONTACT.address.note}
                 </span>
               </dd>
             </div>
             <div className="border-rice/10 flex justify-between gap-6 border-t pt-5">
-              <dt className="text-agar-glow text-xs tracking-[0.2em] uppercase">Phone</dt>
+              <dt className="text-rice/70 text-xs tracking-[0.2em] uppercase">Phone</dt>
               <dd>
                 <a
                   href={CONTACT.phone.href}
-                  className="hover:text-lantern transition-colors"
+                  className="hover:text-peach-glow transition-colors"
                 >
                   {CONTACT.phone.display}
                 </a>
@@ -151,20 +149,6 @@ export function Contact() {
           </dl>
         </div>
       </div>
-
-      <footer className="text-agar-glow flex flex-wrap items-center justify-between gap-4 px-3 pt-5 pb-2 text-xs">
-        <span>
-          © {new Date().getFullYear()} {CONTACT.name}
-        </span>
-        <nav aria-label="Footer" className="flex gap-6">
-          <Link href="/menu" className="hover:text-rice transition-colors">
-            Menu
-          </Link>
-          <Link href="/order" className="hover:text-rice transition-colors">
-            Order
-          </Link>
-        </nav>
-      </footer>
     </section>
   );
 }

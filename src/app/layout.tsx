@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { clientEnv } from "@/env";
 import { InkOrigin } from "@/components/motion/ink-origin";
 import { SmoothScroll } from "@/components/motion/smooth-scroll";
+import { SiteFooter } from "@/components/nav/site-footer";
 import { TopNav } from "@/components/nav/top-nav";
 import {
   archivo,
@@ -56,6 +57,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <InkOrigin />
         <TopNav />
         <div className="flex min-h-full flex-col">{children}</div>
+        <SiteFooter />
       </body>
     </html>
   );

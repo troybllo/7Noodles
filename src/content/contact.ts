@@ -5,9 +5,9 @@
  * from here, so an address or an opening hour cannot drift between them.
  *
  * Address, phone and hours are the restaurant's own published details, as
- * listed on its previous site and public listings. Email and social handles
- * are deliberately absent: none were found for this restaurant, and they are
- * not ours to invent. Add them here when the owner supplies them.
+ * listed on its previous site and public listings. Email is deliberately absent:
+ * none was found for this restaurant, and it is not ours to invent. Add it here
+ * when the owner supplies it.
  */
 
 const ADDRESS_QUERY = "4664 Yonge St Unit 13, North York, ON M2N 5M1";
@@ -44,5 +44,15 @@ export const CONTACT = {
     embedSrc: `https://maps.google.com/maps?q=${encodeURIComponent(ADDRESS_QUERY)}&z=16&output=embed`,
     /** The documented Maps URLs format; needs no key. */
     directionsHref: `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(ADDRESS_QUERY)}`,
+  },
+  /**
+   * TO CONFIRM WITH THE OWNER. Two public Instagram accounts give this
+   * restaurant's address: @7noodles_qia (used here, named for the brand) and
+   * @qia7noodles. Neither is linked from the restaurant's own site or its BIA
+   * listing, so which one is official has not been verified.
+   */
+  instagram: {
+    handle: "@7noodles_qia",
+    href: "https://www.instagram.com/7noodles_qia/",
   },
 } as const;

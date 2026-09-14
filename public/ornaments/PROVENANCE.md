@@ -8,6 +8,12 @@ from or derived from the reference images, which are stock illustrations.
 |---|---|
 | lantern-a.png | Round red lantern, eight ribs, long tassel |
 | lantern-b.png | Slightly narrower lantern, seven ribs, shorter tassel |
+| lantern-painted.png | Dry-brush red lantern with ink caps and hanging loop |
+
+`lantern-painted.png` is a stand-in, painted in the manner of Troy Bello's own
+lantern painting, which he created and has given permission to use. It is
+replaced by that artwork once it arrives as a file without its poster
+lettering.
 
 Regenerate rather than edit: the seeds are fixed, so the script reproduces
 these files exactly.
