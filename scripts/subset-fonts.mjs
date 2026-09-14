@@ -51,8 +51,9 @@ const FACES = [
      *   恰小面  the restaurant's name, the hero mark
      *   招牌    the showcase eyebrow
      *   麻辣    the story section
+     *   豌杂    the dish named over the hero's bowl
      */
-    glyphs: "恰小面招牌麻辣",
+    glyphs: "恰小面招牌麻辣豌杂",
   },
   {
     family: "Resource Han Rounded CN Bold",
@@ -77,6 +78,26 @@ const FACES = [
      *   and every category name on the menu, derived above
      */
     glyphs: unique(`恰小面菜单${CATEGORY_GLYPHS}`),
+  },
+  {
+    family: "ZCOOL KuaiLe",
+    /**
+     * Handwritten Chinese, for notes and callouts drawn over photographs. SIL
+     * OFL 1.1.
+     *
+     * Taken from the google/fonts repository at a pinned commit and
+     * checksummed: the file Google's CSS API serves for this family is a
+     * partial subset that lacks most of these characters.
+     */
+    source: {
+      url: "https://raw.githubusercontent.com/google/fonts/a606d6f3181c62b792c8c1463d309c6a8abb8a12/ofl/zcoolkuaile/ZCOOLKuaiLe-Regular.ttf",
+      sha256: "812a6fc1fe54b6d73a419245c32dfeba8aa33104d5be90d1cf6af082007cb71d",
+    },
+    file: "zcool-kuaile-subset.woff2",
+    /**
+     *   秘制肉沫 糯糯豌豆  the hero's callouts (src/content/hero.ts)
+     */
+    glyphs: unique("秘制肉沫糯糯豌豆"),
   },
 ];
 

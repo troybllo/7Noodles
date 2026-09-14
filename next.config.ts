@@ -27,6 +27,7 @@ const nextConfig: NextConfig = {
       { pathname: "/brand/**", search: "" },
       { pathname: "/artwork/**", search: "" },
       { pathname: "/ornaments/**", search: "" },
+      { pathname: "/textures/**", search: "" },
     ],
   },
   async headers() {

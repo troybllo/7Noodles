@@ -3,7 +3,17 @@ import { clientEnv } from "@/env";
 import { InkOrigin } from "@/components/motion/ink-origin";
 import { SmoothScroll } from "@/components/motion/smooth-scroll";
 import { TopNav } from "@/components/nav/top-nav";
-import { archivo, hanRounded, maShanZheng, quicksand } from "./fonts";
+import {
+  archivo,
+  courierPrime,
+  fredoka,
+  hanRounded,
+  kalam,
+  maShanZheng,
+  quicksand,
+  titanOne,
+  zcoolKuaiLe,
+} from "./fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -24,7 +34,20 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${archivo.variable} ${maShanZheng.variable} ${quicksand.variable} ${hanRounded.variable} h-full antialiased`}
+      className={[
+        archivo,
+        maShanZheng,
+        quicksand,
+        hanRounded,
+        titanOne,
+        kalam,
+        courierPrime,
+        fredoka,
+        zcoolKuaiLe,
+      ]
+        .map((font) => font.variable)
+        .concat("h-full antialiased")
+        .join(" ")}
     >
       <body className="bg-rice text-ink flex min-h-full flex-col font-sans">
         <SmoothScroll />

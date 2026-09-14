@@ -7,7 +7,13 @@
  * than a second copy of it.
  */
 
-export type Ground = "rice" | "ink";
+/**
+ * Grounds text is checked against. The two paper grounds are measured from the
+ * generated tiles at their worst case for the text they carry: red paper at its
+ * lightest crease (it only carries light text), cream paper at its darkest (it
+ * only carries dark text). See scripts/generate-textures.mjs.
+ */
+export type Ground = "rice" | "ink" | "red-paper" | "cream-paper";
 
 export type Swatch = {
   /** Token name, matching `--color-{token}` and the Tailwind utility. */
@@ -31,9 +37,47 @@ export type SwatchGroup = {
 export const GROUND_HEX: Record<Ground, string> = {
   rice: "#f2eee5",
   ink: "#12100e",
+  "red-paper": "#9a211c",
+  "cream-paper": "#ded5c6",
 };
 
 export const PALETTE: SwatchGroup[] = [
+  {
+    name: "Handmade",
+    note: "The redesign's palette: red paper, cream paper and ink, with red as the only accent. The paper itself is a texture; these are its fallback colours and the colours set on it.",
+    swatches: [
+      {
+        token: "chili",
+        hex: "#8b1f1b",
+        chinese: "辣椒红",
+        english: "Chilli red",
+        usage:
+          "The red paper ground (the tile's median tone), and red type on cream paper.",
+        textOn: ["cream-paper"],
+      },
+      {
+        token: "chili-deep",
+        hex: "#6b1814",
+        english: "Deep chilli",
+        usage: "Pressed states and offset shadows on red paper.",
+        textOn: ["cream-paper"],
+      },
+      {
+        token: "cream",
+        hex: "#f3ead8",
+        english: "Cream",
+        usage: "Type, buttons and brushwork on red paper and on ink.",
+        textOn: ["red-paper", "ink"],
+      },
+      {
+        token: "cream-paper",
+        hex: "#e5ddcb",
+        english: "Cream paper",
+        usage: "The cream paper ground (the tile's median tone).",
+        textOn: [],
+      },
+    ],
+  },
   {
     name: "Ground",
     note: "Structural surfaces. Everything else sits on one of these two.",

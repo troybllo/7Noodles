@@ -1,95 +1,227 @@
-import { PaintButton } from "@/components/ui/paint-button";
-import { CONTACT } from "@/content/contact";
+import Image from "next/image";
+import { ChiliDoodles } from "@/components/hand/chili-doodles";
+import { HandArrow } from "@/components/hand/hand-arrow";
+import { Steam } from "@/components/hand/steam";
+import { PaperButton } from "@/components/ui/paper-button";
 import { HERO } from "@/content/hero";
-import { HeroMarquee } from "./hero-marquee";
-import { HeroMotion } from "./hero-motion";
+import { HeroIntro } from "./hero-intro";
+
+/** A shadow stepped one pixel at a time, so the letters read as stamped in relief. */
+const STAMPED_SHADOW = Array.from(
+  { length: 6 },
+  (_, i) => `-${i + 1}px ${i + 1}px 0 var(--color-ink)`,
+).join(", ");
+
+/** Painted chilli slices scattered around the bowl, in the dish column's own units. */
+const SLICES = [
+  { src: "a", left: "2%", top: "12%", size: "14%", rotate: -18, depth: 0.6, phone: true },
+  { src: "b", left: "84%", top: "2%", size: "12%", rotate: 24, depth: 1.1, phone: false },
+  { src: "c", left: "90%", top: "40%", size: "15%", rotate: 8, depth: 0.8, phone: true },
+  {
+    src: "a",
+    left: "-8%",
+    top: "56%",
+    size: "12%",
+    rotate: 40,
+    depth: 1.2,
+    phone: false,
+  },
+  {
+    src: "b",
+    left: "76%",
+    top: "84%",
+    size: "13%",
+    rotate: -30,
+    depth: 0.7,
+    phone: true,
+  },
+  { src: "c", left: "30%", top: "90%", size: "10%", rotate: 12, depth: 1, phone: false },
+  { src: "a", left: "58%", top: "10%", size: "8%", rotate: 64, depth: 1.3, phone: false },
+] as const;
 
 /**
- * The hero, after the Framer prototype: three rows of dish photography moving
- * in alternating directions behind a centred wordmark.
+ * The hero, after the approved mockup: red crumpled paper, the name in worn
+ * poster lettering with a stamped shadow, a handwritten line, and a bowl cut
+ * out on the paper with hand-drawn notes pointing into it.
  *
- * The text layer ignores the pointer except where it has something to click,
- * so hovering anywhere over the grid still reaches the tiles beneath.
+ * Everything decorative is drawn or generated for the site: the paper, the
+ * chilli doodles and slices, the arrows and the steam. Only the bowl is a
+ * photograph.
  */
 export function Hero() {
+  const { dish } = HERO;
+  // Letters are stamped one at a time, but each word stays on one line.
+  const words = HERO.title.toUpperCase().split(" ");
+  const rimHeight = dish.photo.rim.bottom - dish.photo.rim.top;
+
   return (
-    <HeroMotion>
+    <HeroIntro>
       <section
         id="hero"
-        data-nav-theme="dark"
-        className="bg-ink-deep relative isolate h-svh min-h-[40rem] w-full overflow-hidden"
+        data-nav-theme="red"
+        className="paper-red text-cream relative isolate overflow-hidden"
       >
-        <HeroMarquee />
+        <ChiliDoodles className="text-chili-deep -z-10 opacity-45" />
 
-        {/* The bar sits over the top row; without this its labels vanish
-            against a bright tile. */}
-        <div
-          aria-hidden="true"
-          className="from-ink-deep/85 pointer-events-none absolute inset-x-0 top-0 z-10 h-32 bg-gradient-to-b to-transparent"
-        />
+        <div className="mx-auto grid min-h-[100dvh] max-w-[1400px] items-center gap-y-6 px-6 pt-28 pb-16 md:px-10 lg:grid-cols-[1.05fr_1fr] lg:gap-x-10 lg:pt-24">
+          <div className="relative">
+            <h1 className="font-poster text-[clamp(3rem,7.1vw,7.75rem)] leading-[0.92]">
+              <span className="sr-only">{HERO.title}</span>
+              <span aria-hidden="true" className="flex flex-wrap gap-x-[0.28em]">
+                {words.map((word) => (
+                  <span key={word} className="inline-flex whitespace-nowrap">
+                    {[...word].map((letter, index) => (
+                      <span
+                        // Letters repeat within a word ("OO"), so position is the key.
+                        key={`${word}-${index}`}
+                        data-stamp
+                        className="relative inline-block"
+                      >
+                        {/* The stamped shadow: the letter again in ink, stepped down and left. */}
+                        <span
+                          className="text-ink absolute inset-0"
+                          style={{ textShadow: STAMPED_SHADOW }}
+                        >
+                          {letter}
+                        </span>
+                        <span className="text-cream print-worn relative">{letter}</span>
+                      </span>
+                    ))}
+                  </span>
+                ))}
+              </span>
+            </h1>
 
-        {/* A soft pool of dark behind the type, so it reads over any tile. */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 z-10"
-          style={{
-            background:
-              "radial-gradient(ellipse 55% 45% at 50% 50%, rgba(10,9,8,0.72), rgba(10,9,8,0.15) 70%, transparent)",
-          }}
-        />
+            <p
+              data-rise
+              className="font-hand mt-5 max-w-[30ch] text-[clamp(1.3rem,2.2vw,2.1rem)] leading-snug tracking-[0.04em] text-balance"
+            >
+              {HERO.tagline}
+            </p>
 
-        <div className="pointer-events-none relative z-20 flex h-full flex-col items-center justify-center px-6 text-center">
-          <p
-            data-hero-rise
-            lang="zh"
-            className="font-round-cjk text-rice/90 text-[clamp(1.5rem,2.6vw,2.5rem)] leading-none"
-          >
-            {HERO.nameZh}
-          </p>
+            <div data-rise className="mt-9">
+              <PaperButton href={HERO.action.href}>{HERO.action.label}</PaperButton>
+            </div>
+          </div>
 
-          <h1
-            data-hero-rise
-            className="font-round text-rice mt-4 text-[clamp(2.25rem,7.2vw,7.5rem)] leading-[0.95] font-semibold tracking-[0.14em]"
-          >
-            {HERO.wordmark}
-          </h1>
+          {/* The dish. Positions inside are proportions of this column, so the
+              composition scales as one piece. */}
+          <div className="relative mx-auto aspect-[1/1.05] w-full max-w-[34rem]">
+            <p
+              lang="zh"
+              data-rise
+              className="font-brush absolute inset-x-0 top-0 text-center text-[clamp(3rem,7vw,6rem)] leading-none tracking-[0.5em]"
+              style={{ textShadow: "-3px 3px 0 var(--color-ink)" }}
+            >
+              {dish.nameZh}
+            </p>
 
-          <p
-            data-hero-rise
-            className="text-rice/80 mt-6 max-w-md text-sm leading-relaxed md:text-base"
-          >
-            {HERO.lede}
-          </p>
+            <Steam className="text-cream/45 absolute top-[12%] left-[4%] w-[36%]" />
 
-          <div
-            data-hero-rise
-            className="pointer-events-auto mt-8 flex flex-wrap items-center justify-center gap-6"
-          >
-            {HERO.actions.map((action) => (
-              <PaintButton
-                key={action.href}
-                href={action.href}
-                primary={action.primary}
-                tone="rice"
+            {SLICES.map((slice, index) => (
+              <div
+                key={index}
+                data-parallax={slice.depth}
+                aria-hidden="true"
+                className={`absolute ${slice.phone ? "" : "hidden sm:block"}`}
+                style={{ left: slice.left, top: slice.top, width: slice.size }}
               >
-                {action.label}
-              </PaintButton>
+                <Image
+                  src={`/textures/chili-slice-${slice.src}.webp`}
+                  width={320}
+                  height={320}
+                  alt=""
+                  sizes="80px"
+                  className="animate-drift h-auto w-full"
+                  style={{
+                    rotate: `${slice.rotate}deg`,
+                    animationDelay: `${-index * 1.3}s`,
+                  }}
+                />
+              </div>
             ))}
+
+            {/* The bowl, cut out along its rim and set down on the paper. */}
+            <div
+              data-bowl
+              className="absolute inset-x-[4%] top-[22%] drop-shadow-[0_18px_22px_rgb(40_6_4/0.45)]"
+            >
+              <div
+                className="relative w-full overflow-hidden"
+                style={{
+                  aspectRatio: `1 / ${rimHeight}`,
+                  clipPath: "ellipse(50% 50% at 50% 50%)",
+                }}
+              >
+                <Image
+                  src={dish.photo.src}
+                  alt={dish.photo.alt}
+                  fill
+                  preload
+                  sizes="(min-width: 1024px) 520px, 90vw"
+                  quality={90}
+                  className="object-cover"
+                  style={{
+                    objectPosition: `50% ${(dish.photo.rim.top / (1 - rimHeight)) * 100}%`,
+                  }}
+                />
+              </div>
+            </div>
+
+            <p
+              data-rise
+              className="absolute top-[18%] right-0 w-[32%] text-center leading-tight sm:right-[-2%] sm:w-[26%]"
+            >
+              <span
+                lang="zh"
+                className="font-hand-cjk block text-[clamp(0.95rem,1.4vw,1.25rem)]"
+              >
+                {dish.callouts.upper.zh}
+              </span>
+              <span className="font-hand block text-[clamp(0.7rem,0.95vw,0.85rem)] font-bold tracking-[0.06em] uppercase">
+                {dish.callouts.upper.en}
+              </span>
+            </p>
+            <HandArrow
+              seed={21}
+              size={[90, 80]}
+              points={[
+                [74, 2],
+                [80, 30],
+                [60, 58],
+                [26, 72],
+              ]}
+              className="absolute top-[30%] right-[4%] w-[17%]"
+            />
+
+            <p
+              data-rise
+              className="absolute bottom-[4%] left-0 w-[32%] text-center leading-tight sm:w-[26%]"
+            >
+              <span className="font-hand block text-[clamp(0.7rem,0.95vw,0.85rem)] font-bold tracking-[0.06em] uppercase">
+                {dish.callouts.lower.en}
+              </span>
+              <span
+                lang="zh"
+                className="font-hand-cjk block text-[clamp(0.95rem,1.4vw,1.25rem)]"
+              >
+                {dish.callouts.lower.zh}
+              </span>
+            </p>
+            <HandArrow
+              seed={37}
+              size={[90, 80]}
+              points={[
+                [12, 78],
+                [8, 48],
+                [30, 22],
+                [66, 12],
+              ]}
+              className="absolute bottom-[16%] left-[12%] w-[17%]"
+            />
           </div>
         </div>
-
-        <address
-          data-hero-rise
-          className="bg-ink-deep/85 text-rice/85 absolute bottom-6 left-6 z-20 flex flex-col gap-3 px-5 py-4 text-sm not-italic backdrop-blur-sm md:left-10"
-        >
-          <span>{CONTACT.hoursSummary}</span>
-          <span className="leading-snug">
-            {CONTACT.address.street}
-            <br />
-            {CONTACT.address.locality}, {CONTACT.address.region}
-          </span>
-        </address>
       </section>
-    </HeroMotion>
+    </HeroIntro>
   );
 }

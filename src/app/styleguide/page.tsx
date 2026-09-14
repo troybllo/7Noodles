@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-const GROUNDS: Ground[] = ["rice", "ink"];
+const GROUNDS: Ground[] = ["rice", "ink", "red-paper", "cream-paper"];
 
 function Ratio({ hex, ground }: { hex: string; ground: Ground }) {
   const ratio = contrastRatio(hex, GROUND_HEX[ground]);

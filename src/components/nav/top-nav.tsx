@@ -6,6 +6,7 @@ import { useRef, useState } from "react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGsap } from "@/components/motion/use-gsap";
 import { HOME_SECTIONS } from "@/content/home-sections";
+import { HandUnderline } from "@/components/hand/hand-underline";
 import { NAV_ITEMS } from "./nav-items";
 
 /**
@@ -123,13 +124,13 @@ export function TopNav() {
             which would vanish over the light sections; as a mask it takes
             whatever colour the bar is currently using and inverts with it.
 
-            Shown at 28px from an 85px source, so it is downscaled threefold
-            and stays sharp on high-density screens.
+            Shown at up to 48px from an 85px source, so it stays sharp on
+            high-density screens.
           */}
           <Link href="/" aria-label="Seven Noodles, home" className="block">
             <span
               aria-hidden="true"
-              className="block aspect-[283/85] h-7 transition-colors duration-[--duration-base]"
+              className="block aspect-[283/85] h-9 transition-colors duration-[--duration-base] md:h-12"
               style={{
                 backgroundColor: "var(--bar-label)",
                 maskImage: "url(/brand/logo-horizontal-light.png)",
@@ -143,8 +144,8 @@ export function TopNav() {
           </Link>
 
           <nav aria-label="Primary" className="hidden md:block">
-            <ul className="flex items-center gap-8">
-              {NAV_ITEMS.map((item) => {
+            <ul className="flex items-center gap-9">
+              {NAV_ITEMS.map((item, index) => {
                 const active =
                   item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
 
@@ -153,23 +154,16 @@ export function TopNav() {
                     <Link
                       href={item.href}
                       aria-current={active ? "page" : undefined}
-                      className="flex flex-col leading-tight"
+                      className="group font-nav relative block py-1 text-[1.05rem] font-semibold tracking-[0.04em] uppercase"
+                      style={{ color: "var(--bar-label)" }}
                     >
-                      <span
-                        className="text-xs font-semibold tracking-[0.18em] uppercase"
-                        style={{
-                          color: active ? "var(--bar-accent)" : "var(--bar-label)",
-                        }}
-                      >
-                        {item.label}
-                      </span>
-                      <span
-                        lang="zh"
-                        className="text-[0.7rem]"
-                        style={{ color: "var(--bar-sub)" }}
-                      >
-                        {item.zh}
-                      </span>
+                      {item.label}
+                      {/* Drawn under the current page, and drawn on when hovered. */}
+                      <HandUnderline
+                        seed={index * 13 + 5}
+                        drawn={active}
+                        className="absolute inset-x-0 -bottom-1 h-2"
+                      />
                     </Link>
                   </li>
                 );
@@ -182,7 +176,7 @@ export function TopNav() {
             onClick={() => setOpen((value) => !value)}
             aria-expanded={open}
             aria-controls="mobile-nav"
-            className="text-xs font-semibold tracking-[0.18em] uppercase md:hidden"
+            className="font-nav text-sm font-semibold tracking-[0.06em] uppercase md:hidden"
             style={{ color: "var(--bar-label)" }}
           >
             {open ? "Close" : "Menu"}
@@ -211,17 +205,17 @@ export function TopNav() {
       <div
         id="mobile-nav"
         hidden={!open}
-        className="bg-rice fixed inset-0 z-40 flex flex-col justify-center gap-8 px-8 md:hidden"
+        className="paper-red text-cream fixed inset-0 z-40 flex flex-col justify-center gap-7 px-8 md:hidden"
       >
         {NAV_ITEMS.map((item) => (
           <Link
             key={item.href}
             href={item.href}
             onClick={() => setOpen(false)}
-            className="flex flex-col"
+            className="flex items-baseline gap-4"
           >
-            <span className="text-title text-ink font-black">{item.label}</span>
-            <span lang="zh" className="text-agar-text text-sm">
+            <span className="font-poster text-5xl leading-none">{item.label}</span>
+            <span lang="zh" className="font-hand-cjk text-cream/80 text-xl">
               {item.zh}
             </span>
           </Link>
