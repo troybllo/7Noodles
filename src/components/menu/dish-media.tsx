@@ -50,7 +50,7 @@ export function DishMedia({
 
   return (
     <div
-      className="bg-paper relative aspect-[4/5] overflow-hidden"
+      className="bg-cream-paper relative aspect-[4/5] overflow-hidden"
       onPointerEnter={media?.video ? start : undefined}
       onPointerLeave={media?.video ? stop : undefined}
     >
@@ -66,7 +66,7 @@ export function DishMedia({
             className="object-cover"
           />
         ) : (
-          <PhotoSlot label={label} tone="bg-paper" labelTone="text-ink" />
+          <PhotoSlot label={label} tone="bg-cream-paper" labelTone="text-ink/70" />
         )}
       </div>
 

@@ -114,23 +114,6 @@ const BRUSHES = [
       },
     ],
   },
-  {
-    name: "underline",
-    width: 900,
-    height: 190,
-    strokes: [
-      {
-        curve: [
-          [40, 108],
-          [260, 74],
-          [600, 128],
-          [860, 86],
-        ],
-        w: 78,
-        seed: 61,
-      },
-    ],
-  },
 ];
 
 async function build({ name, width, height, strokes }) {

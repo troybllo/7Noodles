@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { contrastRatio, parseHex } from "@/lib/contrast";
-import { DRAGON_STRENGTH, PANEL_OPACITY } from "./backdrop";
+import { DRAGON_STRENGTH } from "./backdrop";
 import { GROUND_HEX, PALETTE, type Ground } from "./palette";
 
 const css = readFileSync(new URL("../app/globals.css", import.meta.url), "utf8");
@@ -142,20 +142,19 @@ describe("palette accessibility claims", () => {
 
   it("keeps menu text readable over the dragon's darkest strokes", () => {
     /*
-     * The dragon sits behind the menu as a tinted ink layer. Measuring against
-     * the bare ground would miss the worst case: where the ink is fully opaque,
-     * the ground is darkened (or, on the overview, lightened) by the backdrop's
-     * whole strength. Every pairing is checked there.
+     * The dragon sits behind the menu as a wash of ink. Measuring against the
+     * bare paper would miss the worst case: where the ink is fully opaque, the
+     * paper is darkened by the wash's whole strength. Every pairing is checked
+     * there, on each paper at its worst case for the text it carries.
      */
-    const riceUnder = blend("#12100e", DRAGON_STRENGTH.rice, "#f2eee5");
-    const darkUnder = blend("#f2eee5", DRAGON_STRENGTH.dark, "#0a0908");
+    const creamUnder = blend("#12100e", DRAGON_STRENGTH.cream, GROUND_HEX["cream-paper"]);
+    const redUnder = blend("#12100e", DRAGON_STRENGTH.red, GROUND_HEX["red-paper"]);
 
     const pairs: [string, string, string, number][] = [
-      ["dish names, prices and tags", "#12100e", riceUnder, 4.5],
-      ["category title in Chinese, large", "#bd4147", riceUnder, 3],
-      ["overview tabs", "#f2eee5", darkUnder, 4.5],
-      ["overview current tab", "#d9a441", darkUnder, 4.5],
-      ["overview title in Chinese, large", "#d9a441", darkUnder, 3],
+      ["dish names, prices and tags, ink on cream", "#12100e", creamUnder, 4.5],
+      ["category title in Chinese, chilli on cream, large", "#8b1f1b", creamUnder, 3],
+      ["overview headings and counts, cream on red", "#f6f5e9", redUnder, 4.5],
+      ["overview Chinese titles, parchment on red, large", "#e3ccb2", redUnder, 3],
     ];
 
     for (const [name, text, ground, floor] of pairs) {
@@ -164,11 +163,17 @@ describe("palette accessibility claims", () => {
     }
   });
 
-  it("keeps the show dishes panel readable over any photograph", () => {
-    // Worst case: the ink panel over a pure white photograph.
-    const panel = blend("#12100e", PANEL_OPACITY, "#ffffff");
-    const ratio = contrastRatio("#f2eee5", panel);
-    expect(ratio, `panel text is ${ratio.toFixed(2)}:1`).toBeGreaterThanOrEqual(4.5);
+  it("keeps the menu's tabs and show dishes button readable", () => {
+    const pairs: [string, string, string][] = [
+      ["tab, cream on chilli", "#f6f5e9", "#8b1f1b"],
+      ["current tab and show dishes, ink on cream", "#12100e", "#f6f5e9"],
+      ["current tab on cream pages, cream on ink", "#f6f5e9", "#12100e"],
+    ];
+
+    for (const [name, text, ground] of pairs) {
+      const ratio = contrastRatio(text, ground);
+      expect(ratio, `${name} is ${ratio.toFixed(2)}:1`).toBeGreaterThanOrEqual(4.5);
+    }
   });
 
   it("keeps the reference olive out of the palette", () => {

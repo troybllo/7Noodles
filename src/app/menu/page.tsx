@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { StampedText } from "@/components/hand/stamped-text";
 import { CategoryCollage } from "@/components/menu/category-collage";
 import { CategoryTabs } from "@/components/menu/category-tabs";
 import { DragonBackdrop } from "@/components/menu/dragon-backdrop";
@@ -20,26 +21,26 @@ export default function MenuPage() {
     <PageTransition id="menu">
       <main
         id="main"
-        data-nav-theme="dark"
-        className="bg-ink-deep text-rice relative isolate min-h-svh px-6 pt-32 pb-24 md:px-10"
+        data-nav-theme="red"
+        className="paper-red text-cream relative isolate min-h-svh px-6 pt-32 pb-24 md:px-10"
       >
-        <DragonBackdrop tone="dark" />
-        <MenuOrnaments tone="dark" />
+        <DragonBackdrop tone="red" />
+        <MenuOrnaments />
 
         <div className="relative mx-auto max-w-5xl">
-          <CategoryTabs categories={categories} anchors tone="dark" />
+          <CategoryTabs categories={categories} anchors tone="red" />
 
           <header className="mt-14 text-center">
-            <p lang="zh" className="font-round-cjk text-lantern text-3xl leading-none">
+            <p lang="zh" className="font-brush text-parchment text-5xl leading-none">
               菜单
             </p>
-            <h1 className="font-round mt-3 text-[clamp(2.5rem,5vw,4.5rem)] leading-none font-semibold tracking-[0.08em] uppercase">
-              Menu
+            <h1 className="font-poster mt-3 text-[clamp(3rem,7vw,6rem)] leading-none uppercase">
+              <StampedText>Menu</StampedText>
             </h1>
           </header>
 
           <InkRevealGrid className="mt-20 flex flex-col gap-28 md:gap-36">
-            {categories.map((category) => (
+            {categories.map((category, index) => (
               <section
                 key={category.slug}
                 id={category.slug}
@@ -49,22 +50,25 @@ export default function MenuPage() {
                 <header className="mb-10 text-center">
                   <p
                     lang="zh"
-                    className="font-round-cjk text-lantern text-2xl leading-none"
+                    className="font-brush text-parchment text-4xl leading-none"
                   >
                     {category.nameZh}
                   </p>
                   <h2
                     id={`${category.slug}-title`}
-                    className="font-round mt-3 text-[clamp(1.75rem,3.5vw,3rem)] leading-tight font-semibold tracking-[0.06em] uppercase"
+                    className="font-poster mt-3 text-[clamp(1.9rem,3.8vw,3.25rem)] leading-tight uppercase"
                   >
-                    {category.nameEn}
+                    <StampedText>{category.nameEn}</StampedText>
                   </h2>
-                  <p className="text-rice mt-2 text-sm">
+                  <p className="font-hand text-cream mt-2 text-xl">
                     {category.itemCount} {category.itemCount === 1 ? "dish" : "dishes"}
                   </p>
                 </header>
 
-                <CategoryCollage category={category} />
+                <CategoryCollage
+                  category={category}
+                  tilt={index % 2 === 0 ? -1.2 : 1.2}
+                />
               </section>
             ))}
           </InkRevealGrid>

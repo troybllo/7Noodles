@@ -22,7 +22,7 @@ type PhotoSlotProps = {
 export function PhotoSlot({
   label,
   tone = "bg-ink-soft",
-  labelTone = "text-agar-glow",
+  labelTone = "text-cream/60",
   compact = false,
   className,
 }: PhotoSlotProps) {

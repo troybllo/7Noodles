@@ -11,7 +11,7 @@ type CategoryTabsProps = {
    * in turn.
    */
   anchors?: boolean;
-  tone: "light" | "dark";
+  tone: "red" | "cream";
 };
 
 /**
@@ -32,16 +32,14 @@ export function CategoryTabs({
 }: CategoryTabsProps) {
   // Every tab carries its own solid ground. The lanterns and the plum branch
   // can pass behind the row, and text on a pill never depends on what is behind.
+  // Paper pills. Every tab carries its own solid ground, so the lanterns and
+  // the plum branch can pass behind the row without touching its text.
   const base =
-    tone === "dark"
-      ? "border-rice/25 bg-ink-deep text-rice hover:border-rice/60"
-      : "border-ink/20 bg-rice text-ink hover:border-ink/60";
-  // On the light pages the current tab is a filled pill rather than peach text:
-  // small peach text measured 3.76:1 over the dragon's darkest strokes.
+    tone === "red"
+      ? "border-cream/45 bg-chili text-cream hover:border-cream"
+      : "border-ink/25 bg-cream text-ink hover:border-ink";
   const current =
-    tone === "dark"
-      ? "border-lantern bg-ink-deep text-lantern"
-      : "border-ink bg-ink text-rice";
+    tone === "red" ? "border-cream bg-cream text-ink" : "border-ink bg-ink text-cream";
 
   return (
     <nav
@@ -51,12 +49,15 @@ export function CategoryTabs({
       <ul className="flex w-max gap-2 md:w-auto md:flex-wrap md:justify-center">
         {categories.map((category) => {
           const isActive = category.slug === active;
-          const pill = `flex items-baseline gap-2 border px-4 py-2 text-xs tracking-[0.12em] whitespace-nowrap uppercase transition-colors duration-[--duration-fast] ${
+          const pill = `font-nav flex items-baseline gap-2 rounded-full border-2 px-4 py-2 text-sm font-bold whitespace-nowrap uppercase transition-colors duration-[--duration-fast] ${
             isActive ? current : base
           }`;
           const label = (
             <>
-              <span lang="zh" className="font-round-cjk tracking-normal">
+              <span
+                lang="zh"
+                className="font-brush text-base tracking-normal normal-case"
+              >
                 {category.nameZh}
               </span>
               <span>{category.nameEn}</span>

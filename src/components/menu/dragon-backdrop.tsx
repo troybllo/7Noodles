@@ -7,9 +7,8 @@ import { DRAGON_STRENGTH } from "@/design/backdrop";
  * Soga Nichokuan's Dragon, as a layer of ink behind the menu.
  *
  * The file is a transparent ink extraction of the painting, used as a mask and
- * filled with a token colour — black paint on the rice pages, pale ink on the
- * dark overview — so one asset serves both grounds. Provenance in
- * public/artwork/PROVENANCE.md.
+ * filled with ink, so it reads as a faint wash of ink on the red or cream
+ * paper beneath. Provenance in public/artwork/PROVENANCE.md.
  *
  * Sits at -z-10, so its page must establish a stacking context (`isolate`);
  * without one the layer drops behind the page background entirely.
@@ -17,7 +16,7 @@ import { DRAGON_STRENGTH } from "@/design/backdrop";
  * It drifts a little against the scroll so it reads as a layer behind the page
  * rather than a pattern printed on it. Under reduced motion it simply stays put.
  */
-export function DragonBackdrop({ tone }: { tone: "rice" | "dark" }) {
+export function DragonBackdrop({ tone }: { tone: "cream" | "red" }) {
   const scope = useGsap<HTMLDivElement>(({ gsap, scope: element }) => {
     gsap.fromTo(
       element.firstElementChild,
@@ -42,7 +41,7 @@ export function DragonBackdrop({ tone }: { tone: "rice" | "dark" }) {
       <div
         className="absolute inset-x-0 top-[6%] mx-auto aspect-[2000/833] w-[min(140%,110rem)] max-w-none"
         style={{
-          backgroundColor: tone === "rice" ? "var(--color-ink)" : "var(--color-rice)",
+          backgroundColor: "var(--color-ink)",
           opacity: DRAGON_STRENGTH[tone],
           maskImage: "url(/artwork/soga-nichokuan-dragon-ink.webp)",
           WebkitMaskImage: "url(/artwork/soga-nichokuan-dragon-ink.webp)",

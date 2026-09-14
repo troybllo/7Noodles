@@ -1,15 +1,8 @@
 /**
- * How strongly the dragon backdrop shows behind the menu, per ground.
+ * How strongly the dragon shows behind the menu, as an ink wash, per paper.
  *
  * Kept in a plain module, not the component, so the contrast tests read the
  * real values. Raise either and palette.test.ts checks that text over the
  * dragon's darkest strokes still reads.
  */
-export const DRAGON_STRENGTH = { rice: 0.09, dark: 0.11 } as const;
-
-/**
- * Opacity of the ink panel that invites a click over menu photographs ("Show
- * dishes"). The contrast tests check its text over a pure white photograph, the
- * worst a picture behind it can be.
- */
-export const PANEL_OPACITY = 0.7;
+export const DRAGON_STRENGTH = { cream: 0.09, red: 0.14 } as const;

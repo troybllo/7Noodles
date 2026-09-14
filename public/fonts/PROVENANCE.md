@@ -11,19 +11,15 @@ below before it ships.
 | Face | Ma Shan Zheng, by Ma Shan Zheng |
 | Source | Google Fonts, pinned v18 |
 | Licence | SIL Open Font License 1.1 |
-| Used for | Brush lettering: the hero's 恰小面, the showcase eyebrow and the story section |
+| Used for | Brush lettering: 豌杂, section marks and the menu's category names |
 
-## resource-han-rounded-subset.woff2
+## zhi-mang-xing-subset.woff2
 
 | | |
 |---|---|
-| Face | Resource Han Rounded CN, Bold, by Cyano Hao |
-| Source | https://github.com/CyanoHao/Resource-Han-Rounded, release v0.990, checksummed |
-| Licence | SIL Open Font License 1.1. Copyright © 2018–2022 Cyano Hao; portions © 2014–2021 Adobe, with Reserved Font Name "Source" |
-| Used for | Rounded 恰小面 beside the wordmark, the menu title and category names |
-
-Chosen over M PLUS Rounded 1c, which matches the logo as closely but is a
-Japanese face: it has no glyphs for simplified forms such as 单, 乐 and 汤, so
-those characters were being set in the system face mid-word.
+| Face | Zhi Mang Xing, by the Zhi Mang Xing Project Authors |
+| Source | google/fonts repository at a pinned commit, checksummed |
+| Licence | SIL Open Font License 1.1 |
+| Used for | Handwritten Chinese in the hero's notes |
 
 Both licences permit embedding and subsetting for commercial web use.

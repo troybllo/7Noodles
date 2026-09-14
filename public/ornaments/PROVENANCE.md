@@ -6,8 +6,6 @@ from or derived from the reference images, which are stock illustrations.
 
 | File | What it is |
 |---|---|
-| lantern-a.png | Round red lantern, eight ribs, long tassel |
-| lantern-b.png | Slightly narrower lantern, seven ribs, shorter tassel |
 | lantern-painted.png | Dry-brush red lantern with ink caps and hanging loop |
 
 `lantern-painted.png` is a stand-in, painted in the manner of Troy Bello's own

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { HandUnderline } from "@/components/hand/hand-underline";
 import { ViewTransition } from "react";
 import { formatCad } from "@/lib/money";
 import type { MenuItem } from "@/lib/menu";
@@ -26,21 +27,28 @@ export function DishCard({
     <article>
       <Link
         href={`/menu/${categorySlug}/${item.slug}`}
-        className="group focus-visible:outline-peach-text flex flex-col outline-offset-4"
+        className="group focus-visible:outline-ink flex flex-col outline-offset-4"
       >
         {/* Shares its name with the dish page's hero, so the photograph flies
             into place when the card is opened. */}
         <ViewTransition name={`dish-${item.slug}`} share="morph" default="none">
-          <div data-ink>
+          <div
+            data-ink
+            className="bg-cream p-[0.4rem] shadow-[0_0.3rem_0.8rem_rgb(40_20_10/0.18)] transition-transform duration-[--duration-slow] ease-[--ease-out-expo] group-hover:-translate-y-1 group-hover:-rotate-1"
+          >
             <DishMedia media={DISH_MEDIA[item.slug]} label={item.nameEn} />
           </div>
         </ViewTransition>
 
         <div className="mt-4 flex items-baseline justify-between gap-4">
-          <h3 className="font-round text-ink text-lg leading-snug font-semibold decoration-1 underline-offset-4 group-hover:underline">
+          <h3 className="font-nav text-ink relative text-lg leading-snug font-bold">
             {item.nameEn}
+            <HandUnderline
+              seed={item.nameEn.length * 3}
+              className="text-chili absolute inset-x-0 -bottom-1 h-2"
+            />
           </h3>
-          <p className="font-round text-ink shrink-0 text-lg font-semibold tabular-nums">
+          <p className="text-ink shrink-0 font-mono text-lg">
             {formatCad(item.priceCents)}
           </p>
         </div>
@@ -50,7 +58,7 @@ export function DishCard({
 
         {/* The hairline and its height stay even when a dish has no tags, so every
             card in a row lines up. */}
-        <div className="border-ink/15 mt-4 min-h-10 border-t pt-3">
+        <div className="border-ink/20 mt-4 min-h-10 border-t border-dashed pt-3">
           <DishTags item={item} />
         </div>
       </Link>

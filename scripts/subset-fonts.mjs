@@ -8,7 +8,7 @@
  *
  * Run with `pnpm fonts`. The output is committed, so a clean checkout builds
  * without reaching the network — CI never depends on a font host being up.
- * Faces shipped as a 7z archive are unpacked with bsdtar (libarchive), which
+ * Faces shipped in an archive are unpacked with bsdtar (libarchive), which
  * macOS includes; on Linux install libarchive-tools.
  *
  * When Chinese copy is added, add its characters to the face's glyphs and
@@ -59,30 +59,6 @@ const FACES = [
     glyphs: unique(
       `恰小面招牌麻辣鲜香豌杂菜单川味品牌故事食客白墨纸红${CATEGORY_GLYPHS}`,
     ),
-  },
-  {
-    family: "Resource Han Rounded CN Bold",
-    /**
-     * The closest free match for the rounded monoline 恰小面 in the client's
-     * logo that covers Simplified Chinese. A Japanese rounded face looks the
-     * part but lacks simplified forms such as 单, 乐 and 汤, which would fall
-     * back to the system face mid-word.
-     *
-     * SIL OFL 1.1. Pinned to a release and checksummed, because the archive is
-     * a GitHub release asset rather than an immutable font URL.
-     */
-    source: {
-      url: "https://github.com/CyanoHao/Resource-Han-Rounded/releases/download/v0.990/RHR-CN-0.990.7z",
-      sha256: "e7005f7b4a7a0b8352d32c4a1358ff47564eb73be7fdb2db00d9f792755e9dc7",
-      entry: "ResourceHanRoundedCN-Bold.ttf",
-    },
-    file: "resource-han-rounded-subset.woff2",
-    /**
-     *   恰小面  the restaurant's name, as it sits over the hero
-     *   菜单    the menu page title
-     *   and every category name on the menu, derived above
-     */
-    glyphs: unique(`恰小面菜单${CATEGORY_GLYPHS}`),
   },
   {
     family: "Zhi Mang Xing",

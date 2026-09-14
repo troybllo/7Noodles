@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { StampedText } from "@/components/hand/stamped-text";
 import { CategoryTabs } from "@/components/menu/category-tabs";
 import { DishCard } from "@/components/menu/dish-card";
 import { DragonBackdrop } from "@/components/menu/dragon-backdrop";
@@ -38,26 +39,28 @@ export default async function CategoryPage({ params }: PageProps<"/menu/[categor
       <main
         id="main"
         data-nav-theme="light"
-        className="bg-rice text-ink relative isolate min-h-svh px-6 pt-32 pb-28 md:px-10"
+        className="paper-cream text-ink relative isolate min-h-svh px-6 pt-32 pb-28 md:px-10"
       >
-        <DragonBackdrop tone="rice" />
-        <MenuOrnaments tone="rice" />
+        <DragonBackdrop tone="cream" />
+        <MenuOrnaments />
 
         <div className="relative mx-auto max-w-[1400px]">
           <CategoryTabs
             categories={getCategories()}
             active={category.slug}
-            tone="light"
+            tone="cream"
           />
 
           <header className="mx-auto mt-14 max-w-2xl text-center">
-            <p lang="zh" className="font-round-cjk text-peach-text text-3xl leading-none">
+            <p lang="zh" className="font-brush text-chili text-5xl leading-none">
               {category.nameZh}
             </p>
-            <h1 className="font-round mt-3 text-[clamp(2.25rem,4.5vw,4rem)] leading-tight font-semibold">
-              {category.nameEn}
+            <h1 className="font-poster mt-3 text-[clamp(2.5rem,5vw,4.5rem)] leading-tight uppercase">
+              <StampedText tone="text-ink" shadow="text-chili">
+                {category.nameEn}
+              </StampedText>
             </h1>
-            <p className="text-ink mt-3 text-sm">
+            <p className="font-hand text-ink mt-3 text-xl">
               {category.itemCount} {category.itemCount === 1 ? "dish" : "dishes"}
             </p>
           </header>

@@ -5,7 +5,7 @@ import { useGsap } from "@/components/motion/use-gsap";
 
 type BrushFrameProps = {
   /** Name of a mask in public/brushes, without the extension. */
-  brush: "story-right" | "story-left" | "underline";
+  brush: "story-right" | "story-left";
   children: ReactNode;
   className?: string;
   /** Seconds to wait before the stroke is painted on. */

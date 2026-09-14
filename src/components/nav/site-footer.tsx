@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
+import { PaintedLantern } from "@/components/brand/painted-lantern";
 import { HandUnderline } from "@/components/hand/hand-underline";
 import { CONTACT } from "@/content/contact";
 
@@ -46,30 +46,6 @@ const REACH = [
   { icon: "pin", label: "Directions on Google Maps", href: CONTACT.map.directionsHref },
 ] as const;
 
-/** A lantern on its thread, swinging gently from the top of its box. */
-function Lantern({ mirrored, className }: { mirrored?: boolean; className?: string }) {
-  return (
-    <div aria-hidden="true" className={`pointer-events-none ${className ?? ""}`}>
-      <div
-        className="animate-lantern-sway origin-top"
-        style={{
-          animationDuration: mirrored ? "8.2s" : "7s",
-          animationDelay: mirrored ? "-2.6s" : "0s",
-        }}
-      >
-        <Image
-          src="/ornaments/lantern-painted.png"
-          width={700}
-          height={875}
-          alt=""
-          sizes="(min-width: 1024px) 18rem, 7rem"
-          className={`h-auto w-full ${mirrored ? "-scale-x-100" : ""}`}
-        />
-      </div>
-    </div>
-  );
-}
-
 function FooterLink({ href, children }: { href: string; children: string }) {
   return (
     <Link href={href} className="group relative inline-block py-1">
@@ -113,10 +89,13 @@ export function SiteFooter() {
         </div>
 
         <div className="relative grid items-center lg:grid-cols-[1fr_minmax(0,34rem)_1fr]">
-          <Lantern className="hidden w-[min(18rem,100%)] justify-self-start lg:block" />
+          <PaintedLantern
+            sizes="18rem"
+            className="hidden w-[min(18rem,100%)] justify-self-start lg:block"
+          />
 
           <div className="flex flex-col items-center text-center">
-            <Lantern className="mb-4 w-24 lg:hidden" />
+            <PaintedLantern sizes="6rem" className="mb-4 w-24 lg:hidden" />
             <Link href="/" aria-label="Seven Noodles, home">
               <span
                 aria-hidden="true"
@@ -143,8 +122,11 @@ export function SiteFooter() {
             </address>
           </div>
 
-          <Lantern
+          <PaintedLantern
             mirrored
+            sway={8.2}
+            offset={2.6}
+            sizes="18rem"
             className="hidden w-[min(18rem,100%)] justify-self-end lg:block"
           />
         </div>

@@ -3,7 +3,6 @@ import {
   Fredoka,
   Gochi_Hand,
   Kalam,
-  Quicksand,
   Roboto_Mono,
   Rubik,
 } from "next/font/google";
@@ -37,32 +36,6 @@ export const maShanZheng = localFont({
   variable: "--font-brush-face",
   display: "block",
   weight: "400",
-  style: "normal",
-});
-
-/**
- * The wordmark face. The client's logo sets SEVEN NOODLES in a wide, rounded
- * geometric sans; Quicksand was the closest free match when set against it,
- * with the same soft terminals and near-circular O. It does not reproduce the
- * logo's rounded E, which appears to be custom lettering.
- */
-export const quicksand = Quicksand({
-  variable: "--font-quicksand",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-/**
- * Rounded Chinese, for 恰小面 where it sits beside the Quicksand wordmark, and
- * for the menu's titles. The brush face reads as a different brand next to it.
- * Subset to the glyphs the site sets; add characters in
- * scripts/subset-fonts.mjs first, which refuses any the face lacks.
- */
-export const hanRounded = localFont({
-  src: "../../public/fonts/resource-han-rounded-subset.woff2",
-  variable: "--font-round-cjk-face",
-  display: "block",
-  weight: "700",
   style: "normal",
 });
 

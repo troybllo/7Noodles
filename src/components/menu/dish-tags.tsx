@@ -2,7 +2,7 @@ import type { MenuItem } from "@/lib/menu";
 
 function Chilli() {
   return (
-    <svg aria-hidden="true" viewBox="0 0 16 16" className="fill-peach-text size-3.5">
+    <svg aria-hidden="true" viewBox="0 0 16 16" className="fill-chili size-4">
       <path d="M11.6 1.2c-.5-.3-1.1-.1-1.4.4-.2.4-.1.9.2 1.2-2.6.3-4.4 2.6-5.3 5.3C4.3 10.6 2.8 12.3.9 13.2c-.4.2-.4.8 0 1 3.9 1.9 9.4.2 11.4-4.6.9-2.1.8-4.2-.2-5.8.6-.3.9-1 .6-1.6-.2-.4-.6-.7-1.1-1z" />
     </svg>
   );
@@ -38,7 +38,7 @@ export function DishTags({ item, className }: { item: MenuItem; className?: stri
               <Chilli key={i} />
             ))}
           </span>
-          <span className="text-ink">
+          <span className="font-hand-caps text-ink text-[1.15em] tracking-[0.04em] uppercase">
             {item.spiceLevel >= 3 ? "Very spicy" : "Spicy"}
           </span>
         </span>
@@ -46,7 +46,7 @@ export function DishTags({ item, className }: { item: MenuItem; className?: stri
       {tags.map((tag) => (
         <span
           key={tag}
-          className="text-ink border-ink/25 border px-2 py-0.5 tracking-[0.08em] uppercase"
+          className="font-hand-caps text-ink border-ink/40 rounded-full border px-2.5 py-0.5 text-[1.1em] tracking-[0.04em] uppercase"
         >
           {TAG_LABEL[tag]}
         </span>
