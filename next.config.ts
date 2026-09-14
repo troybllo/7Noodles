@@ -20,11 +20,13 @@ const nextConfig: NextConfig = {
     // Required from Next.js 16. Without an allowlist the optimiser will encode
     // any quality a URL asks for, which is free work for anyone scripting it.
     qualities: [75, 90],
-    // Only our own photography and brand assets are optimised. Omitting
+    // Only our own photography, brand assets, artwork and ornaments are optimised. Omitting
     // `search` would let arbitrary query strings mint new cached variants.
     localPatterns: [
       { pathname: "/photos/**", search: "" },
       { pathname: "/brand/**", search: "" },
+      { pathname: "/artwork/**", search: "" },
+      { pathname: "/ornaments/**", search: "" },
     ],
   },
   async headers() {

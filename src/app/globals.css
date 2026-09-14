@@ -124,6 +124,42 @@
     }
   }
 
+  /* Hanging lanterns. The sway starts and ends at rest, so under reduced
+     motion, where the global rule below cuts every animation to one instant
+     iteration, a lantern simply hangs straight. Each lantern sets its own
+     duration and delay inline so a row never swings in step. */
+  --animate-lantern-sway: lantern-sway 7s ease-in-out infinite;
+  --animate-lantern-glow: lantern-glow 5s ease-in-out infinite;
+
+  @keyframes lantern-sway {
+    0%,
+    100% {
+      transform: rotate(0deg);
+    }
+    25% {
+      transform: rotate(1.8deg);
+    }
+    75% {
+      transform: rotate(-1.8deg);
+    }
+  }
+
+  @keyframes lantern-glow {
+    0%,
+    100% {
+      opacity: 0.8;
+    }
+    40% {
+      opacity: 1;
+    }
+    55% {
+      opacity: 0.88;
+    }
+    70% {
+      opacity: 0.97;
+    }
+  }
+
   --duration-fast: 160ms;
   --duration-base: 320ms;
   --duration-slow: 640ms;

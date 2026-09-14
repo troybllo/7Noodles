@@ -20,7 +20,8 @@
     "test:watch": "vitest",
     "verify": "pnpm typecheck && pnpm lint && pnpm format:check && pnpm test",
     "fonts": "node scripts/subset-fonts.mjs",
-    "brushes": "node scripts/generate-brushes.mjs"
+    "brushes": "node scripts/generate-brushes.mjs",
+    "ornaments": "node scripts/generate-ornaments.mjs"
   },
   "dependencies": {
     "gsap": "^3.15.0",
