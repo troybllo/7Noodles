@@ -5,8 +5,8 @@ type PhotoSlotProps = {
   tone?: string;
   /** Label colour, for grounds the default would disappear against. */
   labelTone?: string;
-  /** Where the label sits, for frames that set their own text along the bottom. */
-  labelPosition?: "top" | "bottom";
+  /** For small frames: the label is left off below the `sm` breakpoint. */
+  compact?: boolean;
   className?: string;
 };
 
@@ -23,18 +23,20 @@ export function PhotoSlot({
   label,
   tone = "bg-ink-soft",
   labelTone = "text-agar-glow",
-  labelPosition = "bottom",
+  compact = false,
   className,
 }: PhotoSlotProps) {
   return (
     <div
-      className={`relative flex h-full w-full ${labelPosition === "top" ? "items-start" : "items-end"} ${tone} ${className ?? ""}`}
+      className={`relative flex h-full w-full items-end ${tone} ${className ?? ""}`}
       style={{
         backgroundImage:
           "repeating-linear-gradient(135deg, transparent 0 14px, rgba(242,238,229,0.035) 14px 28px)",
       }}
     >
-      <p className={`${labelTone} p-4 text-[0.65rem] tracking-[0.18em] uppercase`}>
+      <p
+        className={`${labelTone} ${compact ? "hidden sm:block" : ""} p-4 text-[0.65rem] tracking-[0.18em] uppercase`}
+      >
         {label}
       </p>
     </div>

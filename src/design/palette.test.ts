@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { contrastRatio, parseHex } from "@/lib/contrast";
-import { DRAGON_STRENGTH, TILE_SCRIM } from "./backdrop";
+import { DRAGON_STRENGTH, PANEL_OPACITY } from "./backdrop";
 import { GROUND_HEX, PALETTE, type Ground } from "./palette";
 
 const css = readFileSync(new URL("../app/globals.css", import.meta.url), "utf8");
@@ -191,19 +191,11 @@ describe("palette accessibility claims", () => {
     }
   });
 
-  it("keeps category names readable on their photographs", () => {
-    // Worst case: the scrim over a pure white cover, at the height of the name.
-    const underName = blend("#0a0908", TILE_SCRIM.underText, "#ffffff");
-
-    const pairs: [string, string, number][] = [
-      ["English name and dish count, rice", "#f2eee5", 4.5],
-      ["Chinese name, lantern, large and bold", "#d9a441", 3],
-    ];
-
-    for (const [name, text, floor] of pairs) {
-      const ratio = contrastRatio(text, underName);
-      expect(ratio, `${name} is ${ratio.toFixed(2)}:1`).toBeGreaterThanOrEqual(floor);
-    }
+  it("keeps the show dishes panel readable over any photograph", () => {
+    // Worst case: the ink panel over a pure white photograph.
+    const panel = blend("#12100e", PANEL_OPACITY, "#ffffff");
+    const ratio = contrastRatio("#f2eee5", panel);
+    expect(ratio, `panel text is ${ratio.toFixed(2)}:1`).toBeGreaterThanOrEqual(4.5);
   });
 
   it("keeps the reference olive out of the palette", () => {

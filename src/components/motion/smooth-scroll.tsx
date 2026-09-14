@@ -24,6 +24,9 @@ export function SmoothScroll() {
 
     const lenis = new Lenis({
       duration: 1.05,
+      // In-page links (the menu's category tabs) glide rather than jump, and
+      // stop clear of the fixed navigation bar.
+      anchors: { offset: -112 },
       // Slightly overshoot-free exponential glide; matches --ease-out-expo.
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     });

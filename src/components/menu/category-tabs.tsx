@@ -5,6 +5,12 @@ type CategoryTabsProps = {
   categories: MenuCategory[];
   /** Slug of the category being viewed, if any. */
   active?: string;
+  /**
+   * Link to sections on the current page (`#slug`) rather than to each
+   * category's own page. Used on the overview, where every category is set out
+   * in turn.
+   */
+  anchors?: boolean;
   tone: "light" | "dark";
 };
 
@@ -13,11 +19,17 @@ type CategoryTabsProps = {
  *
  * These are links, not client-side tab state: each category is its own page
  * with its own address, so it can be shared, bookmarked and indexed. The
- * current one carries aria-current rather than only a highlight.
+ * current one carries aria-current rather than only a highlight. On the
+ * overview they jump to that category's section instead.
  *
  * On narrow screens the row scrolls sideways instead of wrapping into a block.
  */
-export function CategoryTabs({ categories, active, tone }: CategoryTabsProps) {
+export function CategoryTabs({
+  categories,
+  active,
+  anchors = false,
+  tone,
+}: CategoryTabsProps) {
   // Every tab carries its own solid ground. The lanterns and the plum branch
   // can pass behind the row, and text on a pill never depends on what is behind.
   const base =
@@ -39,20 +51,35 @@ export function CategoryTabs({ categories, active, tone }: CategoryTabsProps) {
       <ul className="flex w-max gap-2 md:w-auto md:flex-wrap md:justify-center">
         {categories.map((category) => {
           const isActive = category.slug === active;
+          const pill = `flex items-baseline gap-2 border px-4 py-2 text-xs tracking-[0.12em] whitespace-nowrap uppercase transition-colors duration-[--duration-fast] ${
+            isActive ? current : base
+          }`;
+          const label = (
+            <>
+              <span lang="zh" className="font-round-cjk tracking-normal">
+                {category.nameZh}
+              </span>
+              <span>{category.nameEn}</span>
+            </>
+          );
+
           return (
             <li key={category.slug}>
-              <Link
-                href={`/menu/${category.slug}`}
-                aria-current={isActive ? "page" : undefined}
-                className={`flex items-baseline gap-2 border px-4 py-2 text-xs tracking-[0.12em] whitespace-nowrap uppercase transition-colors duration-[--duration-fast] ${
-                  isActive ? current : base
-                }`}
-              >
-                <span lang="zh" className="font-round-cjk tracking-normal">
-                  {category.nameZh}
-                </span>
-                <span>{category.nameEn}</span>
-              </Link>
+              {anchors ? (
+                // A plain anchor, not a router link: this stays on the page, and
+                // smooth scrolling takes it from here.
+                <a href={`#${category.slug}`} className={pill}>
+                  {label}
+                </a>
+              ) : (
+                <Link
+                  href={`/menu/${category.slug}`}
+                  aria-current={isActive ? "page" : undefined}
+                  className={pill}
+                >
+                  {label}
+                </Link>
+              )}
             </li>
           );
         })}

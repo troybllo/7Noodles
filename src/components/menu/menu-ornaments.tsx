@@ -12,8 +12,8 @@ const FADE = "linear-gradient(to bottom, #000 62%, transparent)";
  * the navigation bar, and only the small logo sits there. On rice they hang
  * unlit, where a glow would only muddy the paper.
  *
- * The layer is confined to the page's head and faded out before the dishes
- * begin, so no name or price is ever set over a blossom. Lanterns only appear
+ * The layer is confined to the page's head and faded out before the content
+ * below it begins, so no heading, name or price is ever set over a blossom. Lanterns only appear
  * where the margins are wide enough to hold them clear of the title; the
  * branch stays at every width, scaled so it stays outside a title held to
  * max-w-2xl.
@@ -27,7 +27,7 @@ export function MenuOrnaments({ tone }: { tone: "dark" | "rice" }) {
   return (
     <div
       aria-hidden="true"
-      className={`pointer-events-none absolute inset-x-0 top-0 overflow-hidden ${lit ? "h-[46rem]" : "h-[30rem]"}`}
+      className="pointer-events-none absolute inset-x-0 top-0 h-[30rem] overflow-hidden"
       style={{ maskImage: FADE, WebkitMaskImage: FADE }}
     >
       <HangingLantern
