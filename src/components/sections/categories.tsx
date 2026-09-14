@@ -15,7 +15,7 @@ export function Categories() {
     <section
       id="categories"
       data-nav-theme="light"
-      className="bg-rice relative z-10 w-full"
+      className="paper-cream relative z-10 w-full"
     >
       <h2 className="sr-only">What we cook</h2>
       <CategoriesTrack>

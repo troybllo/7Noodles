@@ -6,14 +6,14 @@ function Stars({ rating }: { rating: number }) {
     <span
       role="img"
       aria-label={`Rated ${rating} out of 5`}
-      className="text-peach flex gap-1"
+      className="text-chili flex gap-1"
     >
       {Array.from({ length: 5 }, (_, i) => (
         <svg
           key={i}
           aria-hidden="true"
           viewBox="0 0 20 20"
-          className={`size-4 ${i < rating ? "fill-current" : "fill-paper"}`}
+          className={`size-4 ${i < rating ? "fill-current" : "fill-ink/15"}`}
         >
           <path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 14.9l-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z" />
         </svg>
@@ -32,7 +32,7 @@ function Stars({ rating }: { rating: number }) {
  */
 function Card({ review }: { review: Review }) {
   return (
-    <li className="bg-rice-dim flex h-[25rem] w-[22rem] shrink-0 flex-col items-center justify-between px-8 py-9 text-center">
+    <li className="bg-cream flex h-[25rem] w-[22rem] shrink-0 flex-col items-center justify-between px-8 py-9 text-center">
       <p className="text-ink my-auto text-[0.95rem] leading-relaxed font-semibold">
         {review.text}
       </p>
@@ -66,11 +66,11 @@ export function Reviews() {
     <section
       id="reviews"
       data-nav-theme="light"
-      className="bg-rice relative z-10 w-full py-24 md:py-32"
+      className="paper-cream relative z-10 w-full py-24 md:py-32"
     >
       <div className="px-6 md:px-10">
         <div className="mx-auto max-w-[1700px]">
-          <p className="text-peach-text text-xs font-semibold tracking-[0.22em] uppercase">
+          <p className="text-chili text-xs font-semibold tracking-[0.22em] uppercase">
             <span lang="zh">食客</span> · Reviews
           </p>
           <h2 className="font-round text-ink mt-4 max-w-2xl text-[clamp(2rem,4vw,3.75rem)] leading-[1.05] font-semibold">

@@ -27,7 +27,7 @@ export function Story() {
         <div className="lg:col-span-7">
           <div className="flex items-center gap-4">
             <Seal character={STORY.sealCharacter} />
-            <span lang="zh" className="text-lantern font-brush text-2xl md:text-3xl">
+            <span lang="zh" className="text-peach-glow font-brush text-2xl md:text-3xl">
               {STORY.vertical}
             </span>
           </div>
@@ -43,7 +43,7 @@ export function Story() {
               <ScrollRevealText
                 key={line}
                 text={line}
-                className="text-agar-glow text-base leading-relaxed md:text-lg"
+                className="text-rice/70 text-base leading-relaxed md:text-lg"
               />
             ))}
           </div>
@@ -62,7 +62,7 @@ export function Story() {
           >
             <PhotoSlot
               label={STORY.photos.primary}
-              tone="bg-agar/40"
+              tone="bg-ink-soft"
               labelTone="text-rice/70"
             />
           </BrushFrame>
@@ -74,7 +74,7 @@ export function Story() {
           >
             <PhotoSlot
               label={STORY.photos.secondary}
-              tone="bg-agar/40"
+              tone="bg-ink-soft"
               labelTone="text-rice/70"
             />
           </BrushFrame>

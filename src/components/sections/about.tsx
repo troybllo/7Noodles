@@ -26,7 +26,7 @@ export function About() {
         <p
           aria-hidden="true"
           lang="zh"
-          className="text-agar-glow/50 absolute top-24 left-4 z-10 hidden text-xs tracking-[0.4em] xl:block"
+          className="text-rice/40 absolute top-24 left-4 z-10 hidden text-xs tracking-[0.4em] xl:block"
           style={{ writingMode: "vertical-rl" }}
         >
           {ABOUT.vertical}
@@ -48,17 +48,17 @@ export function About() {
       {/* Brand history. */}
       <div
         data-nav-theme="light"
-        className="bg-rice text-ink px-6 py-16 md:px-10 md:py-20"
+        className="paper-cream text-ink px-6 py-16 md:px-10 md:py-20"
       >
         <div className="mx-auto grid max-w-[1700px] gap-10 lg:grid-cols-12 lg:gap-x-16">
           <div className="lg:sticky lg:top-28 lg:col-span-5 lg:self-start">
-            <p lang="zh" className="font-brush text-peach-text text-4xl leading-none">
+            <p lang="zh" className="font-brush text-chili text-4xl leading-none">
               {ABOUT.headingZh}
             </p>
             <h2 className="mt-4 text-[clamp(2.25rem,4.5vw,4.25rem)] leading-[1.02] font-black">
               {ABOUT.heading}
             </h2>
-            <p className="text-agar-text mt-6 max-w-sm text-base leading-relaxed">
+            <p className="text-ink/70 mt-6 max-w-sm text-base leading-relaxed">
               {ABOUT.lede}
             </p>
           </div>
@@ -72,7 +72,7 @@ export function About() {
                 >
                   {entry.title}
                 </h3>
-                <p className="text-agar-text text-sm leading-relaxed">{entry.body}</p>
+                <p className="text-ink/70 text-sm leading-relaxed">{entry.body}</p>
               </div>
             ))}
           </div>
@@ -82,16 +82,16 @@ export function About() {
               <h3 className="text-[0.68rem] font-semibold tracking-[0.22em] uppercase">
                 {ABOUT.aside.room.title}
               </h3>
-              <p className="text-agar-text text-sm leading-relaxed">
+              <p className="text-ink/70 text-sm leading-relaxed">
                 {ABOUT.aside.room.body}
               </p>
             </div>
 
-            <figure className="border-paper flex flex-col gap-4 border-t pt-8">
+            <figure className="border-ink/15 flex flex-col gap-4 border-t pt-8">
               <blockquote className="text-ink text-lg leading-snug font-semibold">
                 “{ABOUT.aside.quote.text}”
               </blockquote>
-              <figcaption className="text-agar-text text-xs tracking-[0.16em] uppercase">
+              <figcaption className="text-ink/70 text-xs tracking-[0.16em] uppercase">
                 {ABOUT.aside.quote.author} · {ABOUT.aside.quote.date}
               </figcaption>
             </figure>

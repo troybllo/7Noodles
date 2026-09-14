@@ -19,7 +19,7 @@ export function Showcase() {
       <ShowcasePanels />
 
       <div className="pointer-events-none absolute top-24 left-6 z-10 md:left-10">
-        <p lang="zh" className="text-lantern font-brush text-2xl">
+        <p lang="zh" className="text-peach-glow font-brush text-2xl">
           招牌
         </p>
         <h2 className="text-rice mt-1 text-sm font-semibold tracking-[0.2em] uppercase">

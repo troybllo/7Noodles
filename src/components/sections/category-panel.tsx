@@ -26,13 +26,18 @@ function Plate({
   return (
     <figure className={`flex flex-col gap-2 ${className ?? ""}`}>
       <div className="min-h-0 flex-1">
-        <PhotoSlot label={dish.shot} tone="bg-paper" labelTone="text-agar-text" compact />
+        <PhotoSlot
+          label={dish.shot}
+          tone="bg-ink/[0.07]"
+          labelTone="text-ink/60"
+          compact
+        />
       </div>
       <figcaption className="flex flex-col leading-tight">
         <span lang="zh" className="text-ink text-[0.7rem]">
           {dish.nameZh}
         </span>
-        <span className="text-agar-text text-[0.62rem] tracking-[0.1em] uppercase">
+        <span className="text-ink/70 text-[0.62rem] tracking-[0.1em] uppercase">
           {dish.nameEn}
         </span>
       </figcaption>
@@ -85,7 +90,7 @@ export function CategoryPanel({ category }: PanelProps) {
   return (
     <section
       aria-labelledby={`category-${category.slug}`}
-      className="bg-rice relative flex w-[86%] shrink-0 snap-start flex-col px-6 pt-20 pb-12 first:ml-0 md:h-svh md:w-full md:px-10 md:pt-28 md:pb-8"
+      className="paper-cream relative flex w-[86%] shrink-0 snap-start flex-col px-6 pt-20 pb-12 first:ml-0 md:h-svh md:w-full md:px-10 md:pt-28 md:pb-8"
     >
       <div
         data-panel-dim
@@ -93,11 +98,11 @@ export function CategoryPanel({ category }: PanelProps) {
         className="bg-ink pointer-events-none absolute inset-0 z-20 opacity-0"
       />
 
-      <div className="border-paper text-agar-text flex items-center justify-between border-b pb-3 text-[0.6rem] tracking-[0.22em] uppercase">
+      <div className="border-ink/15 text-ink/70 flex items-center justify-between border-b pb-3 text-[0.6rem] tracking-[0.22em] uppercase">
         <span lang="zh">菜单 · Menu</span>
         <span className="hidden md:inline">{category.nameEn}</span>
         <span>
-          {category.index} <span className="text-paper">— 04</span>
+          {category.index} <span className="text-ink/40">— 04</span>
         </span>
       </div>
 
@@ -106,14 +111,14 @@ export function CategoryPanel({ category }: PanelProps) {
           <h3
             id={`category-${category.slug}`}
             lang="zh"
-            className="font-brush text-ink text-[clamp(2rem,4vw,3.75rem)] leading-none"
+            className="font-brush text-chili text-[clamp(2rem,4vw,3.75rem)] leading-none"
           >
             {category.nameZh}
           </h3>
           <p className="text-ink mt-3 text-[clamp(1rem,1.5vw,1.5rem)] leading-tight font-black">
             {category.nameEn}
           </p>
-          <p className="text-agar-text mt-3 max-w-[22ch] text-xs leading-relaxed">
+          <p className="text-ink/70 mt-3 max-w-[22ch] text-xs leading-relaxed">
             {category.note}
           </p>
         </header>
@@ -137,7 +142,7 @@ export function CategoryPanel({ category }: PanelProps) {
         </div>
 
         <footer className="mt-6 flex max-w-xs flex-col gap-1 md:absolute md:right-0 md:bottom-0 md:mt-0 md:text-right">
-          <span className="text-agar-text text-[0.6rem] tracking-[0.22em] uppercase">
+          <span className="text-ink/70 text-[0.6rem] tracking-[0.22em] uppercase">
             招牌 · Signature
           </span>
           {category.signature.map((line) => (

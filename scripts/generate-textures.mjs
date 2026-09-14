@@ -207,7 +207,8 @@ await paper(normals, {
 await paper(normals, {
   name: "paper-cream",
   base: [243, 234, 216],
-  relief: 0.9,
+  // Cream carries long reading passages, so its creases stay faint.
+  relief: 0.32,
   grainFloor: 0.88,
   flecks: 0,
 });

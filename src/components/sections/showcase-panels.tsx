@@ -14,27 +14,31 @@ const HOLD = 1.1;
 /** How long that hand-over takes. */
 const SETTLE = 1.3;
 
+/**
+ * The three grounds of the black, white and red palette: ink, red paper and
+ * cream paper, each with the text set on it and the tone of its placeholder.
+ */
 const GROUND: Record<
   ShowcaseDish["ground"],
   { panel: string; text: string; sub: string; shade: string }
 > = {
-  pine: {
-    panel: "bg-pine",
-    text: "text-ink",
+  ink: {
+    panel: "bg-ink",
+    text: "text-rice",
     sub: "text-rice/75",
-    shade: "bg-pine-shade",
+    shade: "bg-ink-soft",
   },
-  peach: {
-    panel: "bg-peach-deep",
-    text: "text-ink",
-    sub: "text-rice/75",
-    shade: "bg-peach-shade",
+  chili: {
+    panel: "paper-red",
+    text: "text-cream",
+    sub: "text-cream/80",
+    shade: "bg-chili-deep",
   },
-  rice: {
-    panel: "bg-rice",
+  cream: {
+    panel: "paper-cream",
     text: "text-ink",
-    sub: "text-agar-text",
-    shade: "bg-rice-shade",
+    sub: "text-ink/70",
+    shade: "bg-cream-paper",
   },
 };
 
@@ -87,7 +91,7 @@ export function ShowcasePanels() {
               </span>
 
               <span
-                className={`relative block flex-1 overflow-hidden text-black ${tone.panel} ${tone.text}`}
+                className={`relative block flex-1 overflow-hidden ${tone.panel} ${tone.text}`}
               >
                 <span
                   className={`absolute inset-y-0 left-0 flex w-full flex-col justify-end gap-3 p-7 transition-opacity duration-[--duration-base] md:w-[66.6cqw] ${

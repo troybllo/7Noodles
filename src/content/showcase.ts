@@ -17,7 +17,7 @@ export type ShowcaseDish = {
   family: string;
   priceCents: number;
   /** Which panel ground this dish sits on. */
-  ground: "pine" | "peach" | "rice";
+  ground: "ink" | "chili" | "cream";
   /** What the photograph in this panel should be. */
   shot: string;
 };
@@ -29,7 +29,7 @@ export const SHOWCASE: ShowcaseDish[] = [
     nameEn: "Signature Wanza Noodles",
     family: "Dry Noodles",
     priceCents: 1600,
-    ground: "pine",
+    ground: "ink",
     shot: "Wanza noodles, overhead, chopsticks lifting",
   },
   {
@@ -38,7 +38,7 @@ export const SHOWCASE: ShowcaseDish[] = [
     nameEn: "Wonton in Red Chili Oil",
     family: "Wonton",
     priceCents: 1400,
-    ground: "peach",
+    ground: "chili",
     shot: "Wontons in red oil, close, three-quarter",
   },
   {
@@ -47,7 +47,7 @@ export const SHOWCASE: ShowcaseDish[] = [
     nameEn: "Beef Skewers",
     family: "Crispy Fried Skewer",
     priceCents: 650,
-    ground: "rice",
+    ground: "cream",
     shot: "Beef skewers in hand, against dark",
   },
 ];

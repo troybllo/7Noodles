@@ -6,15 +6,12 @@ import { PALETTE } from "@/design/palette";
  * The palette, set as a brand-book spread.
  *
  * Every value is read from src/design/palette.ts, so the band cannot drift
- * from the tokens the site actually ships. These five are the colours the
- * client's reference named — the palette was derived from that image in the
- * first place, so they match it exactly rather than approximately.
+ * from the tokens the site actually ships. Since the handmade redesign the
+ * landing page is black, white and red, so these are those colours: cream
+ * (白), ink (墨), cream paper (纸), and the two reds of the chilli paper.
  *
- * On legibility: 绿沉 and 沉香 sit mid-luminance and carry no small text at
- * all. The best available is ink-deep at 4.48 and 4.46, and even pure black
- * reaches only 4.73 and 4.71. The blocks therefore stay exactly as referenced
- * and the code lines are set at the large-text threshold, where 3:1 applies
- * and ink-deep clears with room. The deviation is type size, not colour.
+ * The code lines stay at the large-text threshold, a size that reads as a
+ * brand book rather than fine print.
  */
 
 const SWATCHES = PALETTE.flatMap((group) => group.swatches);
@@ -52,7 +49,7 @@ function Block({ token, name, tone, className }: BlockProps) {
 
   return (
     <div
-      className={`flex flex-col justify-between p-5 text-black md:p-7 ${text} ${className ?? ""}`}
+      className={`flex flex-col justify-between p-5 md:p-7 ${text} ${className ?? ""}`}
       style={{ backgroundColor: hex }}
     >
       {name ? (
@@ -91,23 +88,20 @@ function Block({ token, name, tone, className }: BlockProps) {
 }
 
 /**
- * The reference's arrangement: the two light neutrals down the left, tall
- * photographs breaking the run, the two mid-tones, and 桃红 closing the
- * bottom right. Deliberately uneven — a palette laid on an even grid reads as
- * a swatch chart rather than a spread.
- *
- * Four columns by three rows, the last row shorter, so every colour has a
- * place. An earlier version used two rows and left 桃红 with nowhere to go.
+ * Four columns by three rows, the last row shorter: cream and ink tall in the
+ * first two rows with photographs between them, then cream paper, deep red and
+ * a wide red closing the bottom right. Deliberately uneven — a palette laid on
+ * an even grid reads as a swatch chart rather than a spread.
  */
 export function PaletteMosaic() {
   return (
     <section
       aria-label="Colour palette"
       data-nav-theme="light"
-      className="grid w-full grid-cols-2 text-black md:h-[78svh] md:grid-cols-4 md:grid-rows-[1fr_1fr_0.6fr]"
+      className="grid w-full grid-cols-2 md:h-[78svh] md:grid-cols-4 md:grid-rows-[1fr_1fr_0.6fr]"
     >
       <Block
-        token="rice-dim"
+        token="cream"
         name="白"
         tone="ink"
         className="md:col-start-1 md:row-span-2 md:row-start-1 md:pt-28"
@@ -118,9 +112,9 @@ export function PaletteMosaic() {
       </div>
 
       <Block
-        token="agar"
-        name="沉香"
-        tone="ink"
+        token="ink"
+        name="墨"
+        tone="rice"
         className="md:col-start-3 md:row-span-2 md:row-start-1 md:pt-28"
       />
 
@@ -128,19 +122,19 @@ export function PaletteMosaic() {
         <PhotoSlot label="Room at night, warm slats, banquette" tone="bg-ink" />
       </div>
 
-      <Block token="paper" tone="ink" className="md:col-start-1 md:row-start-3" />
-
       <Block
-        token="pine-deep"
-        name="绿沉"
+        token="cream-paper"
+        name="纸"
         tone="ink"
-        className="text-black md:col-start-2 md:row-start-3"
+        className="md:col-start-1 md:row-start-3"
       />
 
+      <Block token="chili-deep" tone="rice" className="md:col-start-2 md:row-start-3" />
+
       <Block
-        token="peach"
-        name="桃红"
-        tone="ink"
+        token="chili"
+        name="红"
+        tone="rice"
         className="col-span-2 md:col-span-2 md:col-start-3 md:row-start-3"
       />
     </section>

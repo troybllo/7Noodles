@@ -69,32 +69,23 @@ describe("palette accessibility claims", () => {
     expect(lantern?.textOn).toEqual(["ink"]);
   });
 
-  it("holds the showcase panels at the large-text threshold", () => {
-    /*
-     * The showcase sets dark text on its coloured panels. The dish names are
-     * display type and clear 3:1 comfortably; the smaller lines beneath them —
-     * English name, family, price — do not reach 4.5 on the two coloured
-     * panels:
-     *
-     *   風入松 #736E3E   ink 3.64   rice at 75% 3.30
-     *   桃紅   #B12959   ink 3.01   rice at 75% 3.69
-     *
-     * That is a deliberate design direction, recorded here as it ships rather
-     * than as it once was. Everything still holds 3:1, which is the floor this
-     * test guards; if a panel is retuned and drops below it, this fails.
-     */
-    const rice75 = (ground: string) => blend("#f2eee5", 0.75, ground);
-    const panels: [string, string, string][] = [
-      ["風入松 ink", "#736e3e", "#12100e"],
-      ["桃紅 ink", "#b12959", "#12100e"],
-      ["風入松 rice/75", "#736e3e", rice75("#736e3e")],
-      ["桃紅 rice/75", "#b12959", rice75("#b12959")],
-      ["白 ink", "#f2eee5", "#12100e"],
+  it("holds the showcase panels at body-text contrast", () => {
+    // Black, white and red: each panel's name and its smaller lines, the
+    // paper grounds taken at their worst case for the text they carry.
+    const redPaper = GROUND_HEX["red-paper"];
+    const creamPaper = GROUND_HEX["cream-paper"];
+    const pairs: [string, string, string][] = [
+      ["ink panel, rice", "#f2eee5", "#12100e"],
+      ["ink panel, rice at 75%", blend("#f2eee5", 0.75, "#12100e"), "#12100e"],
+      ["red panel, cream", "#f6f5e9", redPaper],
+      ["red panel, cream at 80%", blend("#f6f5e9", 0.8, redPaper), redPaper],
+      ["cream panel, ink", "#12100e", creamPaper],
+      ["cream panel, ink at 70%", blend("#12100e", 0.7, creamPaper), creamPaper],
     ];
 
-    for (const [name, ground, text] of panels) {
+    for (const [name, text, ground] of pairs) {
       const ratio = contrastRatio(text, ground);
-      expect(ratio, `${name} is ${ratio.toFixed(2)}:1`).toBeGreaterThanOrEqual(3);
+      expect(ratio, `${name} is ${ratio.toFixed(2)}:1`).toBeGreaterThanOrEqual(4.5);
     }
   });
 
@@ -105,59 +96,41 @@ describe("palette accessibility claims", () => {
     expect(contrastRatio(GROUND_HEX.rice, "#72511e")).toBeGreaterThanOrEqual(4.5);
   });
 
-  it("documents why the mosaic code lines are set large", () => {
-    /*
-     * The mosaic sets each block's colour values on the block itself. Two of
-     * those grounds are mid-luminance, and our warm near-black falls just
-     * short of small-text contrast on both:
-     *
-     *   绿沉 #76796E  ink-deep 4.48   pure black 4.73
-     *   沉香 #897367  ink-deep 4.46   pure black 4.71
-     *
-     * Pure black would clear 4.5, but only by a hair, and it means an
-     * off-palette neutral on a deliberately warm system for a margin of about
-     * 0.2. The lines are set at the large-text threshold instead, where
-     * ink-deep clears 3:1 comfortably and the type is more legible than the
-     * reference's fine print would have been.
-     *
-     * If a block is ever retuned, this is where the trade-off resurfaces.
-     */
-    const midTone = [
-      ["绿沉", "#76796e"],
-      ["沉香", "#897367"],
-    ] as const;
-
-    for (const [name, ground] of midTone) {
-      const warm = contrastRatio("#0a0908", ground);
-      expect(warm, `${name} with ink-deep`).toBeLessThan(4.5);
-      expect(warm, `${name} must still clear large text`).toBeGreaterThanOrEqual(3);
-    }
-  });
-
   it("holds every mosaic block against the tone set on it", () => {
-    // Large text, so 3:1. Dark text on every block, as the mosaic now ships.
+    // Large text, so 3:1 is the floor; every block clears body text anyway.
     const blocks: [string, string, string][] = [
-      ["白 rice-dim", "#e7e7dc", "#0a0908"],
-      ["paper", "#dad6cb", "#0a0908"],
-      ["绿沉 pine-deep", "#76796e", "#000000"],
-      ["沉香 agar", "#897367", "#000000"],
-      ["桃红 peach", "#c14a50", "#000000"],
+      ["白 cream", "#f6f5e9", "#0a0908"],
+      ["墨 ink", "#12100e", "#f2eee5"],
+      ["纸 cream paper", "#e5ddcb", "#0a0908"],
+      ["deep chilli", "#6b1814", "#f2eee5"],
+      ["红 chilli", "#8b1f1b", "#f2eee5"],
     ];
 
     for (const [name, ground, text] of blocks) {
       const ratio = contrastRatio(text, ground);
-      expect(ratio, `${name} is ${ratio.toFixed(2)}:1`).toBeGreaterThanOrEqual(3);
+      expect(ratio, `${name} is ${ratio.toFixed(2)}:1`).toBeGreaterThanOrEqual(4.5);
     }
   });
 
   it("holds the reviews and contact sections at body-text contrast", () => {
     const pairs: [string, string, string, number][] = [
-      ["review text, ink on card", "#12100e", "#e7e7dc", 4.5],
-      ["reviews eyebrow, peach-text on rice", "#bd4147", "#f2eee5", 4.5],
+      ["review text, ink on cream card", "#12100e", "#f6f5e9", 4.5],
+      [
+        "reviews eyebrow, chilli on cream paper",
+        "#8b1f1b",
+        GROUND_HEX["cream-paper"],
+        4.5,
+      ],
       // Stars are graphics, not text: WCAG 1.4.11 asks 3:1.
-      ["review stars, peach on card", "#c14a50", "#e7e7dc", 3],
+      ["review stars, chilli on cream card", "#8b1f1b", "#f6f5e9", 3],
       ["contact detail, rice on panel", "#f2eee5", "#12100e", 4.5],
-      ["contact labels, agar-glow on panel", "#8d776a", "#12100e", 4.5],
+      [
+        "contact labels, rice at 70% on panel",
+        blend("#f2eee5", 0.7, "#12100e"),
+        "#12100e",
+        4.5,
+      ],
+      ["story and showcase marks, peach-glow on ink", "#c6595e", "#0a0908", 4.5],
       ["story call to action, rice on ink-deep", "#f2eee5", "#0a0908", 4.5],
     ];
 
