@@ -2,8 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import { useGsap } from "@/components/motion/use-gsap";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { HandUnderline } from "@/components/hand/hand-underline";
 import { isCurrent, NAV_ITEMS, type NavItem } from "./nav-items";
 
@@ -25,52 +24,93 @@ function Chevron({ open }: { open: boolean }) {
   );
 }
 
-const LABEL =
-  "font-nav relative flex items-center gap-[0.6em] font-bold uppercase [text-shadow:0_0.08em_0.12em_rgb(40_6_4/0.55)]";
+/** How far the page scrolls before the large bar settles into the compact one. */
+const COMPACT_AFTER = 48;
+
+/** Where, from the top of the viewport, the bar reads the section beneath it. */
+const PROBE_Y = 40;
+
+const subscribeToScroll = (onChange: () => void) => {
+  window.addEventListener("scroll", onChange, { passive: true });
+  return () => window.removeEventListener("scroll", onChange);
+};
+
+/** Whether the page has scrolled past the top. False on the server. */
+function useScrolled(): boolean {
+  return useSyncExternalStore(
+    subscribeToScroll,
+    () => window.scrollY > COMPACT_AFTER,
+    () => false,
+  );
+}
+
+/** Eases every size and position change between the large and compact bar. */
+const SETTLE = "duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]";
+
+const LABEL = `font-nav relative flex items-center gap-[0.6em] font-bold uppercase [text-shadow:var(--bar-label-shadow)]`;
 
 /**
- * The site's navigation bar, after the approved hero mockup.
+ * The site's navigation bar.
  *
- * On large screens it is laid out in the same design units as the hero
- * (`--u`, one pixel of the 1074 x 600 mockup), so the logo and every label sit
- * exactly where the mockup puts them at any width. Below that, it becomes a
- * logo and a Menu button opening a full-screen menu on red paper.
+ * At the top of the home page it is large and laid out exactly as the approved
+ * hero mockup, in the same design units as the hero (`--u`, one pixel of the
+ * 1074 x 600 mockup), sitting straight on the red paper. Once the reader
+ * scrolls, or on any other page, it settles into a compact bar: the logo
+ * shrinks to the left, the links gather to the right, and a surface slides in
+ * behind them.
  *
- * Items with children open a small menu: on hover for a mouse, on click or
- * Enter for everyone, closing on Escape, on a click elsewhere, or when a link
- * is followed.
+ * Colour follows whatever is under the bar. On every scroll it looks at the
+ * page beneath its own position and takes the nearest `data-nav-theme`
+ * (red, dark or light), which sets the label colour and the compact surface.
+ * Nested themes work, so a light block inside a dark section reads as light.
  *
- * Colour comes from the `[data-bar]` custom properties, which flip as each
- * section declaring `data-nav-theme` passes the middle of the viewport.
+ * Below `lg` it is a logo and a Menu button opening a full-screen menu.
+ * Items with children open a small menu on hover or click, closing on Escape,
+ * on a press elsewhere, or when a link is followed.
  */
 export function TopNav() {
   const pathname = usePathname();
+  const scrolled = useScrolled();
+  const compact = pathname !== "/" || scrolled;
+
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const header = useRef<HTMLElement>(null);
   const bar = useRef<HTMLDivElement>(null);
 
-  const scope = useGsap<HTMLElement>(
-    ({ gsap, scope: header }) => {
-      for (const section of document.querySelectorAll<HTMLElement>("[data-nav-theme]")) {
-        const theme = section.dataset.navTheme ?? "light";
-        const apply = () => header.setAttribute("data-bar", theme);
+  // Read the theme of whatever sits beneath the bar, now and on every scroll,
+  // resize and navigation.
+  useEffect(() => {
+    let frame = 0;
 
-        gsap.timeline({
-          scrollTrigger: {
-            trigger: section,
-            start: "top 50%",
-            end: "bottom 50%",
-            onEnter: apply,
-            onEnterBack: apply,
-          },
-        });
+    const probe = () => {
+      frame = 0;
+      const element = header.current;
+      if (!element) return;
+
+      const y = Math.min(PROBE_Y, window.innerHeight - 1);
+      for (const hit of document.elementsFromPoint(window.innerWidth / 2, y)) {
+        if (element.contains(hit)) continue;
+        const theme = hit.closest<HTMLElement>("[data-nav-theme]")?.dataset.navTheme;
+        if (theme) {
+          element.setAttribute("data-bar", theme);
+          return;
+        }
       }
-    },
-    // Re-run on every navigation: the bar stays mounted across client-side
-    // route changes, and triggers built for one page's sections would keep
-    // reading the previous page's elements.
-    [pathname],
-  );
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(probe);
+    };
+
+    schedule();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+    };
+  }, [pathname]);
 
   // While a menu is open, Escape or a press outside the bar closes it.
   useEffect(() => {
@@ -113,32 +153,40 @@ export function TopNav() {
       </a>
 
       <header
-        ref={scope}
+        ref={header}
         data-bar="light"
-        className="frame-stage fixed inset-x-0 top-0 z-50"
+        data-compact={compact}
+        className="frame-stage group/nav fixed inset-x-0 top-0 z-50"
         // Named so page transitions leave the bar in place; see globals.css.
         style={{ viewTransitionName: "site-nav" }}
       >
+        {/* The compact bar's surface, faded in once the page has scrolled. */}
+        <div
+          aria-hidden="true"
+          className={`pointer-events-none absolute inset-0 opacity-0 backdrop-blur-md transition-opacity group-data-[compact=true]/nav:opacity-100 ${SETTLE}`}
+          style={{ background: "var(--bar-surface)", boxShadow: "var(--bar-edge)" }}
+        />
+
         <div
           ref={bar}
           data-nav-bar
-          className="frame relative mx-auto flex items-center justify-between px-6 py-4 lg:block lg:h-[calc(var(--u)*90)] lg:w-[calc(var(--u)*1074)] lg:p-0"
+          className={`frame relative mx-auto flex h-20 items-center justify-between px-6 transition-[height] group-data-[compact=true]/nav:h-14 lg:block lg:h-[calc(var(--u)*90)] lg:w-[calc(var(--u)*1074)] lg:px-0 lg:group-data-[compact=true]/nav:h-16 ${SETTLE}`}
         >
           {/*
-            The client's logo, used as a mask and filled with the bar's own
-            label colour, so it inverts with the bar over light sections.
-            The file's artwork sits inside a small margin, so the box is placed
-            to land the drawn logo on the mockup's 211 x 52 at (69, 35).
+            The client's logo, used as a mask and filled with the bar's label
+            colour, so it inverts with the bar. Large, the box is placed so the
+            drawn logo lands on the mockup's 211 x 52 at (69, 35); compact, it
+            sits in the bar's left margin.
           */}
           <Link
             href="/"
             aria-label="Seven Noodles, home"
             onClick={closeAll}
-            className="block lg:absolute lg:top-[calc(var(--u)*26.5)] lg:left-[calc(var(--u)*58.7)]"
+            className={`block transition-[left,top] lg:absolute lg:top-[calc(var(--u)*26.5)] lg:left-[calc(var(--u)*58.7)] lg:group-data-[compact=true]/nav:top-3 lg:group-data-[compact=true]/nav:left-[calc(var(--u)*40)] ${SETTLE}`}
           >
             <span
               aria-hidden="true"
-              className="block aspect-[283/85] h-11 transition-colors duration-[--duration-base] lg:h-[calc(var(--u)*69.2)]"
+              className={`block aspect-[283/85] h-11 transition-[height] group-data-[compact=true]/nav:h-9 lg:h-[calc(var(--u)*69.2)] lg:group-data-[compact=true]/nav:h-10 ${SETTLE}`}
               style={{
                 backgroundColor: "var(--bar-label)",
                 maskImage: "url(/brand/logo-horizontal-light.png)",
@@ -153,13 +201,22 @@ export function TopNav() {
 
           <nav
             aria-label="Primary"
-            className="hidden lg:absolute lg:top-[calc(var(--u)*43)] lg:left-[calc(var(--u)*365)] lg:block"
+            className={`hidden transition-[left,top,translate] lg:absolute lg:top-[calc(var(--u)*43)] lg:left-[calc(var(--u)*365)] lg:block lg:group-data-[compact=true]/nav:top-1/2 lg:group-data-[compact=true]/nav:left-[calc(100%-var(--u)*40)] lg:group-data-[compact=true]/nav:-translate-x-full lg:group-data-[compact=true]/nav:-translate-y-1/2 ${SETTLE}`}
           >
-            <ul className="flex items-center gap-[calc(var(--u)*38)] text-[calc(var(--u)*14.5)]">
+            <ul
+              className={`flex w-max items-center gap-[calc(var(--u)*38)] text-[calc(var(--u)*14.5)] whitespace-nowrap transition-[gap,font-size] group-data-[compact=true]/nav:gap-7 group-data-[compact=true]/nav:text-[0.8rem] ${SETTLE}`}
+            >
               {NAV_ITEMS.map((item, index) => {
                 const current = isCurrent(item, pathname);
                 const menuId = `nav-menu-${index}`;
                 const open = openMenu === item.label;
+                const underline = (
+                  <HandUnderline
+                    seed={index * 13 + 5}
+                    drawn={current}
+                    className="absolute inset-x-0 -bottom-[0.45em] h-[0.5em]"
+                  />
+                );
 
                 return (
                   <li
@@ -179,11 +236,7 @@ export function TopNav() {
                       >
                         {item.label}
                         <Chevron open={open} />
-                        <HandUnderline
-                          seed={index * 13 + 5}
-                          drawn={current}
-                          className="absolute inset-x-0 -bottom-[0.45em] h-[0.5em]"
-                        />
+                        {underline}
                       </button>
                     ) : (
                       <Link
@@ -194,11 +247,7 @@ export function TopNav() {
                         style={{ color: "var(--bar-label)" }}
                       >
                         {item.label}
-                        <HandUnderline
-                          seed={index * 13 + 5}
-                          drawn={current}
-                          className="absolute inset-x-0 -bottom-[0.45em] h-[0.5em]"
-                        />
+                        {underline}
                       </Link>
                     )}
 

@@ -102,6 +102,7 @@ export function PaletteMosaic() {
   return (
     <section
       aria-label="Colour palette"
+      data-nav-theme="light"
       className="grid w-full grid-cols-2 text-black md:h-svh md:grid-cols-4 md:grid-rows-[1fr_1fr_0.6fr]"
     >
       <Block

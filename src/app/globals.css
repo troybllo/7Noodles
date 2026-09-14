@@ -283,39 +283,30 @@
      from variables that flip as each section passes the viewport midpoint.
      Custom properties cannot themselves transition, but the properties that
      consume them can, which is where the crossfade comes from. */
+  /* The navigation bar's colours, chosen by the section under it (each
+     section declares `data-nav-theme`). `--bar-surface` is what the compact bar
+     sits on once the page has scrolled: red paper over red paper, smoked ink
+     over dark sections, rice over light ones. The large bar at the top of the
+     home page has no surface and sits straight on the hero. */
   [data-bar] {
-    --bar-strand: var(--color-ink);
-    --bar-muted: var(--color-agar);
     --bar-label: var(--color-ink);
-    --bar-sub: var(--color-agar-text);
-    --bar-accent: var(--color-peach);
+    --bar-label-shadow: none;
+    --bar-surface: rgb(242 238 229 / 0.88);
+    --bar-edge: 0 1px 0 rgb(18 16 14 / 0.08);
   }
 
-  /* On red paper everything is cream: the accent is the drawn underline, not
-     a second colour. */
   [data-bar="red"] {
-    --bar-strand: var(--color-mist);
-    --bar-muted: var(--color-mist);
     --bar-label: var(--color-mist);
-    --bar-sub: var(--color-mist);
-    --bar-accent: var(--color-mist);
+    --bar-label-shadow: 0 0.08em 0.12em rgb(40 6 4 / 0.55);
+    --bar-surface: var(--color-chili) url(/textures/paper-red.webp) 0 0 / 1200px 1200px;
+    --bar-edge: 0 0.4rem 1.4rem rgb(40 6 4 / 0.35);
   }
 
   [data-bar="dark"] {
-    --bar-strand: var(--color-rice);
-    --bar-muted: var(--color-agar-glow);
     --bar-label: var(--color-rice);
-    --bar-sub: var(--color-agar-glow);
-    --bar-accent: var(--color-peach-glow);
-  }
-
-  [data-bar] path,
-  [data-bar] a,
-  [data-bar] span {
-    transition:
-      stroke var(--duration-base) var(--ease-out-soft),
-      color var(--duration-base) var(--ease-out-soft),
-      background-color var(--duration-base) var(--ease-out-soft);
+    --bar-label-shadow: none;
+    --bar-surface: rgb(10 9 8 / 0.82);
+    --bar-edge: 0 1px 0 rgb(242 238 229 / 0.06);
   }
 
   :focus-visible {

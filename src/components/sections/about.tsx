@@ -46,7 +46,10 @@ export function About() {
       </div>
 
       {/* Brand history. */}
-      <div className="bg-rice text-ink px-6 py-20 md:px-10 md:py-28">
+      <div
+        data-nav-theme="light"
+        className="bg-rice text-ink px-6 py-20 md:px-10 md:py-28"
+      >
         <div className="mx-auto grid max-w-[1700px] gap-10 lg:grid-cols-12 lg:gap-x-16">
           <div className="lg:sticky lg:top-28 lg:col-span-5 lg:self-start">
             <p lang="zh" className="font-brush text-peach-text text-4xl leading-none">
