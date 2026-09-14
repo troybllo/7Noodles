@@ -45,12 +45,13 @@ export const quicksand = Quicksand({
 });
 
 /**
- * Rounded Chinese, for 恰小面 where it sits beside the Quicksand wordmark. The
- * brush face reads as a different brand next to it. Subset to three glyphs
- * (1.6 KB from 3.4 MB); add characters in scripts/subset-fonts.mjs first.
+ * Rounded Chinese, for 恰小面 where it sits beside the Quicksand wordmark, and
+ * for the menu's titles. The brush face reads as a different brand next to it.
+ * Subset to the glyphs the site sets; add characters in
+ * scripts/subset-fonts.mjs first, which refuses any the face lacks.
  */
-export const mPlusRounded = localFont({
-  src: "../../public/fonts/m-plus-rounded-subset.woff2",
+export const hanRounded = localFont({
+  src: "../../public/fonts/resource-han-rounded-subset.woff2",
   variable: "--font-round-cjk-face",
   display: "block",
   weight: "700",

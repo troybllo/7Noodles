@@ -7,23 +7,44 @@
  * making. This cuts a woff2 containing only the glyphs the site actually sets.
  *
  * Run with `pnpm fonts`. The output is committed, so a clean checkout builds
- * without reaching the network — CI never depends on Google being up.
+ * without reaching the network — CI never depends on a font host being up.
+ * Faces shipped as a 7z archive are unpacked with bsdtar (libarchive), which
+ * macOS includes; on Linux install libarchive-tools.
  *
- * When Chinese copy is added, add its characters to GLYPHS and re-run. The
- * same pipeline covers the full translation pass.
+ * When Chinese copy is added, add its characters to the face's glyphs and
+ * re-run. The same pipeline covers the full translation pass.
  */
 
-import { mkdir, writeFile } from "node:fs/promises";
+import { execFile } from "node:child_process";
+import { createHash } from "node:crypto";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { promisify } from "node:util";
+import harfbuzz from "harfbuzzjs";
 import subsetFont from "subset-font";
 
-const OUT_DIR = join(import.meta.dirname, "..", "public", "fonts");
+const ROOT = join(import.meta.dirname, "..");
+const OUT_DIR = join(ROOT, "public", "fonts");
+
+/**
+ * Every character in the menu's category names, read from the menu itself.
+ * Written out by hand, a new or renamed category would be easy to miss; derived
+ * here, re-running this script is the whole fix.
+ */
+const menu = JSON.parse(await readFile(join(ROOT, "data", "menu-source.json"), "utf8"));
+const CATEGORY_GLYPHS = menu.categories.map((category) => category.nameZh).join("");
+
+/** Each character once, in first-seen order. */
+const unique = (text) => [...new Set([...text])].join("");
 
 const FACES = [
   {
     family: "Ma Shan Zheng",
     // Pinned so a font revision cannot silently change the brand mark.
-    url: "https://fonts.gstatic.com/s/mashanzheng/v18/NaPecZTRCLxvwo41b4gvzkXaRMQ.ttf",
+    source: {
+      url: "https://fonts.gstatic.com/s/mashanzheng/v18/NaPecZTRCLxvwo41b4gvzkXaRMQ.ttf",
+    },
     file: "ma-shan-zheng-subset.woff2",
     /**
      * Every character set in this face, anywhere on the site.
@@ -34,25 +55,84 @@ const FACES = [
     glyphs: "恰小面招牌麻辣",
   },
   {
-    family: "M PLUS Rounded 1c",
-    // The closest free match for the rounded monoline 恰小面 in the client's
-    // logo. Pinned for the same reason as the brush face.
-    url: "https://fonts.gstatic.com/s/mplusrounded1c/v22/VdGBAYIAV6gnpUpoWwNkYvrugw9RuM064ZsK.ttf",
-    file: "m-plus-rounded-subset.woff2",
+    family: "Resource Han Rounded CN Bold",
+    /**
+     * The closest free match for the rounded monoline 恰小面 in the client's
+     * logo that covers Simplified Chinese. A Japanese rounded face looks the
+     * part but lacks simplified forms such as 单, 乐 and 汤, which would fall
+     * back to the system face mid-word.
+     *
+     * SIL OFL 1.1. Pinned to a release and checksummed, because the archive is
+     * a GitHub release asset rather than an immutable font URL.
+     */
+    source: {
+      url: "https://github.com/CyanoHao/Resource-Han-Rounded/releases/download/v0.990/RHR-CN-0.990.7z",
+      sha256: "e7005f7b4a7a0b8352d32c4a1358ff47564eb73be7fdb2db00d9f792755e9dc7",
+      entry: "ResourceHanRoundedCN-Bold.ttf",
+    },
+    file: "resource-han-rounded-subset.woff2",
     /**
      *   恰小面  the restaurant's name, as it sits over the hero
+     *   菜单    the menu page title
+     *   and every category name on the menu, derived above
      */
-    glyphs: "恰小面",
+    glyphs: unique(`恰小面菜单${CATEGORY_GLYPHS}`),
   },
 ];
 
-async function build({ family, url, file, glyphs }) {
+const run = promisify(execFile);
+const hb = await harfbuzz;
+
+async function download(family, url) {
   const response = await fetch(url);
   if (!response.ok) {
     throw new Error(`${family}: ${response.status} fetching ${url}`);
   }
+  return Buffer.from(await response.arrayBuffer());
+}
 
-  const original = Buffer.from(await response.arrayBuffer());
+async function load({ family, source }) {
+  const body = await download(family, source.url);
+
+  if (source.sha256) {
+    const actual = createHash("sha256").update(body).digest("hex");
+    if (actual !== source.sha256) {
+      throw new Error(`${family}: checksum mismatch for ${source.url} (got ${actual})`);
+    }
+  }
+  if (!source.entry) return body;
+
+  const dir = await mkdtemp(join(tmpdir(), "subset-fonts-"));
+  try {
+    const archive = join(dir, "source");
+    await writeFile(archive, body);
+    await run("bsdtar", ["-xf", archive, "-C", dir, source.entry]);
+    return await readFile(join(dir, source.entry));
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+}
+
+/**
+ * The subsetter drops characters a face does not contain without complaint,
+ * and the browser then sets them in a fallback face. Fail here instead.
+ */
+function assertCoverage(family, font, glyphs) {
+  const face = hb.createFace(hb.createBlob(font), 0);
+  const covered = new Set(face.collectUnicodes());
+  face.destroy();
+
+  const missing = [...glyphs].filter((glyph) => !covered.has(glyph.codePointAt(0)));
+  if (missing.length > 0) {
+    throw new Error(`${family} has no glyph for: ${missing.join(" ")}`);
+  }
+}
+
+async function build(face) {
+  const { family, file, glyphs } = face;
+  const original = await load(face);
+  assertCoverage(family, original, glyphs);
+
   const subset = await subsetFont(original, glyphs, { targetFormat: "woff2" });
 
   await mkdir(OUT_DIR, { recursive: true });
@@ -62,7 +142,7 @@ async function build({ family, url, file, glyphs }) {
   const saved = (1 - subset.length / original.length) * 100;
   console.log(
     `${family}: ${kb(original.length)} -> ${kb(subset.length)} ` +
-      `(${saved.toFixed(2)}% smaller, ${[...glyphs].length} glyphs)`,
+      `(${saved.toFixed(2)}% smaller, ${[...glyphs].length} glyphs: ${glyphs})`,
   );
 }
 
