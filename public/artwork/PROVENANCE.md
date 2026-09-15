@@ -76,5 +76,51 @@ Processing, so the branch can sit on either ground as a cut-out:
 The recolouring is a deliberate change to the artwork, recorded here so the
 image is never presented as the painting as Zhang Ruoai left it.
 
+## nichokuan-tiger-ink.webp
+
+| | |
+|---|---|
+| Title | Tiger (the companion screen to the Dragon above) |
+| Artist | Soga Nichokuan (Japanese) |
+| Date | Early to mid-1600s |
+| Medium | Six-panel folding screen; ink, slight colour, gold and silver on paper |
+| Source | The Cleveland Museum of Art, Leonard C. Hanna Jr. Fund |
+| Accession | 1985.134.2 |
+| Object page | https://clevelandart.org/art/1985.134.2 |
+| Licence | CC0 1.0 Universal, verified on the object's own record (`share_license_status: CC0`). |
+
+Retrieved as the 3400 x 1537 print image. Processing:
+
+1. Cropped to the tiger (x 1790–3010, y 360–1250), clear of the bamboo.
+2. Softened the panel seams with a horizontal median, as for the dragon.
+3. Estimated the paper by a large grey closing and blur, and mapped how much
+   darker than its paper each pixel is to opacity, so the brushwork — stripes,
+   spots, fur and outline — becomes the image and the paper and washes drop
+   out.
+4. Dropped specks under 18 px; cleared a remnant of a panel seam above the
+   back, a bamboo leaf at the bottom right and a mark at the left edge.
+5. Feathered the crop edges, resized to 1200 px wide, WebP at quality 70.
+
+Used as a mask filled with the site's red, so it reads as a tiger drawn in red
+brush.
+
+## nichokuan-dragon-head-ink.webp
+
+From the same Dragon screen (1985.134.1) as `soga-nichokuan-dragon-ink.webp`,
+processed separately for use at full strength:
+
+1. Cropped to the head, claws and the clouds around them (x 1990–3320,
+   y 250–1450 of the 3400 px print).
+2. Softened the panel seams and applied a 3 x 3 median.
+3. Mapped darkness to opacity with a strong curve (14th to 62nd percentile,
+   power 0.8), so the ink clouds read as solid black and the dragon, painted
+   in reserve, as the paper colour showing through.
+4. Added seeded ink flecks thrown to the upper right. These are drawn for the
+   site and are not part of the painting.
+5. Removed the artist's signature and seal from the bottom right of the crop,
+   feathered the edges, resized to 1000 px wide, WebP at quality 55.
+
+Used as black ink over red paper.
+
 Attribution is not required by CC0, but the record is kept because knowing
 what the artwork is matters more than the licence does.

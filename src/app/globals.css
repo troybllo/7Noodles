@@ -24,6 +24,8 @@
   --color-parchment: #e3ccb2;
   --color-mist: #dad8d8;
   --color-cream-paper: #e5ddcb;
+  /* Bright vermilion, only as the ground under ink paintings. */
+  --color-vermilion: #d63a26;
 
   /* Ground */
   --color-ink: #12100e; /* warm near-black */

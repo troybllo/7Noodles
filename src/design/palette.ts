@@ -84,6 +84,14 @@ export const PALETTE: SwatchGroup[] = [
         textOn: ["red-paper"],
       },
       {
+        token: "vermilion",
+        hex: "#d63a26",
+        chinese: "朱红",
+        english: "Vermilion",
+        usage: "The flat ground under black ink paintings. Carries no text.",
+        textOn: [],
+      },
+      {
         token: "cream-paper",
         hex: "#e5ddcb",
         english: "Cream paper",
