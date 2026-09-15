@@ -9,6 +9,7 @@ import { priceLines, totals } from "@/lib/cart";
 import { useCart } from "@/lib/cart-store";
 import { formatCad } from "@/lib/money";
 import { pickupSlots } from "@/lib/pickup";
+import { Field, INPUT } from "@/components/ui/field";
 import { CartLines } from "./cart-lines";
 import { EmptyBowl } from "./empty-bowl";
 
@@ -33,38 +34,6 @@ type Errors = Partial<Record<keyof Fields, string>>;
 const NO_SLOTS: ReturnType<typeof pickupSlots> = [];
 const noSlots = () => NO_SLOTS;
 const subscribeNever = () => () => {};
-
-function Field({
-  id,
-  label,
-  error,
-  children,
-}: {
-  id: string;
-  label: string;
-  error: string | undefined;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="flex flex-col gap-1.5">
-      <label
-        htmlFor={id}
-        className="font-hand-caps text-base tracking-[0.06em] uppercase"
-      >
-        {label}
-      </label>
-      {children}
-      {error ? (
-        <p id={`${id}-error`} className="font-hand text-chili text-lg leading-snug">
-          {error}
-        </p>
-      ) : null}
-    </div>
-  );
-}
-
-const INPUT =
-  "border-ink/40 bg-cream focus-visible:border-ink h-12 rounded-lg border-2 px-4 text-base outline-none aria-[invalid=true]:border-chili";
 
 /**
  * Checkout, as far as it can go without a payment connection: the diner picks
