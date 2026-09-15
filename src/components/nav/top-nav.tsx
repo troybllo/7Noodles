@@ -4,6 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { HandUnderline } from "@/components/hand/hand-underline";
+import { CartButton } from "@/components/order/cart-button";
+import { roughPath } from "@/design/hand-drawn";
 import { isCurrent, NAV_ITEMS, type NavItem } from "./nav-items";
 
 /** A hand-drawn chevron, as a thick rounded tick under the baseline. */
@@ -23,6 +25,32 @@ function Chevron({ open }: { open: boolean }) {
     </svg>
   );
 }
+
+/** A head and shoulders, drawn by hand, for the account link. */
+const ACCOUNT_ICON = [
+  roughPath(
+    [
+      [12, 3],
+      [16.5, 5],
+      [16.5, 10],
+      [12, 12.5],
+      [7.5, 10],
+      [7.5, 5],
+      [12, 3],
+    ],
+    { seed: 21, wobble: 0.3 },
+  ),
+  roughPath(
+    [
+      [3, 22],
+      [5, 16.5],
+      [12, 14.5],
+      [19, 16.5],
+      [21, 22],
+    ],
+    { seed: 23, wobble: 0.3 },
+  ),
+];
 
 /** How far the page scrolls before the large bar settles into the compact one. */
 const COMPACT_AFTER = 48;
@@ -201,7 +229,7 @@ export function TopNav() {
 
           <nav
             aria-label="Primary"
-            className={`hidden transition-[left,top,translate] lg:absolute lg:top-[calc(var(--u)*43)] lg:left-[calc(var(--u)*365)] lg:block lg:group-data-[compact=true]/nav:top-1/2 lg:group-data-[compact=true]/nav:left-[calc(100%-var(--u)*40)] lg:group-data-[compact=true]/nav:-translate-x-full lg:group-data-[compact=true]/nav:-translate-y-1/2 ${SETTLE}`}
+            className={`hidden transition-[left,top,translate] lg:absolute lg:top-[calc(var(--u)*43)] lg:left-[calc(var(--u)*365)] lg:block lg:group-data-[compact=true]/nav:top-1/2 lg:group-data-[compact=true]/nav:left-[calc(100%-var(--u)*40-6rem)] lg:group-data-[compact=true]/nav:-translate-x-full lg:group-data-[compact=true]/nav:-translate-y-1/2 ${SETTLE}`}
           >
             <ul
               className={`flex w-max items-center gap-[calc(var(--u)*38)] text-[calc(var(--u)*14.5)] whitespace-nowrap transition-[gap,font-size] group-data-[compact=true]/nav:gap-7 group-data-[compact=true]/nav:text-[0.8rem] ${SETTLE}`}
@@ -286,16 +314,48 @@ export function TopNav() {
             </ul>
           </nav>
 
-          <button
-            type="button"
-            onClick={() => setMobileOpen((value) => !value)}
-            aria-expanded={mobileOpen}
-            aria-controls="mobile-nav"
-            className="font-nav text-sm font-bold tracking-[0.06em] uppercase lg:hidden"
-            style={{ color: "var(--bar-label)" }}
+          {/*
+            The order and the account. Large, the bowl sits after the last link
+            at the mockup's scale; compact, both gather at the right edge.
+          */}
+          <div
+            className={`flex items-center gap-5 transition-[left,top,translate] lg:absolute lg:top-[calc(var(--u)*41)] lg:left-[calc(var(--u)*1016)] lg:h-[calc(var(--u)*20)] lg:group-data-[compact=true]/nav:top-1/2 lg:group-data-[compact=true]/nav:left-[calc(100%-var(--u)*40)] lg:group-data-[compact=true]/nav:h-6 lg:group-data-[compact=true]/nav:-translate-x-full lg:group-data-[compact=true]/nav:-translate-y-1/2 ${SETTLE}`}
           >
-            {mobileOpen ? "Close" : "Menu"}
-          </button>
+            <Link
+              href="/account"
+              aria-label="Your account"
+              onClick={closeAll}
+              className="hidden h-6 lg:group-data-[compact=true]/nav:block"
+              style={{ color: "var(--bar-label)" }}
+            >
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="h-full w-auto"
+              >
+                {ACCOUNT_ICON.map((d) => (
+                  <path key={d} d={d} />
+                ))}
+              </svg>
+            </Link>
+            <CartButton className="h-6 lg:h-full" />
+
+            <button
+              type="button"
+              onClick={() => setMobileOpen((value) => !value)}
+              aria-expanded={mobileOpen}
+              aria-controls="mobile-nav"
+              className="font-nav text-sm font-bold tracking-[0.06em] uppercase lg:hidden"
+              style={{ color: "var(--bar-label)" }}
+            >
+              {mobileOpen ? "Close" : "Menu"}
+            </button>
+          </div>
         </div>
       </header>
 
@@ -347,6 +407,20 @@ export function TopNav() {
               )}
             </li>
           ))}
+          <li>
+            <Link
+              href="/account"
+              onClick={closeAll}
+              className="flex items-baseline gap-3"
+            >
+              <span className="font-poster text-parchment text-4xl uppercase">
+                Account
+              </span>
+              <span lang="zh" className="text-cream/80 text-lg">
+                账户
+              </span>
+            </Link>
+          </li>
         </ul>
       </div>
     </>

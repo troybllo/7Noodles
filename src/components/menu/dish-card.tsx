@@ -4,6 +4,7 @@ import { ViewTransition } from "react";
 import { formatCad } from "@/lib/money";
 import type { MenuItem } from "@/lib/menu";
 import { DISH_MEDIA } from "@/content/menu-media";
+import { AddToCart } from "@/components/order/add-to-cart";
 import { DishMedia } from "./dish-media";
 import { DishTags } from "./dish-tags";
 
@@ -24,7 +25,7 @@ export function DishCard({
   categorySlug: string;
 }) {
   return (
-    <article>
+    <article className="relative">
       <Link
         href={`/menu/${categorySlug}/${item.slug}`}
         className="group focus-visible:outline-ink flex flex-col outline-offset-4"
@@ -62,6 +63,10 @@ export function DishCard({
           <DishTags item={item} />
         </div>
       </Link>
+      {/* Outside the link, so adding a dish never also opens its page. */}
+      <div className="absolute top-3 right-3 z-10">
+        <AddToCart slug={item.slug} name={item.nameEn} variant="plus" />
+      </div>
     </article>
   );
 }

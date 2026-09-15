@@ -3,6 +3,9 @@ import { clientEnv } from "@/env";
 import { InkOrigin } from "@/components/motion/ink-origin";
 import { SmoothScroll } from "@/components/motion/smooth-scroll";
 import { HandFilters } from "@/components/hand/hand-filters";
+import { AddedNote } from "@/components/order/added-note";
+import { CartDrawer } from "@/components/order/cart-drawer";
+import { CartProvider } from "@/lib/cart-store";
 import { SiteFooter } from "@/components/nav/site-footer";
 import { TopNav } from "@/components/nav/top-nav";
 import {
@@ -53,9 +56,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <HandFilters />
         <SmoothScroll />
         <InkOrigin />
-        <TopNav />
-        <div className="flex min-h-full flex-col">{children}</div>
-        <SiteFooter />
+        <CartProvider>
+          <TopNav />
+          <div className="flex min-h-full flex-col">{children}</div>
+          <SiteFooter />
+          <CartDrawer />
+          <AddedNote />
+        </CartProvider>
       </body>
     </html>
   );

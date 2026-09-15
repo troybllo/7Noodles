@@ -6,11 +6,11 @@ import { HandUnderline } from "@/components/hand/hand-underline";
 import { StampedText } from "@/components/hand/stamped-text";
 import { TapedFrame } from "@/components/hand/taped-frame";
 import { DishCard } from "@/components/menu/dish-card";
+import { AddToCart } from "@/components/order/add-to-cart";
 import { DishMedia } from "@/components/menu/dish-media";
 import { DishTags } from "@/components/menu/dish-tags";
 import { DragonBackdrop } from "@/components/menu/dragon-backdrop";
 import { InkRevealGrid } from "@/components/menu/ink-reveal-grid";
-import { PaperButton } from "@/components/ui/paper-button";
 import { CONTACT } from "@/content/contact";
 import { DISH_MEDIA } from "@/content/menu-media";
 import { getCategories, getDish, getMoreDishes } from "@/lib/menu";
@@ -133,9 +133,7 @@ export default async function DishPage({ params }: PageProps<"/menu/[category]/[
               ) : null}
 
               <div className="mt-10">
-                <PaperButton href="/order" tone="ink">
-                  Order for pickup
-                </PaperButton>
+                <AddToCart slug={item.slug} name={item.nameEn} />
               </div>
               <p className="font-hand text-ink/85 mt-4 text-lg">
                 Pickup at {CONTACT.address.street}, {CONTACT.address.locality}.{" "}
