@@ -108,3 +108,14 @@ export function getMoreDishes(
   const others = [...category.items.slice(index + 1), ...category.items.slice(0, index)];
   return others.slice(0, count);
 }
+
+/** Any dish on the menu by its slug, which is unique across the whole menu. */
+export function findDish(
+  dishSlug: string,
+): { category: MenuCategory; item: MenuItem } | undefined {
+  for (const category of categories) {
+    const item = category.items.find((candidate) => candidate.slug === dishSlug);
+    if (item) return { category, item };
+  }
+  return undefined;
+}
