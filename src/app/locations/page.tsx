@@ -12,7 +12,7 @@ export default function LocationsPage() {
   return (
     <PageTransition id="locations">
       <main id="main" data-nav-theme="dark" className="paper-ink pt-16">
-        <Contact />
+        <Contact headingLevel={1} />
       </main>
     </PageTransition>
   );

@@ -53,12 +53,13 @@ const FACES = [
      *   菜单 川味 品牌故事 食客  menu, about and reviews headings
      *   白墨纸红          the colour mosaic's swatch names
      *   花椒 辣椒          the about page's 麻辣 diagram
+     *   隐私 条款 可持续     the legal and sustainability page marks
      *   and every category name on the menu, derived above. Dish names stay
      *   in the reader's system face: they are small, and one of them (嬢) is
      *   a character this face does not have.
      */
     glyphs: unique(
-      `恰小面招牌麻辣鲜香豌杂菜单川味品牌故事食客白墨纸红花椒辣${CATEGORY_GLYPHS}`,
+      `恰小面招牌麻辣鲜香豌杂菜单川味品牌故事食客白墨纸红花椒辣隐私条款可持续${CATEGORY_GLYPHS}`,
     ),
   },
   {

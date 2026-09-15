@@ -176,6 +176,34 @@ describe("palette accessibility claims", () => {
     }
   });
 
+  it("holds the ordering, account and legal pages at body-text contrast", () => {
+    const creamPaper = GROUND_HEX["cream-paper"];
+    const pairs: [string, string, string][] = [
+      [
+        "secondary lines, ink at 70% on cream paper",
+        blend("#12100e", 0.7, creamPaper),
+        creamPaper,
+      ],
+      [
+        "notes, ink at 75% on cream paper",
+        blend("#12100e", 0.75, creamPaper),
+        creamPaper,
+      ],
+      ["field errors, chilli on cream paper", "#8b1f1b", creamPaper],
+      ["call and order buttons, cream on chilli", "#f6f5e9", "#8b1f1b"],
+      [
+        "about page body, cream at 90% on ink paper",
+        blend("#f6f5e9", 0.9, "#12100e"),
+        "#12100e",
+      ],
+    ];
+
+    for (const [name, text, ground] of pairs) {
+      const ratio = contrastRatio(text, ground);
+      expect(ratio, `${name} is ${ratio.toFixed(2)}:1`).toBeGreaterThanOrEqual(4.5);
+    }
+  });
+
   it("keeps the reference olive out of the palette", () => {
     // #787240 is the colour from the client's reference. It reads 4.24:1 on
     // rice and 3.87:1 on ink, so it cannot carry small text either way.

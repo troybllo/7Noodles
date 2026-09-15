@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { PageTransition } from "@/components/motion/page-transition";
-import { CONTACT } from "@/content/contact";
+import { LegalPage } from "@/components/legal/legal-page";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
@@ -8,35 +7,45 @@ export const metadata: Metadata = {
     "How Seven Noodles handles the information you share when you order or get in touch.",
 };
 
-/**
- * The legal text comes from the restaurant and its lawyer, not from us. Until
- * it does, the page says so plainly and gives a way to ask directly. It must be
- * in place before online ordering opens.
- */
 export default function PrivacyPage() {
   return (
-    <PageTransition id="privacy">
-      <main
-        id="main"
-        data-nav-theme="light"
-        className="paper-cream text-ink flex min-h-[70dvh] flex-col items-center justify-center px-6 pt-32 pb-20 text-center"
-      >
-        <h1 className="font-poster text-[clamp(2.25rem,6vw,4.5rem)] leading-none">
-          Privacy Policy
-        </h1>
-        <p className="mt-6 max-w-[46ch] text-base leading-relaxed text-balance">
-          We&rsquo;re preparing how we handle the information you share when you order or
-          get in touch. It will be published here before online ordering opens. Until
-          then, call us on{" "}
-          <a
-            href={CONTACT.phone.href}
-            className="decoration-chili font-semibold underline decoration-2 underline-offset-4"
-          >
-            {CONTACT.phone.display}
-          </a>{" "}
-          with any question.
-        </p>
-      </main>
-    </PageTransition>
+    <LegalPage
+      id="privacy"
+      title="Privacy Policy"
+      zh="隐私"
+      intro="How we handle what you share with us when you order, register or get in touch. It will be published here before online ordering opens."
+      sections={[
+        {
+          id: "what-we-collect",
+          title: "What we collect",
+          covers:
+            "The details you give us at checkout or when you register, such as your name, phone number and email, and what you order.",
+        },
+        {
+          id: "how-we-use-it",
+          title: "How we use it",
+          covers:
+            "Preparing your order, contacting you about it, and, only if you ask, keeping your details for next time.",
+        },
+        {
+          id: "payments",
+          title: "Payments",
+          covers:
+            "Who processes card payments once online ordering opens, and what card information we do and do not see.",
+        },
+        {
+          id: "cookies",
+          title: "Cookies and this browser",
+          covers:
+            "What this site keeps in your browser, such as your order in progress, and how to clear it.",
+        },
+        {
+          id: "your-choices",
+          title: "Your choices",
+          covers:
+            "How to see, correct or delete the information we hold about you, under Canadian privacy law.",
+        },
+      ]}
+    />
   );
 }

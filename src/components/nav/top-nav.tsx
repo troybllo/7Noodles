@@ -101,15 +101,20 @@ export function TopNav() {
   const scrolled = useScrolled();
   const compact = pathname !== "/" || scrolled;
 
+  // Held in state rather than written to the element, so a re-render can
+  // never put back the initial value over what the probe found.
+  const [bar, setBar] = useState("light");
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const header = useRef<HTMLElement>(null);
-  const bar = useRef<HTMLDivElement>(null);
+  const barRow = useRef<HTMLDivElement>(null);
 
-  // Read the theme of whatever sits beneath the bar, now and on every scroll,
-  // resize and navigation.
+  // Read the theme of whatever sits beneath the bar, now and whenever the
+  // page under it may have changed.
   useEffect(() => {
     let frame = 0;
+
+    let retries = 0;
 
     const probe = () => {
       frame = 0;
@@ -121,9 +126,17 @@ export function TopNav() {
         if (element.contains(hit)) continue;
         const theme = hit.closest<HTMLElement>("[data-nav-theme]")?.dataset.navTheme;
         if (theme) {
-          element.setAttribute("data-bar", theme);
+          retries = 0;
+          setBar(theme);
           return;
         }
+      }
+
+      // Nothing themed under the bar yet. On first load the page can be hit-
+      // tested before it has laid out, so look again for a short while.
+      if (retries < 120) {
+        retries += 1;
+        frame = requestAnimationFrame(probe);
       }
     };
     const schedule = () => {
@@ -133,8 +146,14 @@ export function TopNav() {
     schedule();
     window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", schedule);
+    // Content can change under the bar without a scroll: a loading state
+    // giving way to its page, or a section mounting. Nodes being added or
+    // removed is the signal; style changes from animation are not observed.
+    const observer = new MutationObserver(schedule);
+    observer.observe(document.body, { childList: true, subtree: true });
     return () => {
       cancelAnimationFrame(frame);
+      observer.disconnect();
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
     };
@@ -148,7 +167,7 @@ export function TopNav() {
       if (event.key === "Escape") setOpenMenu(null);
     };
     const onPointer = (event: PointerEvent) => {
-      if (!bar.current?.contains(event.target as Node)) setOpenMenu(null);
+      if (!barRow.current?.contains(event.target as Node)) setOpenMenu(null);
     };
 
     document.addEventListener("keydown", onKey);
@@ -182,7 +201,7 @@ export function TopNav() {
 
       <header
         ref={header}
-        data-bar="light"
+        data-bar={bar}
         data-compact={compact}
         className="frame-stage group/nav fixed inset-x-0 top-0 z-50"
         // Named so page transitions leave the bar in place; see globals.css.
@@ -196,7 +215,7 @@ export function TopNav() {
         />
 
         <div
-          ref={bar}
+          ref={barRow}
           data-nav-bar
           className={`frame relative mx-auto flex h-20 items-center justify-between px-6 transition-[height] group-data-[compact=true]/nav:h-14 lg:block lg:h-[calc(var(--u)*90)] lg:w-[calc(var(--u)*1074)] lg:px-0 lg:group-data-[compact=true]/nav:h-16 ${SETTLE}`}
         >

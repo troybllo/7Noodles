@@ -1,38 +1,43 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { PageTransition } from "@/components/motion/page-transition";
+import { DrawOn } from "@/components/motion/draw-on";
+import { NoodleLift } from "@/components/hand/noodle-lift";
+import { LegalPage } from "@/components/legal/legal-page";
 
 export const metadata: Metadata = {
   title: "Sustainability",
-  description: "How 7 Noodles approaches sourcing, packaging and waste.",
+  description: "How Seven Noodles approaches sourcing, packaging and waste.",
 };
 
-/**
- * A page the navigation promises before its content exists. It says so plainly
- * rather than filling the space with claims the restaurant has not made.
- */
 export default function SustainabilityPage() {
   return (
-    <PageTransition id="sustainability">
-      <main
-        id="main"
-        data-nav-theme="red"
-        className="paper-red text-cream flex min-h-[100dvh] flex-col items-center justify-center px-6 py-32 text-center"
-      >
-        <h1 className="font-poster text-parchment text-[clamp(2.5rem,7vw,5.5rem)] leading-none uppercase">
-          Sustainability
-        </h1>
-        <p className="font-hand mt-6 max-w-[34ch] text-[clamp(1.2rem,2vw,1.6rem)] leading-snug text-balance">
-          We&rsquo;re writing this page with the kitchen. It will set out how we source,
-          pack and cut waste.
-        </p>
-        <Link
-          href="/menu"
-          className="font-nav text-cream mt-10 font-bold tracking-[0.06em] uppercase underline decoration-2 underline-offset-8"
-        >
-          See the menu
-        </Link>
-      </main>
-    </PageTransition>
+    <LegalPage
+      id="sustainability"
+      title="Sustainability"
+      zh="可持续"
+      intro="How the kitchen sources, packs and cuts waste. We're writing it with the kitchen, and won't publish claims until they're ones we can stand behind."
+      art={
+        <DrawOn duration={2} className="mx-auto hidden w-44 md:block">
+          <NoodleLift className="text-chili w-full [--noodle-ground:var(--color-cream-paper)]" />
+        </DrawOn>
+      }
+      sections={[
+        {
+          id: "sourcing",
+          title: "Sourcing",
+          covers: "Where our noodles, meat, produce and spices come from.",
+        },
+        {
+          id: "packaging",
+          title: "Packaging",
+          covers:
+            "What pickup orders are packed in, and what can be recycled or composted.",
+        },
+        {
+          id: "waste",
+          title: "Food waste",
+          covers: "How the kitchen plans and prepares to keep waste down.",
+        },
+      ]}
+    />
   );
 }

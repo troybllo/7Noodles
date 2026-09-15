@@ -18,7 +18,8 @@ const PANEL = "rounded-xl border border-cream/10 paper-ink";
  * The reference's navigation pill is omitted: the site already has a
  * persistent top bar, and a second one would duplicate it.
  */
-export function Contact() {
+export function Contact({ headingLevel = 2 }: { headingLevel?: 1 | 2 }) {
+  const Heading = headingLevel === 1 ? "h1" : "h2";
   return (
     <section
       id="contact"
@@ -40,12 +41,12 @@ export function Contact() {
             className="object-cover"
           />
           <div className="from-ink-deep/85 absolute inset-0 bg-gradient-to-t via-transparent to-transparent" />
-          <h2
+          <Heading
             id="contact-heading"
             className="font-poster absolute bottom-6 left-6 text-[clamp(3rem,7vw,7rem)] leading-none uppercase md:bottom-8 md:left-8"
           >
             <StampedText>Find us</StampedText>
-          </h2>
+          </Heading>
         </div>
 
         {/* Opening hours. */}

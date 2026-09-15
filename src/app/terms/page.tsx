@@ -1,40 +1,48 @@
 import type { Metadata } from "next";
-import { PageTransition } from "@/components/motion/page-transition";
-import { CONTACT } from "@/content/contact";
+import { LegalPage } from "@/components/legal/legal-page";
 
 export const metadata: Metadata = {
   title: "Terms & Conditions",
   description: "The terms for ordering from Seven Noodles.",
 };
 
-/**
- * The legal text comes from the restaurant and its lawyer, not from us. Until
- * it does, the page says so plainly and gives a way to ask directly. It must be
- * in place before online ordering opens.
- */
 export default function TermsPage() {
   return (
-    <PageTransition id="terms">
-      <main
-        id="main"
-        data-nav-theme="light"
-        className="paper-cream text-ink flex min-h-[70dvh] flex-col items-center justify-center px-6 pt-32 pb-20 text-center"
-      >
-        <h1 className="font-poster text-[clamp(2.25rem,6vw,4.5rem)] leading-none">
-          Terms & Conditions
-        </h1>
-        <p className="mt-6 max-w-[46ch] text-base leading-relaxed text-balance">
-          We&rsquo;re preparing the terms for ordering from us. It will be published here
-          before online ordering opens. Until then, call us on{" "}
-          <a
-            href={CONTACT.phone.href}
-            className="decoration-chili font-semibold underline decoration-2 underline-offset-4"
-          >
-            {CONTACT.phone.display}
-          </a>{" "}
-          with any question.
-        </p>
-      </main>
-    </PageTransition>
+    <LegalPage
+      id="terms"
+      title="Terms & Conditions"
+      zh="条款"
+      intro="The terms for ordering from us. They will be published here before online ordering opens."
+      sections={[
+        {
+          id: "orders",
+          title: "Placing an order",
+          covers:
+            "When an order is confirmed, and what happens if a dish is unavailable.",
+        },
+        {
+          id: "pickup",
+          title: "Pickup",
+          covers:
+            "Pickup times, how long an order is held, and orders that are not collected.",
+        },
+        {
+          id: "prices",
+          title: "Prices and payment",
+          covers: "Prices, HST, and how and when payment is taken.",
+        },
+        {
+          id: "changes",
+          title: "Changes and refunds",
+          covers: "Changing or cancelling an order, and how refunds are handled.",
+        },
+        {
+          id: "allergies",
+          title: "Allergies",
+          covers:
+            "What to tell us about allergies and dietary needs, and what our kitchen can and cannot guarantee.",
+        },
+      ]}
+    />
   );
 }
