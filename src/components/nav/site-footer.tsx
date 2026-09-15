@@ -5,6 +5,7 @@ import { CONTACT } from "@/content/contact";
 
 const LINKS = [
   { href: "/", label: "Home" },
+  { href: "/about", label: "Our story" },
   { href: "/menu", label: "Menus" },
   { href: "/order", label: "Order online" },
   { href: "/locations", label: "Locations" },

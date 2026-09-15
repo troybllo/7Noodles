@@ -46,7 +46,7 @@ export const NAV_ITEMS: NavItem[] = [
     label: "Explore",
     zh: "探索",
     children: [
-      { href: "/#story", label: "Our story", zh: "品牌故事" },
+      { href: "/about", label: "Our story", zh: "品牌故事" },
       { href: "/#showcase", label: "What to order", zh: "招牌推荐" },
       { href: "/#reviews", label: "Reviews", zh: "食客评价" },
     ],
