@@ -74,7 +74,7 @@ export function CartButton({ className }: { className?: string }) {
         ))}
       </svg>
       {itemCount > 0 ? (
-        <span className="bg-chili text-cream absolute -top-[0.35em] -right-[0.6em] flex h-[1.35em] min-w-[1.35em] items-center justify-center rounded-full px-[0.3em] font-mono text-[0.7em] leading-none">
+        <span className="bg-paper text-brand absolute -top-1.5 -right-2.5 flex h-[1.15rem] min-w-[1.15rem] items-center justify-center rounded-full px-1 text-[0.65rem] leading-none font-bold">
           {itemCount}
         </span>
       ) : null}

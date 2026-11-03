@@ -1,18 +1,20 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { LegalPage } from "@/components/legal/legal-page";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Privacy Policy",
   description:
-    "How Seven Noodles handles the information you share when you order or get in touch.",
-};
+    "How 7 Noodles handles the information you share when you order or get in touch.",
+  path: "/privacy",
+});
 
 export default function PrivacyPage() {
   return (
     <LegalPage
       id="privacy"
       title="Privacy Policy"
-      zh="隐私"
+      zh="隐私政策"
       intro="How we handle what you share with us when you order, register or get in touch. It will be published here before online ordering opens."
       sections={[
         {

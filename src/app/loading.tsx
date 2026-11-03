@@ -1,4 +1,4 @@
-import { PaintedLantern } from "@/components/brand/painted-lantern";
+import { Logo } from "@/components/brand/logo";
 
 /**
  * Shown while a page is still on its way. Every page here is prerendered, so
@@ -10,10 +10,10 @@ export default function Loading() {
     <div
       role="status"
       data-nav-theme="light"
-      className="paper-cream text-ink flex min-h-[100dvh] [animation:reveal-late_300ms_ease-out_450ms_forwards] flex-col items-center justify-center gap-4 opacity-0"
+      className="bg-paper text-brand flex min-h-[100dvh] [animation:reveal-late_300ms_ease-out_450ms_forwards] flex-col items-center justify-center gap-5 opacity-0"
     >
-      <PaintedLantern sizes="6rem" className="w-20" />
-      <p className="font-hand text-2xl">Warming the broth…</p>
+      <Logo variant="mark" title={null} className="w-20 motion-safe:animate-pulse" />
+      <p className="text-xl">Warming the broth…</p>
     </div>
   );
 }

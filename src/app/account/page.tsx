@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { AccountShell } from "@/components/account/account-shell";
-import { PaperButton } from "@/components/ui/paper-button";
+import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
   title: "Your account",
@@ -26,31 +25,22 @@ export default function AccountPage() {
       title="Your account"
       lede="Sign in to see your orders and favourites."
     >
-      <div className="flex flex-wrap gap-4">
-        <PaperButton href="/account/sign-in" tone="ink">
-          Sign in
-        </PaperButton>
-        <Link
-          href="/account/register"
-          className="border-ink inline-flex h-12 items-center rounded-full border-2 px-8 font-mono transition-transform hover:-translate-y-0.5"
-        >
+      <div className="flex flex-wrap gap-3">
+        <Button href="/account/sign-in">Sign in</Button>
+        <Button href="/account/register" tone="outline">
           Create an account
-        </Link>
+        </Button>
       </div>
 
-      <h2 className="font-hand-caps mt-10 text-lg tracking-[0.06em] uppercase">
-        What your account holds
-      </h2>
+      <h2 className="eyebrow text-brand-deep mt-10">What your account holds</h2>
       <ul className="mt-4 flex flex-col gap-4">
         {PREVIEW.map((entry) => (
           <li
             key={entry.title}
-            className="border-ink/30 flex flex-col gap-1 rounded-lg border-2 border-dashed px-5 py-4"
+            className="border-brand/30 flex flex-col gap-1 rounded-sm border-2 border-dashed px-5 py-4"
           >
-            <span className="font-nav text-lg font-bold">{entry.title}</span>
-            <span className="font-hand text-ink/80 text-lg leading-snug">
-              {entry.note}
-            </span>
+            <span className="font-display text-lg">{entry.title}</span>
+            <span className="text-brand-deep text-sm leading-snug">{entry.note}</span>
           </li>
         ))}
       </ul>

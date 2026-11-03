@@ -1,108 +1,52 @@
 @import "tailwindcss";
 
 /* =========================================================================
-   Palette
+   Palette — the brand guide's colours (data/brand/, page 2)
 
-   Drawn from the two traditional Chinese colour systems in the client's
-   references, which name their colours rather than numbering them. Those
-   names are kept because they carry the brand story into the codebase.
+   Heritage Red (朱红) on Paper Ivory (宣纸白): the red carries type, bands,
+   buttons and the logo; the ivory is the page, and the type on red. Both
+   clear 4.5:1 against each other, so each is body text on the other.
 
-   The palette splits in two on purpose. The traditional colours are mid
-   luminance — they are surface and display colours, and every one of them
-   fails 4.5:1 as body text. The `-text` variants are the same hue nudged
-   until they pass. Use the base for fills, panels and large display type;
-   use the `-text` variant for anything set below roughly 24px.
+   The guide's supporting colours — Embroidery Gold (蜀绣金), Ink Black (墨砚黑)
+   and Bamboo Green (竹影青) — are accents. The dish badges keep their own
+   inks, because "vegetarian" and "seafood" should not depend on reading a
+   label.
    ========================================================================= */
 
 @theme {
-  /* Handmade — red paper, cream paper and ink. The paper grounds are textures
-     (.paper-red, .paper-cream below); these are their fallback tones and the
-     colours set on them. */
-  --color-chili: #8b1f1b;
-  --color-chili-deep: #6b1814;
-  --color-cream: #f6f5e9;
-  --color-parchment: #e3ccb2;
-  --color-mist: #dad8d8;
-  --color-cream-paper: #e5ddcb;
-  /* Bright vermilion, only as the ground under ink paintings. */
-  --color-vermilion: #d63a26;
+  --color-paper: #f3eee5; /* Paper Ivory: the page; text on red */
+  --color-brand: #862218; /* Heritage Red: text, bands, buttons */
+  --color-brand-deep: #641910; /* pressed states, small print */
+  --color-brand-soft: #e9e0d1; /* wells and photo placeholders */
 
-  /* Ground */
-  --color-ink: #12100e; /* warm near-black */
-  --color-ink-deep: #0a0908;
-  --color-ink-soft: #211d19;
+  /* Supporting colours, from the guide. */
+  --color-gold: #f2d288; /* Embroidery Gold */
+  --color-ink: #110c05; /* Ink Black */
+  --color-bamboo: #aeb975; /* Bamboo Green */
 
-  /* 白 — rice paper */
-  --color-rice: #f2eee5;
-  --color-rice-dim: #e7e7dc;
-  --color-paper: #dad6cb;
-
-  /* 桃紅 — peach red. The primary accent. */
-  --color-peach: #c14a50;
-  --color-peach-deep: #b12959;
-  --color-peach-text: #bd4147; /* 4.52:1 on rice */
-  --color-peach-glow: #c6595e; /* 4.51:1 on ink */
-
-  /* 風入松 — wind in the pines. Olive matcha, the secondary.
-     Retuned from the reference's #787240, which reads 4.24:1 against rice and
-     3.87:1 against ink — it cannot carry small text in either direction. This
-     is 1.4% darker, visually indistinguishable, and clears 4.5:1 with rice, so
-     one value serves as both fill and small-text ground. */
-  --color-pine: #736e3e; /* 4.50:1 with rice */
-  --color-pine-deep: #76796e; /* 绿沉 */
-  --color-pine-glow: #837d46; /* 4.51:1 on ink */
-
-  /* 沉香 — agarwood. Warm neutral for secondary text and rules. */
-  --color-agar: #897367;
-  --color-agar-text: #7c685e; /* 4.54:1 on rice */
-  --color-agar-glow: #8d776a; /* 4.50:1 on ink */
-
-  /* Shades used behind the showcase placeholders: each panel's own colour,
-     taken down so the reserved frame reads as part of its panel. */
-  --color-pine-shade: #302e1a;
-  --color-peach-shade: #4a1125;
-  --color-rice-shade: #3a362e;
-
-  /* Bronze, from the poster reference's #72511E. Clears 6.23:1 against rice in
-     both directions, so it needs no derived text variant. */
-  --color-bronze: #72511e;
-
-  /* Lantern. Dark-ground only — it sits at 1.94:1 on rice and must never
-     carry text on a light surface. */
-  --color-lantern: #d9a441; /* 8.44:1 on ink */
-  --color-lantern-text: #8d651c; /* the light-ground fallback, 4.52:1 */
+  /* Badge inks, on ivory. */
+  --color-jade: #3d6a44;
+  --color-sea: #2b5f7a;
+  --color-bronze: #7a5320;
 
   /* =======================================================================
      Type
      ======================================================================= */
 
   --font-cjk:
-    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans SC",
-    "Noto Sans SC", sans-serif;
-  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, var(--font-cjk), sans-serif;
-  --font-brush: var(--font-brush-face), var(--font-cjk), cursive;
-  --font-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
-  --font-poster: var(--font-rubik), ui-sans-serif, system-ui, sans-serif;
-  --font-hand: var(--font-kalam), "Comic Sans MS", cursive;
-  --font-hand-caps: var(--font-gochi-hand), var(--font-hand);
-  --font-hand-cjk: var(--font-hand-cjk-face), var(--font-cjk), cursive;
-  --font-mono: var(--font-roboto-mono), ui-monospace, monospace;
-  --font-nav: var(--font-fredoka), ui-rounded, system-ui, sans-serif;
+    var(--font-noto-sans-sc), "PingFang SC", "Noto Sans CJK SC", "Source Han Sans SC",
+    "Microsoft YaHei", sans-serif;
+  --font-sans:
+    var(--font-inter), ui-sans-serif, system-ui, "PingFang SC", "Microsoft YaHei",
+    sans-serif;
+  --font-display: var(--font-lora), Georgia, serif, var(--font-cjk);
+  /* The guide's decoration face: Lora Italic. */
+  --font-accent: var(--font-lora), Georgia, serif;
 
-  /* Fluid display sizes. The wordmark runs edge to edge, so it is sized in
-     container units rather than viewport units — the column it occupies is the
-     viewport minus the rail and its padding, and sizing against the viewport
-     overflowed it. Requires an ancestor with `container-type: inline-size`.
-
-     10.8cqw is measured, not derived. "7 NOODLES" sets 7.26em wide in Archivo
-     Black at 125% width, so glyphs occupy roughly 78% of the column at this
-     size and justify-between distributes the remaining 22% between them. That
-     gap is the tracking: sizing to fill the column instead would set the word
-     tight, which is the opposite of what this mark wants. */
-  --text-hero: clamp(2.25rem, 10.8cqw, 13rem);
-  --text-display: clamp(2.5rem, 7vw, 6.5rem);
-  --text-title: clamp(1.75rem, 3.6vw, 3.25rem);
-  --text-lede: clamp(1.0625rem, 1.35vw, 1.375rem);
+  --text-hero: clamp(3.5rem, 13vw, 13rem);
+  --text-display: clamp(2.5rem, 6.4vw, 6rem);
+  --text-title: clamp(1.875rem, 3.6vw, 3.25rem);
+  --text-lede: clamp(1.0625rem, 1.3vw, 1.3125rem);
 
   /* =======================================================================
      Motion
@@ -140,27 +84,127 @@
     }
   }
 
-  /* Hanging lanterns. The sway starts and ends at rest, so under reduced
-     motion, where the global rule below cuts every animation to one instant
-     iteration, a lantern simply hangs straight. Each lantern sets its own
-     duration and delay inline so a row never swings in step. */
-  --animate-lantern-sway: lantern-sway 7s ease-in-out infinite;
+  /* The flame. Never still, never frantic: a slow lean with a quicker
+     shiver over it. Rests upright under reduced motion. */
+  --animate-flicker: flicker 2.6s ease-in-out infinite;
+  --animate-flicker-fast: flicker-fast 0.9s ease-in-out infinite;
 
-  @keyframes lantern-sway {
+  @keyframes flicker {
+    0%,
+    100% {
+      transform: rotate(0deg) scale(1, 1);
+    }
+    30% {
+      transform: rotate(-2.5deg) scale(0.98, 1.04);
+    }
+    60% {
+      transform: rotate(2deg) scale(1.02, 0.97);
+    }
+  }
+
+  @keyframes flicker-fast {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.82;
+      transform: scale(0.94, 1.06);
+    }
+  }
+
+  /* The red panda: a tail that swings, ears that twitch, eyes that blink.
+     Each is mostly at rest so the mascot reads as alive, not busy. */
+  --animate-tail: tail 4.8s ease-in-out infinite;
+  --animate-ear: ear 6s ease-in-out infinite;
+  --animate-blink: blink 5.2s step-end infinite;
+  --animate-bob: bob 5s ease-in-out infinite;
+
+  @keyframes tail {
     0%,
     100% {
       transform: rotate(0deg);
     }
-    25% {
-      transform: rotate(1.8deg);
+    50% {
+      transform: rotate(9deg);
     }
-    75% {
-      transform: rotate(-1.8deg);
+  }
+
+  @keyframes ear {
+    0%,
+    88%,
+    100% {
+      transform: rotate(0deg);
+    }
+    92% {
+      transform: rotate(-10deg);
+    }
+    96% {
+      transform: rotate(4deg);
+    }
+  }
+
+  @keyframes blink {
+    0%,
+    94%,
+    100% {
+      transform: scaleY(1);
+    }
+    96% {
+      transform: scaleY(0.1);
+    }
+  }
+
+  @keyframes bob {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-3%);
     }
   }
 
   /* Steam off a hot bowl, and chilli slices drifting on the paper. Both come
      to rest at their starting frame under reduced motion. */
+  /* The menu margins' drawings keep up a gentle loop while shown: hanging
+     things sway, loose things drift, steam rises. Each starts and ends at
+     rest, so reduced motion simply shows the drawing still. */
+  --animate-margin-sway: margin-sway 7s ease-in-out infinite;
+  --animate-margin-drift: margin-drift 9s ease-in-out infinite;
+  --animate-margin-rise: margin-rise 6s ease-in-out infinite;
+
+  @keyframes margin-sway {
+    0%,
+    100% {
+      transform: rotate(0deg);
+    }
+    50% {
+      transform: rotate(1.6deg);
+    }
+  }
+
+  @keyframes margin-drift {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-1.5%);
+    }
+  }
+
+  @keyframes margin-rise {
+    0%,
+    100% {
+      transform: translateY(0) scaleY(1);
+    }
+    50% {
+      transform: translateY(-2%) scaleY(1.03);
+    }
+  }
+
   --animate-steam: steam 5.5s ease-out infinite;
   --animate-drift: drift 9s ease-in-out infinite;
 
@@ -197,7 +241,7 @@
   @keyframes note-in {
     from {
       opacity: 0;
-      transform: translateY(1rem) rotate(-1.5deg);
+      transform: translateY(1rem);
     }
   }
 
@@ -224,30 +268,12 @@
     --u: min(calc(100cqw / 1074), calc(100dvh / 600));
   }
 
-  /* Paper grounds. Seamless 1200px tiles generated by scripts/generate-textures.mjs,
-     over their median tone so the section reads correctly before the tile loads. */
-  .paper-red {
-    background-color: var(--color-chili);
-    background-image: url(/textures/paper-red.webp);
-    background-size: 1200px 1200px;
-  }
-
-  .paper-cream {
-    background-color: var(--color-cream-paper);
-    background-image: url(/textures/paper-cream.webp);
-    background-size: 1200px 1200px;
-  }
-
-  .paper-ink {
-    background-color: var(--color-ink);
-    background-image: url(/textures/paper-ink.webp);
-    background-size: 1200px 1200px;
-  }
-
-  /* Display type printed in worn ink: the letters show through a speckle mask. */
-  .print-worn {
-    mask-image: url(/textures/print-speckle.webp);
-    mask-size: 384px 384px;
+  /* Small caps label above a heading: "01 — Noodles". */
+  .eyebrow {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
   }
 
   /* Pausing a row on hover is done with a hover: utility on the track, not
@@ -264,55 +290,61 @@
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;
-    background-color: var(--color-rice);
-    color: var(--color-ink);
+    background-color: var(--color-paper);
+    color: var(--color-brand);
   }
 
-  /* The wordmark and section titles are set tight; Archivo's default tracking
-     is too open at display sizes. */
-  /* The wordmark is tracked apart by justify-between, so it must not also
-     carry negative letter-spacing — the two pull against each other. */
+  /* Wide inner layers (the showcase panels, the photo row's bleed) must never
+     widen the page. `clip`, not `hidden`: it creates no scroll container, so
+     sticky sections still stick. */
+  body {
+    overflow-x: clip;
+  }
+
+  /* Display type, per the brand guide: Lora Bold in capitals. */
+  .font-display {
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+  }
+
+  .font-accent {
+    font-style: italic;
+  }
+
   .text-hero {
+    letter-spacing: -0.02em;
     line-height: 0.9;
   }
 
   .text-display {
-    letter-spacing: -0.03em;
-    line-height: 0.86;
+    letter-spacing: -0.015em;
+    line-height: 0.98;
   }
 
-  /* The bar floats over sections of either ground, so it reads its colours
-     from variables that flip as each section passes the viewport midpoint.
-     Custom properties cannot themselves transition, but the properties that
-     consume them can, which is where the crossfade comes from. */
+  .text-title {
+    letter-spacing: -0.01em;
+    line-height: 1.08;
+  }
+
   /* The navigation bar's colours, chosen by the section under it (each
-     section declares `data-nav-theme`). `--bar-surface` is what the compact bar
-     sits on once the page has scrolled: red paper over red paper, smoked ink
-     over dark sections, rice over light ones. The large bar at the top of the
-     home page has no surface and sits straight on the hero. */
+     section declares `data-nav-theme`). Custom properties cannot themselves
+     transition, but the properties that consume them can, which is where the
+     crossfade comes from. */
   [data-bar] {
-    --bar-label: var(--color-ink);
-    --bar-label-shadow: none;
-    --bar-surface: rgb(242 238 229 / 0.88);
-    --bar-edge: 0 1px 0 rgb(18 16 14 / 0.08);
-  }
-
-  [data-bar="red"] {
-    --bar-label: var(--color-mist);
-    --bar-label-shadow: 0 0.08em 0.12em rgb(40 6 4 / 0.55);
-    --bar-surface: var(--color-chili) url(/textures/paper-red.webp) 0 0 / 1200px 1200px;
-    --bar-edge: 0 0.4rem 1.4rem rgb(40 6 4 / 0.35);
+    --bar-label: var(--color-brand);
+    --bar-surface: rgb(243 238 229 / 0.94);
+    --bar-edge: 0 1px 0 rgb(134 34 24 / 0.15);
   }
 
   [data-bar="dark"] {
-    --bar-label: var(--color-rice);
-    --bar-label-shadow: none;
-    --bar-surface: rgb(10 9 8 / 0.82);
-    --bar-edge: 0 1px 0 rgb(242 238 229 / 0.06);
+    --bar-label: var(--color-paper);
+    --bar-surface: rgb(134 34 24 / 0.96);
+    --bar-edge: none;
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-peach-text);
+    outline: 2px solid var(--color-brand);
     outline-offset: 3px;
   }
 
@@ -328,6 +360,13 @@
       transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;
     }
+  }
+}
+
+/* Printing one kitchen ticket: the board marks it, and hides the rest. */
+@media print {
+  body.printing-one .kitchen-ticket:not(.print-target) {
+    display: none;
   }
 }
 

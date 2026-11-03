@@ -1,22 +1,34 @@
-import { findDish, type MenuCategory, type MenuItem } from "./menu";
+import {
+  findDish,
+  resolveSelection,
+  type MenuCategory,
+  type MenuChoice,
+  type MenuItem,
+  type MenuOption,
+  type Selection,
+} from "./menu";
 import { applyRate, type Cents } from "./money";
 
 /**
  * The order being built, as the browser keeps it.
  *
- * Only slugs and quantities are stored. Names and prices are always read back
- * from the menu, so a cart saved last week can never carry last week's price,
- * and a dish removed from the menu simply drops out.
+ * Only slugs, chosen options and quantities are stored. Names and prices are
+ * always read back from the menu, so a cart saved last week can never carry
+ * last week's price, and a dish removed from the menu simply drops out.
  *
- * Everything here is pure, so the same functions can price an order on the
- * server when checkout is connected.
+ * Everything here is pure, so checkout prices the order again on the server
+ * with these same functions and never trusts a total sent by the browser.
  */
 
-export type CartLine = { slug: string; quantity: number };
+export type CartLine = { slug: string; selection: Selection; quantity: number };
 
 export type PricedLine = CartLine & {
+  /** Identifies the line: the same dish with different choices is a different line. */
+  key: string;
   item: MenuItem;
   category: MenuCategory;
+  choices: { option: MenuOption; choice: MenuChoice }[];
+  unitPriceCents: Cents;
   lineTotalCents: Cents;
 };
 
@@ -36,44 +48,79 @@ export const MAX_QUANTITY = 20;
 const clamp = (quantity: number) =>
   Math.max(0, Math.min(MAX_QUANTITY, Math.floor(quantity)));
 
-/** Adds `quantity` of a dish, merging with any already in the cart. */
-export function addItem(lines: CartLine[], slug: string, quantity = 1): CartLine[] {
-  const existing = lines.find((line) => line.slug === slug);
-  if (!existing) {
-    const next = clamp(quantity);
-    return next > 0 ? [...lines, { slug, quantity: next }] : lines;
-  }
-  return setQuantity(lines, slug, existing.quantity + quantity);
+/** A stable key for a dish with its choices, independent of the order they were made in. */
+export function lineKey(slug: string, selection: Selection): string {
+  const parts = Object.keys(selection)
+    .sort()
+    .map((option) => `${option}=${selection[option]}`);
+  return parts.length > 0 ? `${slug}?${parts.join("&")}` : slug;
 }
 
-/** Sets a dish's quantity; zero or less removes it. */
-export function setQuantity(
+const keyOf = (line: CartLine) => lineKey(line.slug, line.selection);
+
+/** Adds `quantity` of a dish with these choices, merging with an identical line. */
+export function addItem(
   lines: CartLine[],
   slug: string,
+  selection: Selection = {},
+  quantity = 1,
+): CartLine[] {
+  const key = lineKey(slug, selection);
+  const existing = lines.find((line) => keyOf(line) === key);
+  if (!existing) {
+    const next = clamp(quantity);
+    return next > 0
+      ? [...lines, { slug, selection: { ...selection }, quantity: next }]
+      : lines;
+  }
+  return setQuantity(lines, key, existing.quantity + quantity);
+}
+
+/** Sets a line's quantity by its key; zero or less removes it. */
+export function setQuantity(
+  lines: CartLine[],
+  key: string,
   quantity: number,
 ): CartLine[] {
   const next = clamp(quantity);
-  if (next === 0) return removeItem(lines, slug);
-  return lines.map((line) => (line.slug === slug ? { ...line, quantity: next } : line));
+  if (next === 0) return removeItem(lines, key);
+  return lines.map((line) => (keyOf(line) === key ? { ...line, quantity: next } : line));
 }
 
-export function removeItem(lines: CartLine[], slug: string): CartLine[] {
-  return lines.filter((line) => line.slug !== slug);
+export function removeItem(lines: CartLine[], key: string): CartLine[] {
+  return lines.filter((line) => keyOf(line) !== key);
 }
 
-/** The cart's lines with their dishes and prices, dropping any the menu no longer has. */
+/** How many of a dish the cart holds, across all its choices. */
+export function quantityOf(lines: CartLine[], slug: string): number {
+  return lines.reduce((sum, line) => (line.slug === slug ? sum + line.quantity : sum), 0);
+}
+
+/**
+ * The cart's lines with their dishes, choices and prices. Drops any line whose
+ * dish the menu no longer has, is not serving, or whose choices no longer fit.
+ */
 export function priceLines(lines: CartLine[]): PricedLine[] {
   return lines.flatMap((line) => {
     const found = findDish(line.slug);
     const quantity = clamp(line.quantity);
-    if (!found || quantity === 0) return [];
+    if (!found || !found.item.available || quantity === 0) return [];
+    const choices = resolveSelection(found.item, line.selection);
+    if (!choices) return [];
+    const unitPriceCents =
+      found.item.priceCents +
+      choices.reduce((sum, { choice }) => sum + choice.priceDeltaCents, 0);
     return [
       {
         slug: line.slug,
+        selection: line.selection,
         quantity,
+        key: keyOf(line),
         item: found.item,
         category: found.category,
-        lineTotalCents: found.item.priceCents * quantity,
+        choices,
+        unitPriceCents,
+        lineTotalCents: unitPriceCents * quantity,
       },
     ];
   });
@@ -92,19 +139,27 @@ export function totals(lines: CartLine[]): CartTotals {
   };
 }
 
-/** Parses whatever was stored, keeping only well-formed lines. */
+const isSelection = (value: unknown): value is Selection =>
+  typeof value === "object" &&
+  value !== null &&
+  !Array.isArray(value) &&
+  Object.values(value).every((choice) => typeof choice === "string");
+
+/** Parses whatever was stored or posted, keeping only well-formed lines. */
 export function parseLines(value: unknown): CartLine[] {
   if (!Array.isArray(value)) return [];
   return value.flatMap((entry) => {
-    if (
-      typeof entry === "object" &&
-      entry !== null &&
-      typeof (entry as CartLine).slug === "string" &&
-      typeof (entry as CartLine).quantity === "number"
-    ) {
-      const quantity = clamp((entry as CartLine).quantity);
-      return quantity > 0 ? [{ slug: (entry as CartLine).slug, quantity }] : [];
-    }
-    return [];
+    if (typeof entry !== "object" || entry === null) return [];
+    const { slug, selection, quantity } = entry as Partial<CartLine>;
+    if (typeof slug !== "string" || typeof quantity !== "number") return [];
+    const clamped = clamp(quantity);
+    if (clamped === 0) return [];
+    return [
+      {
+        slug,
+        selection: isSelection(selection) ? { ...selection } : {},
+        quantity: clamped,
+      },
+    ];
   });
 }

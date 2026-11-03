@@ -1,0 +1,1563 @@
+{
+  "source": "data/menu-items.md (恰小面菜单 1.26, supplied by the owner)",
+  "transcribedOn": "2026-10-05",
+  "currency": "CAD",
+  "note": "Prices are integer cents. spiceLevel 0-3 follows the owner's SPICY*/**/*** marks; tags and allergens follow her VEG / SEAFOOD / NUTS marks. Drinks are deliberately left off the website. Lines whose asterisks were damaged in the supplied file are listed in `toConfirm`.",
+  "toConfirm": [
+    "Wanza, Dandan and Mala Noodle Soup: read as SPICY** (file shows SPICY_*).",
+    "Super Spicy Beef/Chicken, Cumin Beef and Roasted Pepper Pork Liver: read as SPICY*** (file shows SPICY_**).",
+    "Spicy Stir-Fried Beef Tripe: read as SPICY** (file shows SPICY_*).",
+    "Mala Noodle Soup: marked NUTS because its description is finished with peanuts.",
+    "Chicken Noodle Soup with Mushrooms: description still needed."
+  ],
+  "categories": [
+    {
+      "slug": "traditional-xiaomian",
+      "nameEn": "Traditional Xiaomian",
+      "nameZh": "传统小面",
+      "note": "Every nut here is peanut or sesame — peanuts, peanut butter, sesame seeds or sesame paste — and all of it can be left off.",
+      "items": [
+        {
+          "slug": "wanza-noodles",
+          "nameEn": "Wanza Noodles",
+          "nameZh": "招牌豌杂面",
+          "priceCents": 1500,
+          "spiceLevel": 2,
+          "tags": [],
+          "allergens": {
+            "nuts": "removable"
+          },
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": true,
+          "options": [],
+          "description": "House-made noodles and A choy greens served over a base of chili oil, secret sauce, preserved mustard greens, and pickled mustard stem. Topped with slow-cooked yellow peas and Sichuan pork meat sauce, then finished with crushed peanuts, sesame, and scallions."
+        },
+        {
+          "slug": "zajiang-noodles",
+          "nameEn": "Zajiang Noodles",
+          "nameZh": "素椒杂酱面",
+          "priceCents": 1300,
+          "spiceLevel": 2,
+          "tags": [],
+          "allergens": {
+            "nuts": "removable"
+          },
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": []
+        },
+        {
+          "slug": "yellow-pea-noodles",
+          "nameEn": "Yellow Pea Noodles",
+          "nameZh": "糯糯豌豆面",
+          "priceCents": 1300,
+          "spiceLevel": 2,
+          "tags": [
+            "vegetarian"
+          ],
+          "allergens": {
+            "nuts": "removable"
+          },
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": []
+        },
+        {
+          "slug": "dandan-noodles",
+          "nameEn": "Dandan Noodles",
+          "nameZh": "腊肉丁丁担担面",
+          "priceCents": 1500,
+          "spiceLevel": 2,
+          "tags": [],
+          "allergens": {
+            "nuts": "removable"
+          },
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": true,
+          "portion": "with a fried egg",
+          "options": [],
+          "description": "House-made noodles tossed with chili oil and our secret sauce, topped with house-smoked diced pork and preserved mustard greens. Finished with scallions, sesame, and crushed peanuts."
+        },
+        {
+          "slug": "egg-and-tomato-noodles",
+          "nameEn": "Egg & Tomato Noodles",
+          "nameZh": "番茄鸡蛋拌面",
+          "priceCents": 1500,
+          "spiceLevel": 0,
+          "tags": [
+            "vegetarian"
+          ],
+          "allergens": {},
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": []
+        },
+        {
+          "slug": "mala-noodle-soup",
+          "nameEn": "Mala Noodle Soup",
+          "nameZh": "麻辣小面",
+          "priceCents": 1000,
+          "spiceLevel": 2,
+          "tags": [
+            "vegan",
+            "vegetarian"
+          ],
+          "allergens": {
+            "nuts": "removable"
+          },
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": [],
+          "description": "Vegan noodles with chili oil, our secret sauce, and vegetable broth, served with A choy greens and finished with scallions and peanuts."
+        },
+        {
+          "slug": "wanzhou-cold-noodles",
+          "nameEn": "Wanzhou Cold Noodles",
+          "nameZh": "万州凉面",
+          "priceCents": 1200,
+          "spiceLevel": 2,
+          "tags": [
+            "vegetarian"
+          ],
+          "allergens": {
+            "nuts": "removable"
+          },
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": []
+        },
+        {
+          "slug": "yibin-spicy-dry-noodles",
+          "nameEn": "Yibin Spicy Dry Noodles",
+          "nameZh": "赵大嬢燃面",
+          "priceCents": 1500,
+          "spiceLevel": 2,
+          "tags": [],
+          "allergens": {
+            "nuts": "removable"
+          },
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": []
+        }
+      ]
+    },
+    {
+      "slug": "chefs-special-noodles",
+      "nameEn": "Chef's Special Noodles",
+      "nameZh": "现炒浇头面",
+      "note": "Wok-fried to order. Ask for more spice, less or none, or a vegetarian version. Every nut here is peanut or sesame and can be left off.",
+      "items": [
+        {
+          "slug": "double-cooked-pork-belly-noodles",
+          "nameEn": "Dry Noodles with Double-Cooked Pork Belly",
+          "nameZh": "翻锅50次的回锅肉拌面",
+          "priceCents": 1600,
+          "spiceLevel": 2,
+          "tags": [],
+          "allergens": {
+            "nuts": "removable"
+          },
+          "spiceAdjustable": true,
+          "available": true,
+          "signature": true,
+          "options": [
+            {
+              "id": "spice",
+              "labelEn": "Spice",
+              "labelZh": "辣度",
+              "choices": [
+                {
+                  "id": "regular",
+                  "labelEn": "As the kitchen makes it",
+                  "labelZh": "正常辣",
+                  "priceDeltaCents": 0
+                },
+                {
+                  "id": "extra",
+                  "labelEn": "Extra spicy",
+                  "labelZh": "多辣",
+                  "priceDeltaCents": 0
+                },
+                {
+                  "id": "mild",
+                  "labelEn": "Mild",
+                  "labelZh": "少辣",
+                  "priceDeltaCents": 0
+                },
+                {
+                  "id": "none",
+                  "labelEn": "Not spicy",
+                  "labelZh": "不辣",
+                  "priceDeltaCents": 0,
+                  "spiceLevel": 0
+                }
+              ]
+            }
+          ],
+          "description": "House-made noodles tossed with chili oil and our secret sauce, served with A choy greens and topped with Sichuan twice-cooked pork. Finished with sesame."
+        },
+        {
+          "slug": "pickled-pepper-pork-liver-noodles",
+          "nameEn": "Dry Noodles with Stir-Fried Pork Liver and Pickled Pepper",
+          "nameZh": "泡椒猪肝拌面",
+          "priceCents": 1500,
+          "spiceLevel": 2,
+          "tags": [],
+          "allergens": {
+            "nuts": "removable"
+          },
+          "spiceAdjustable": true,
+          "available": true,
+          "signature": false,
+          "options": [
+            {
+              "id": "spice",
+              "labelEn": "Spice",
+              "labelZh": "辣度",
+              "choices": [
+                {
+                  "id": "regular",
+                  "labelEn": "As the kitchen makes it",
+                  "labelZh": "正常辣",
+                  "priceDeltaCents": 0
+                },
+                {
+                  "id": "extra",
+                  "labelEn": "Extra spicy",
+                  "labelZh": "多辣",
+                  "priceDeltaCents": 0
+                },
+                {
+                  "id": "mild",
+                  "labelEn": "Mild",
+                  "labelZh": "少辣",
+                  "priceDeltaCents": 0
+                },
+                {
+                  "id": "none",
+                  "labelEn": "Not spicy",
+                  "labelZh": "不辣",
+                  "priceDeltaCents": 0,
+                  "spiceLevel": 0
+                }
+              ]
+            }
+          ],
+          "description": "Noodles tossed with chili oil and served with A choy greens, topped with freshly wok-fried pork liver, stir-fried with chopped pickled chilies, fresh chilies, Chinese chives, ginger, and garlic."
+        },
+        {
+          "slug": "pickled-pepper-chicken-gizzard-noodles",
+          "nameEn": "Dry Noodles with Stir-Fried Chicken Gizzard",
+          "nameZh": "泡椒鸡杂干拌面",
+          "priceCents": 1500,
+          "spiceLevel": 2,
+          "tags": [],
+          "allergens": {
+            "nuts": "removable"
+          },
+          "spiceAdjustable": true,
+          "available": true,
+          "signature": false,
+          "options": [
+            {
+              "id": "spice",
+              "labelEn": "Spice",
+              "labelZh": "辣度",
+              "choices": [
+                {
+                  "id": "regular",
+                  "labelEn": "As the kitchen makes it",
+                  "labelZh": "正常辣",
+                  "priceDeltaCents": 0
+                },
+                {
+                  "id": "extra",
+                  "labelEn": "Extra spicy",
+                  "labelZh": "多辣",
+                  "priceDeltaCents": 0
+                },
+                {
+                  "id": "mild",
+                  "labelEn": "Mild",
+                  "labelZh": "少辣",
+                  "priceDeltaCents": 0
+                },
+                {
+                  "id": "none",
+                  "labelEn": "Not spicy",
+                  "labelZh": "不辣",
+                  "priceDeltaCents": 0,
+                  "spiceLevel": 0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "super-spicy-beef-or-chicken-noodles",
+          "nameEn": "Dry Noodles with Super Spicy Stir-Fried Beef or Chicken",
+          "nameZh": "巨TM辣的双椒牛肉/鸡肉干拌面",
+          "priceCents": 1800,
+          "spiceLevel": 3,
+          "tags": [],
+          "allergens": {
+            "nuts": "removable"
+          },
+          "spiceAdjustable": true,
+          "available": true,
+          "signature": true,
+          "options": [
+            {
+              "id": "protein",
+              "labelEn": "Protein",
+              "labelZh": "肉类",
+              "choices": [
+                {
+                  "id": "beef",
+                  "labelEn": "Beef",
+                  "labelZh": "牛肉",
+                  "priceDeltaCents": 0
+                },
+                {
+                  "id": "chicken",
+                  "labelEn": "Chicken",
+                  "labelZh": "鸡肉",
+                  "priceDeltaCents": 0
+                }
+              ]
+            },
+            {
+              "id": "spice",
+              "labelEn": "Spice",
+              "labelZh": "辣度",
+              "choices": [
+                {
+                  "id": "regular",
+                  "labelEn": "As the kitchen makes it",
+                  "labelZh": "正常辣",
+                  "priceDeltaCents": 0
+                },
+                {
+                  "id": "extra",
+                  "labelEn": "Extra spicy",
+                  "labelZh": "多辣",
+                  "priceDeltaCents": 0
+                },
+                {
+                  "id": "mild",
+                  "labelEn": "Mild",
+                  "labelZh": "少辣",
+                  "priceDeltaCents": 0
+                },
+                {
+                  "id": "none",
+                  "labelEn": "Not spicy",
+                  "labelZh": "不辣",
+                  "priceDeltaCents": 0,
+                  "spiceLevel": 0
+                }
+              ]
+            }
+          ],
+          "description": "Dry noodles tossed with chili oil, our secret sauce, and a blend of six chilies, topped with freshly wok-fried beef or chicken. Fragrant, fiery, and made for serious spice lovers."
+        },
+        {
+          "slug": "cumin-beef-noodles",
+          "nameEn": "Dry Noodles with Cumin Beef",
+          "nameZh": "孜然牛肉干拌面",
+          "priceCents": 1800,
+          "spiceLevel": 3,
+          "tags": [],
+          "allergens": {
+            "nuts": "removable"
+          },
+          "spiceAdjustable": true,
+          "available": true,
+          "signature": false,
+          "options": [
+            {
+              "id": "spice",
+              "labelEn": "Spice",
+              "labelZh": "辣度",
+              "choices": [
+                {
+                  "id": "regular",
+                  "labelEn": "As the kitchen makes it",
+                  "labelZh": "正常辣",
+                  "priceDeltaCents": 0
+                },
+                {
+                  "id": "extra",
+                  "labelEn": "Extra spicy",
+                  "labelZh": "多辣",
+                  "priceDeltaCents": 0
+                },
+                {
+                  "id": "mild",
+                  "labelEn": "Mild",
+                  "labelZh": "少辣",
+                  "priceDeltaCents": 0
+                },
+                {
+                  "id": "none",
+                  "labelEn": "Not spicy",
+                  "labelZh": "不辣",
+                  "priceDeltaCents": 0,
+                  "spiceLevel": 0
+                }
+              ]
+            }
+          ],
+          "description": "Noodles tossed with chili oil and served with A choy greens, topped with beef wok-fried with onions and fresh chilies. Seasoned with freshly ground toasted cumin and chili powder."
+        },
+        {
+          "slug": "roasted-pepper-pork-liver-noodles",
+          "nameEn": "Dry Noodles with Roasted Pepper Pork Liver",
+          "nameZh": "烧椒猪肝干拌面",
+          "priceCents": 1500,
+          "spiceLevel": 3,
+          "tags": [],
+          "allergens": {
+            "nuts": "removable"
+          },
+          "spiceAdjustable": true,
+          "available": true,
+          "signature": false,
+          "options": [
+            {
+              "id": "spice",
+              "labelEn": "Spice",
+              "labelZh": "辣度",
+              "choices": [
+                {
+                  "id": "regular",
+                  "labelEn": "As the kitchen makes it",
+                  "labelZh": "正常辣",
+                  "priceDeltaCents": 0
+                },
+                {
+                  "id": "extra",
+                  "labelEn": "Extra spicy",
+                  "labelZh": "多辣",
+                  "priceDeltaCents": 0
+                },
+                {
+                  "id": "mild",
+                  "labelEn": "Mild",
+                  "labelZh": "少辣",
+                  "priceDeltaCents": 0
+                },
+                {
+                  "id": "none",
+                  "labelEn": "Not spicy",
+                  "labelZh": "不辣",
+                  "priceDeltaCents": 0,
+                  "spiceLevel": 0
+                }
+              ]
+            }
+          ],
+          "description": "Noodles tossed with chili oil and served with A choy greens, topped with freshly wok-fried pork liver in our house-made roasted pepper sauce with fresh chilies, Chinese chives, ginger, and garlic."
+        },
+        {
+          "slug": "spicy-beef-tripe-noodles",
+          "nameEn": "Dry Noodles with Spicy Stir-Fried Beef Tripe",
+          "nameZh": "香辣爆肚干拌面",
+          "priceCents": 1800,
+          "spiceLevel": 2,
+          "tags": [],
+          "allergens": {},
+          "spiceAdjustable": true,
+          "available": false,
+          "signature": false,
+          "options": []
+        },
+        {
+          "slug": "chili-pork-intestine-noodles",
+          "nameEn": "Dry Noodles with Chili and Pork Intestines",
+          "nameZh": "尖椒肥肠干拌面",
+          "priceCents": 1800,
+          "spiceLevel": 2,
+          "tags": [],
+          "allergens": {},
+          "spiceAdjustable": true,
+          "available": false,
+          "signature": false,
+          "options": []
+        },
+        {
+          "slug": "stir-fried-noodles",
+          "nameEn": "Stir-Fried Noodles",
+          "nameZh": "牛肉/鸡肉/大虾/蔬菜炒面",
+          "priceCents": 1800,
+          "spiceLevel": 0,
+          "tags": [],
+          "allergens": {},
+          "spiceAdjustable": true,
+          "available": true,
+          "signature": false,
+          "options": [
+            {
+              "id": "protein",
+              "labelEn": "Protein",
+              "labelZh": "选择",
+              "choices": [
+                {
+                  "id": "beef",
+                  "labelEn": "Beef",
+                  "labelZh": "牛肉",
+                  "priceDeltaCents": 0
+                },
+                {
+                  "id": "chicken",
+                  "labelEn": "Chicken",
+                  "labelZh": "鸡肉",
+                  "priceDeltaCents": 0
+                },
+                {
+                  "id": "shrimp",
+                  "labelEn": "Shrimp",
+                  "labelZh": "大虾",
+                  "priceDeltaCents": 0
+                },
+                {
+                  "id": "veggies",
+                  "labelEn": "Veggies",
+                  "labelZh": "蔬菜",
+                  "priceDeltaCents": 0
+                }
+              ]
+            },
+            {
+              "id": "spice",
+              "labelEn": "Spice",
+              "labelZh": "辣度",
+              "choices": [
+                {
+                  "id": "none",
+                  "labelEn": "Not spicy",
+                  "labelZh": "不辣",
+                  "priceDeltaCents": 0
+                },
+                {
+                  "id": "spicy",
+                  "labelEn": "Spicy — cumin & chili",
+                  "labelZh": "加孜然辣椒面",
+                  "priceDeltaCents": 0,
+                  "spiceLevel": 1
+                }
+              ]
+            }
+          ],
+          "description": "Noodles wok-fried with your choice of beef, chicken, or shrimp, along with cabbage, onions, carrots, and bean sprouts. Seasoned with our house soy sauce blend. Make it spicy with cumin and chili powder."
+        }
+      ]
+    },
+    {
+      "slug": "noodles-in-soup",
+      "nameEn": "Noodles in Soup",
+      "nameZh": "热乎乎汤面",
+      "items": [
+        {
+          "slug": "signature-braised-beef-noodle-soup",
+          "nameEn": "Signature Braised Beef Noodle Soup",
+          "nameZh": "招牌红烧牛肉面",
+          "priceCents": 1600,
+          "spiceLevel": 1,
+          "tags": [],
+          "allergens": {},
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": true,
+          "options": [],
+          "description": "A rich broth made with nearly 15 spices and our house-made Sichuan chili paste. Beef is slow-braised until tender and served with noodles and A choy greens, then garnished with cilantro and green onions."
+        },
+        {
+          "slug": "braised-beef-tendon-noodle-soup",
+          "nameEn": "Braised Beef Tendon Noodle Soup",
+          "nameZh": "红烧牛筋面",
+          "priceCents": 1600,
+          "spiceLevel": 1,
+          "tags": [],
+          "allergens": {},
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": [],
+          "description": "A rich broth made with nearly 15 spices and our house-made Sichuan chili paste. Beef tendon is slow-braised until tender and served with noodles and A choy greens, then garnished with cilantro and green onions."
+        },
+        {
+          "slug": "braised-pork-intestine-noodle-soup",
+          "nameEn": "Braised Pork Intestines Noodle Soup",
+          "nameZh": "安逸肥肠汤面",
+          "priceCents": 1600,
+          "spiceLevel": 1,
+          "tags": [],
+          "allergens": {},
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": [],
+          "description": "A rich broth made with nearly 15 spices and our house-made Sichuan chili paste. Pork intestine is slow-braised until tender and served with noodles and A choy greens, then garnished with cilantro and green onions."
+        },
+        {
+          "slug": "clear-broth-beef-noodle-soup",
+          "nameEn": "Clear Broth Beef Noodle Soup",
+          "nameZh": "港式清汤牛腩面",
+          "priceCents": 1800,
+          "spiceLevel": 0,
+          "tags": [],
+          "allergens": {},
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": [],
+          "description": "Noodles in a clear broth slow-simmered with beef, daikon, and spices, served with thick-cut strips of tender beef brisket. Finished with green onions, crispy garlic, and finely chopped celery."
+        },
+        {
+          "slug": "chicken-mushroom-noodle-soup",
+          "nameEn": "Chicken Noodle Soup with Mushrooms",
+          "nameZh": "菌菇鸡汤面",
+          "priceCents": 1800,
+          "spiceLevel": 0,
+          "tags": [],
+          "allergens": {},
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": []
+        }
+      ]
+    },
+    {
+      "slug": "sichuan-wontons",
+      "nameEn": "House-Made Sichuan Dumplings",
+      "nameZh": "川味抄手",
+      "note": "Choose 14 small pork dumplings or 6 large pork and shrimp — the same price.",
+      "items": [
+        {
+          "slug": "wontons-in-red-chili-oil",
+          "nameEn": "Sichuan Dumplings with Red Chili Oil",
+          "nameZh": "红油抄手",
+          "priceCents": 1300,
+          "spiceLevel": 2,
+          "tags": [],
+          "allergens": {},
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": true,
+          "options": [
+            {
+              "id": "size",
+              "labelEn": "Dumplings",
+              "labelZh": "抄手",
+              "choices": [
+                {
+                  "id": "small-pork",
+                  "labelEn": "14 small pork",
+                  "labelZh": "猪肉小抄手 14个",
+                  "priceDeltaCents": 0
+                },
+                {
+                  "id": "large-pork-shrimp",
+                  "labelEn": "6 large pork & shrimp",
+                  "labelZh": "猪肉+虾大抄手 6个",
+                  "priceDeltaCents": 0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "wontons-in-sesame-sauce",
+          "nameEn": "Sichuan Dumplings with Sesame Sauce",
+          "nameZh": "蒜泥麻酱抄手",
+          "priceCents": 1300,
+          "spiceLevel": 2,
+          "tags": [],
+          "allergens": {
+            "nuts": "contains"
+          },
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": [
+            {
+              "id": "size",
+              "labelEn": "Dumplings",
+              "labelZh": "抄手",
+              "choices": [
+                {
+                  "id": "small-pork",
+                  "labelEn": "14 small pork",
+                  "labelZh": "猪肉小抄手 14个",
+                  "priceDeltaCents": 0
+                },
+                {
+                  "id": "large-pork-shrimp",
+                  "labelEn": "6 large pork & shrimp",
+                  "labelZh": "猪肉+虾大抄手 6个",
+                  "priceDeltaCents": 0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "wontons-in-chicken-soup",
+          "nameEn": "Sichuan Dumplings in Chicken Soup",
+          "nameZh": "鸡汤抄手",
+          "priceCents": 1300,
+          "spiceLevel": 0,
+          "tags": [],
+          "allergens": {},
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": [
+            {
+              "id": "size",
+              "labelEn": "Dumplings",
+              "labelZh": "抄手",
+              "choices": [
+                {
+                  "id": "small-pork",
+                  "labelEn": "14 small pork",
+                  "labelZh": "猪肉小抄手 14个",
+                  "priceDeltaCents": 0
+                },
+                {
+                  "id": "large-pork-shrimp",
+                  "labelEn": "6 large pork & shrimp",
+                  "labelZh": "猪肉+虾大抄手 6个",
+                  "priceDeltaCents": 0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "shrimp-and-pork-wonton-noodle-soup",
+          "nameEn": "Shrimp & Pork Wonton Noodle Soup",
+          "nameZh": "港式云吞面",
+          "priceCents": 1500,
+          "spiceLevel": 0,
+          "tags": [
+            "seafood"
+          ],
+          "allergens": {},
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": []
+        }
+      ]
+    },
+    {
+      "slug": "something-special",
+      "nameEn": "Something Special",
+      "nameZh": "有那么一点特色的面",
+      "note": "Noodles from further afield — and a few of our own inventions.",
+      "items": [
+        {
+          "slug": "seafood-noodles-in-satay-broth",
+          "nameEn": "Seafood Noodles in Rich Satay Broth",
+          "nameZh": "海鲜沙茶浓汤面",
+          "priceCents": 2200,
+          "spiceLevel": 0,
+          "tags": [
+            "seafood"
+          ],
+          "allergens": {},
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": []
+        },
+        {
+          "slug": "hand-pulled-noodles-hot-chili-oil",
+          "nameEn": "Hand-Pulled Noodles with Hot Chili Oil",
+          "nameZh": "陕西油泼面",
+          "priceCents": 1000,
+          "spiceLevel": 1,
+          "tags": [
+            "vegetarian"
+          ],
+          "allergens": {},
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": []
+        },
+        {
+          "slug": "biangbiang-noodles",
+          "nameEn": "BiangBiang Noodles",
+          "nameZh": "油泼面重磅升级版",
+          "priceCents": 1800,
+          "spiceLevel": 1,
+          "tags": [],
+          "allergens": {},
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": []
+        },
+        {
+          "slug": "creamy-mushroom-chicken-noodles",
+          "nameEn": "Creamy Mushroom and Chicken Noodles",
+          "nameZh": "奶油蘑菇鸡肉面",
+          "priceCents": 2000,
+          "spiceLevel": 0,
+          "tags": [],
+          "allergens": {},
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": []
+        }
+      ]
+    },
+    {
+      "slug": "leshan-fried-skewers",
+      "nameEn": "Leshan Fried Skewers",
+      "nameZh": "乐山油炸",
+      "note": "Every skewer is seasoned with a spice mix that contains peanut — it cannot be left off.",
+      "items": [
+        {
+          "slug": "beef-skewers",
+          "nameEn": "Beef",
+          "nameZh": "牛肉",
+          "priceCents": 600,
+          "spiceLevel": 3,
+          "tags": [],
+          "allergens": {
+            "nuts": "contains"
+          },
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "portion": "6 skewers",
+          "options": [
+            {
+              "id": "spice",
+              "labelEn": "Seasoning",
+              "labelZh": "辣度",
+              "choices": [
+                {
+                  "id": "hot",
+                  "labelEn": "Very spicy",
+                  "labelZh": "特辣",
+                  "priceDeltaCents": 0,
+                  "spiceLevel": 3
+                },
+                {
+                  "id": "mild",
+                  "labelEn": "Mildly spicy",
+                  "labelZh": "微辣",
+                  "priceDeltaCents": 0,
+                  "spiceLevel": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "pork-belly-skewers",
+          "nameEn": "Pork Belly",
+          "nameZh": "猪五花",
+          "priceCents": 600,
+          "spiceLevel": 3,
+          "tags": [],
+          "allergens": {
+            "nuts": "contains"
+          },
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "portion": "8 skewers",
+          "options": [
+            {
+              "id": "spice",
+              "labelEn": "Seasoning",
+              "labelZh": "辣度",
+              "choices": [
+                {
+                  "id": "hot",
+                  "labelEn": "Very spicy",
+                  "labelZh": "特辣",
+                  "priceDeltaCents": 0,
+                  "spiceLevel": 3
+                },
+                {
+                  "id": "mild",
+                  "labelEn": "Mildly spicy",
+                  "labelZh": "微辣",
+                  "priceDeltaCents": 0,
+                  "spiceLevel": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "pork-intestine-skewers",
+          "nameEn": "Pork Intestines",
+          "nameZh": "肥肠",
+          "priceCents": 600,
+          "spiceLevel": 3,
+          "tags": [],
+          "allergens": {
+            "nuts": "contains"
+          },
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "portion": "3 skewers",
+          "options": [
+            {
+              "id": "spice",
+              "labelEn": "Seasoning",
+              "labelZh": "辣度",
+              "choices": [
+                {
+                  "id": "hot",
+                  "labelEn": "Very spicy",
+                  "labelZh": "特辣",
+                  "priceDeltaCents": 0,
+                  "spiceLevel": 3
+                },
+                {
+                  "id": "mild",
+                  "labelEn": "Mildly spicy",
+                  "labelZh": "微辣",
+                  "priceDeltaCents": 0,
+                  "spiceLevel": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "chicken-winglet-skewers",
+          "nameEn": "Chicken Winglets",
+          "nameZh": "鸡中翅",
+          "priceCents": 600,
+          "spiceLevel": 3,
+          "tags": [],
+          "allergens": {
+            "nuts": "contains"
+          },
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "portion": "2 skewers",
+          "options": [
+            {
+              "id": "spice",
+              "labelEn": "Seasoning",
+              "labelZh": "辣度",
+              "choices": [
+                {
+                  "id": "hot",
+                  "labelEn": "Very spicy",
+                  "labelZh": "特辣",
+                  "priceDeltaCents": 0,
+                  "spiceLevel": 3
+                },
+                {
+                  "id": "mild",
+                  "labelEn": "Mildly spicy",
+                  "labelZh": "微辣",
+                  "priceDeltaCents": 0,
+                  "spiceLevel": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "chicken-gristle-skewers",
+          "nameEn": "Chicken Gristle",
+          "nameZh": "鸡脆骨",
+          "priceCents": 500,
+          "spiceLevel": 3,
+          "tags": [],
+          "allergens": {
+            "nuts": "contains"
+          },
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "portion": "3 skewers",
+          "options": [
+            {
+              "id": "spice",
+              "labelEn": "Seasoning",
+              "labelZh": "辣度",
+              "choices": [
+                {
+                  "id": "hot",
+                  "labelEn": "Very spicy",
+                  "labelZh": "特辣",
+                  "priceDeltaCents": 0,
+                  "spiceLevel": 3
+                },
+                {
+                  "id": "mild",
+                  "labelEn": "Mildly spicy",
+                  "labelZh": "微辣",
+                  "priceDeltaCents": 0,
+                  "spiceLevel": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "chicken-gizzard-skewers",
+          "nameEn": "Chicken Gizzard",
+          "nameZh": "郡肝",
+          "priceCents": 500,
+          "spiceLevel": 3,
+          "tags": [],
+          "allergens": {
+            "nuts": "contains"
+          },
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "portion": "4 skewers",
+          "options": [
+            {
+              "id": "spice",
+              "labelEn": "Seasoning",
+              "labelZh": "辣度",
+              "choices": [
+                {
+                  "id": "hot",
+                  "labelEn": "Very spicy",
+                  "labelZh": "特辣",
+                  "priceDeltaCents": 0,
+                  "spiceLevel": 3
+                },
+                {
+                  "id": "mild",
+                  "labelEn": "Mildly spicy",
+                  "labelZh": "微辣",
+                  "priceDeltaCents": 0,
+                  "spiceLevel": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "sweet-sausage-skewers",
+          "nameEn": "Sweet Sausage",
+          "nameZh": "小甜肠",
+          "priceCents": 500,
+          "spiceLevel": 1,
+          "tags": [],
+          "allergens": {
+            "nuts": "contains"
+          },
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": [
+            {
+              "id": "spice",
+              "labelEn": "Seasoning",
+              "labelZh": "辣度",
+              "choices": [
+                {
+                  "id": "hot",
+                  "labelEn": "Spicy",
+                  "labelZh": "辣",
+                  "priceDeltaCents": 0,
+                  "spiceLevel": 1
+                },
+                {
+                  "id": "none",
+                  "labelEn": "Not spicy",
+                  "labelZh": "不辣",
+                  "priceDeltaCents": 0,
+                  "spiceLevel": 0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "ham-sausage-skewers",
+          "nameEn": "Chinese Ham Sausage",
+          "nameZh": "双汇火腿肠",
+          "priceCents": 600,
+          "spiceLevel": 1,
+          "tags": [],
+          "allergens": {
+            "nuts": "contains"
+          },
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "portion": "2 skewers",
+          "options": [
+            {
+              "id": "spice",
+              "labelEn": "Seasoning",
+              "labelZh": "辣度",
+              "choices": [
+                {
+                  "id": "hot",
+                  "labelEn": "Spicy",
+                  "labelZh": "辣",
+                  "priceDeltaCents": 0,
+                  "spiceLevel": 1
+                },
+                {
+                  "id": "none",
+                  "labelEn": "Not spicy",
+                  "labelZh": "不辣",
+                  "priceDeltaCents": 0,
+                  "spiceLevel": 0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "corn-skewers",
+          "nameEn": "Corn",
+          "nameZh": "玉米",
+          "priceCents": 500,
+          "spiceLevel": 1,
+          "tags": [],
+          "allergens": {
+            "nuts": "contains"
+          },
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "portion": "5 skewers",
+          "options": [
+            {
+              "id": "spice",
+              "labelEn": "Seasoning",
+              "labelZh": "辣度",
+              "choices": [
+                {
+                  "id": "hot",
+                  "labelEn": "Spicy",
+                  "labelZh": "辣",
+                  "priceDeltaCents": 0,
+                  "spiceLevel": 1
+                },
+                {
+                  "id": "none",
+                  "labelEn": "Not spicy",
+                  "labelZh": "不辣",
+                  "priceDeltaCents": 0,
+                  "spiceLevel": 0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "cauliflower-skewers",
+          "nameEn": "Cauliflower",
+          "nameZh": "花菜",
+          "priceCents": 300,
+          "spiceLevel": 1,
+          "tags": [],
+          "allergens": {
+            "nuts": "contains"
+          },
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "portion": "6 skewers",
+          "options": [
+            {
+              "id": "spice",
+              "labelEn": "Seasoning",
+              "labelZh": "辣度",
+              "choices": [
+                {
+                  "id": "hot",
+                  "labelEn": "Spicy",
+                  "labelZh": "辣",
+                  "priceDeltaCents": 0,
+                  "spiceLevel": 1
+                },
+                {
+                  "id": "none",
+                  "labelEn": "Not spicy",
+                  "labelZh": "不辣",
+                  "priceDeltaCents": 0,
+                  "spiceLevel": 0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "squid-ball-skewers",
+          "nameEn": "Squid Balls",
+          "nameZh": "花枝丸",
+          "priceCents": 500,
+          "spiceLevel": 1,
+          "tags": [
+            "seafood"
+          ],
+          "allergens": {
+            "nuts": "contains"
+          },
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "portion": "3 skewers",
+          "options": [
+            {
+              "id": "spice",
+              "labelEn": "Seasoning",
+              "labelZh": "辣度",
+              "choices": [
+                {
+                  "id": "hot",
+                  "labelEn": "Spicy",
+                  "labelZh": "辣",
+                  "priceDeltaCents": 0,
+                  "spiceLevel": 1
+                },
+                {
+                  "id": "none",
+                  "labelEn": "Not spicy",
+                  "labelZh": "不辣",
+                  "priceDeltaCents": 0,
+                  "spiceLevel": 0
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "appetizers",
+      "nameEn": "Appetizers",
+      "nameZh": "前菜",
+      "items": [
+        {
+          "slug": "spicy-beef-jerky",
+          "nameEn": "Spicy Beef Jerky",
+          "nameZh": "冷吃牛肉",
+          "priceCents": 1200,
+          "spiceLevel": 3,
+          "tags": [],
+          "allergens": {},
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": []
+        },
+        {
+          "slug": "popcorn-chicken",
+          "nameEn": "Popcorn Chicken",
+          "nameZh": "盐酥鸡",
+          "priceCents": 1200,
+          "spiceLevel": 0,
+          "tags": [],
+          "allergens": {
+            "nuts": "contains"
+          },
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": []
+        },
+        {
+          "slug": "crispy-pork-strips",
+          "nameEn": "Crispy Pork Strips with Sichuan Peppercorn",
+          "nameZh": "川味小酥肉",
+          "priceCents": 1000,
+          "spiceLevel": 0,
+          "tags": [],
+          "allergens": {},
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": []
+        },
+        {
+          "slug": "spicy-chicken-gizzard",
+          "nameEn": "Spicy Chicken Gizzard",
+          "nameZh": "麻辣鸡胗",
+          "priceCents": 1000,
+          "spiceLevel": 2,
+          "tags": [],
+          "allergens": {},
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": []
+        },
+        {
+          "slug": "chicken-in-chili-oil",
+          "nameEn": "Chicken in Chili Oil and Roasted Pepper Sauce",
+          "nameZh": "红油烧椒口水鸡",
+          "priceCents": 1000,
+          "spiceLevel": 1,
+          "tags": [],
+          "allergens": {
+            "nuts": "removable"
+          },
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": []
+        },
+        {
+          "slug": "preserved-eggs-roasted-pepper",
+          "nameEn": "Preserved Eggs with Roasted Pepper Sauce",
+          "nameZh": "烧椒皮蛋",
+          "priceCents": 800,
+          "spiceLevel": 1,
+          "tags": [],
+          "allergens": {},
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": []
+        },
+        {
+          "slug": "happy-cucumber-and-peanuts",
+          "nameEn": "Happy Cucumber and Peanuts",
+          "nameZh": "花生拌黄瓜",
+          "priceCents": 700,
+          "spiceLevel": 1,
+          "tags": [],
+          "allergens": {
+            "nuts": "removable"
+          },
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": []
+        },
+        {
+          "slug": "smashed-cucumber-salad",
+          "nameEn": "Smashed Cucumber Salad",
+          "nameZh": "凉拌小黄瓜",
+          "priceCents": 700,
+          "spiceLevel": 0,
+          "tags": [],
+          "allergens": {},
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": []
+        },
+        {
+          "slug": "spinach-and-peanuts",
+          "nameEn": "Spinach and Peanuts with Chinese Vinaigrette",
+          "nameZh": "老醋菠菜花生米",
+          "priceCents": 800,
+          "spiceLevel": 0,
+          "tags": [],
+          "allergens": {
+            "nuts": "removable",
+            "mustard": "contains"
+          },
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": []
+        }
+      ]
+    },
+    {
+      "slug": "extra-toppings",
+      "nameEn": "Extra Toppings",
+      "nameZh": "加料",
+      "note": "Add any of these to a bowl — order them alongside it.",
+      "items": [
+        {
+          "slug": "extra-braised-beef",
+          "nameEn": "Braised Beef",
+          "nameZh": "红烧牛肉",
+          "priceCents": 500,
+          "spiceLevel": 1,
+          "tags": [],
+          "allergens": {},
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": []
+        },
+        {
+          "slug": "extra-braised-beef-tendon",
+          "nameEn": "Braised Beef Tendon",
+          "nameZh": "红烧牛筋",
+          "priceCents": 500,
+          "spiceLevel": 1,
+          "tags": [],
+          "allergens": {},
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": []
+        },
+        {
+          "slug": "extra-braised-pork-intestine",
+          "nameEn": "Braised Pork Intestines",
+          "nameZh": "红烧肥肠",
+          "priceCents": 500,
+          "spiceLevel": 1,
+          "tags": [],
+          "allergens": {},
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": []
+        },
+        {
+          "slug": "extra-meat-sauce",
+          "nameEn": "Meat Sauce",
+          "nameZh": "肉酱",
+          "priceCents": 500,
+          "spiceLevel": 1,
+          "tags": [],
+          "allergens": {},
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": []
+        },
+        {
+          "slug": "extra-yellow-peas",
+          "nameEn": "Stewed Yellow Peas",
+          "nameZh": "豌豆",
+          "priceCents": 400,
+          "spiceLevel": 0,
+          "tags": [],
+          "allergens": {},
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": []
+        },
+        {
+          "slug": "extra-roasted-pepper-sauce",
+          "nameEn": "Roasted Pepper Sauce",
+          "nameZh": "烧椒酱",
+          "priceCents": 200,
+          "spiceLevel": 0,
+          "tags": [],
+          "allergens": {},
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": []
+        },
+        {
+          "slug": "extra-fried-egg",
+          "nameEn": "Pan-Fried Egg",
+          "nameZh": "煎蛋",
+          "priceCents": 200,
+          "spiceLevel": 0,
+          "tags": [],
+          "allergens": {},
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": []
+        },
+        {
+          "slug": "extra-vegetables",
+          "nameEn": "Vegetables",
+          "nameZh": "青菜",
+          "priceCents": 200,
+          "spiceLevel": 0,
+          "tags": [],
+          "allergens": {},
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": []
+        },
+        {
+          "slug": "extra-noodles",
+          "nameEn": "Extra Noodles",
+          "nameZh": "加面",
+          "priceCents": 200,
+          "spiceLevel": 0,
+          "tags": [],
+          "allergens": {},
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": []
+        }
+      ]
+    },
+    {
+      "slug": "desserts",
+      "nameEn": "Desserts",
+      "nameZh": "甜品",
+      "items": [
+        {
+          "slug": "ice-jelly-osmanthus",
+          "nameEn": "Ice Jelly with Osmanthus Syrup",
+          "nameZh": "蒋三嬢桂花冰粉",
+          "priceCents": 500,
+          "spiceLevel": 0,
+          "tags": [],
+          "allergens": {},
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "options": []
+        },
+        {
+          "slug": "brown-sugar-rice-cakes",
+          "nameEn": "Mini Rice Cakes with Brown Sugar",
+          "nameZh": "红糖流心糍粑",
+          "priceCents": 600,
+          "spiceLevel": 0,
+          "tags": [],
+          "allergens": {},
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "portion": "5 pcs",
+          "options": []
+        },
+        {
+          "slug": "deep-fried-milk",
+          "nameEn": "Deep Fried Milk",
+          "nameZh": "黄金酥脆の炸鲜奶",
+          "priceCents": 600,
+          "spiceLevel": 0,
+          "tags": [],
+          "allergens": {},
+          "spiceAdjustable": false,
+          "available": true,
+          "signature": false,
+          "portion": "4 pcs",
+          "options": []
+        }
+      ]
+    }
+  ]
+}

@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useRef, useState } from "react";
-import { PhotoSlot } from "@/components/media/photo-slot";
 import type { DishMedia as DishMediaData } from "@/content/menu-media";
 
 /** Pointers that can hover. Touch devices never autoplay the loops. */
@@ -18,11 +17,14 @@ const CAN_HOVER = "(hover: hover) and (pointer: fine)";
 export function DishMedia({
   media,
   label,
-  sizes = "(min-width: 1024px) 30vw, 50vw",
+  zh,
+  sizes = "(min-width: 1024px) 23vw, 50vw",
   preload = false,
 }: {
   media: DishMediaData | undefined;
   label: string;
+  /** The dish's Chinese name, set large while it has no photograph. */
+  zh: string;
   /** `sizes` for the photograph; the default fits a card in the dish grid. */
   sizes?: string;
   /** Preload the photograph, for a dish page's hero where it is the LCP image. */
@@ -50,7 +52,7 @@ export function DishMedia({
 
   return (
     <div
-      className="bg-cream-paper relative aspect-[4/5] overflow-hidden"
+      className="bg-paper relative aspect-[4/5] overflow-hidden"
       onPointerEnter={media?.video ? start : undefined}
       onPointerLeave={media?.video ? stop : undefined}
     >
@@ -66,7 +68,21 @@ export function DishMedia({
             className="object-cover"
           />
         ) : (
-          <PhotoSlot label={label} tone="bg-cream-paper" labelTone="text-ink/70" />
+          // Until the shoot: the dish's name set in heavy Chinese type on soft
+          // red, so an unphotographed dish reads as a designed tile, not a gap.
+          <div
+            role="img"
+            aria-label={label}
+            className="bg-brand-soft flex h-full items-center justify-center p-6 text-center"
+          >
+            <span
+              lang="zh"
+              aria-hidden="true"
+              className="font-cjk text-brand text-[clamp(1.4rem,2.6vw,2.1rem)] leading-tight font-black tracking-[0.06em] text-balance"
+            >
+              {zh}
+            </span>
+          </div>
         )}
       </div>
 

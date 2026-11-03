@@ -22,22 +22,30 @@
     "fonts": "node scripts/subset-fonts.mjs",
     "brushes": "node scripts/generate-brushes.mjs",
     "ornaments": "node scripts/generate-ornaments.mjs",
-    "textures": "node scripts/generate-textures.mjs"
+    "textures": "node scripts/generate-textures.mjs",
+    "db:migrate": "node --env-file=.env.local scripts/migrate.mjs"
   },
   "dependencies": {
+    "@vercel/functions": "^3.9.11",
     "gsap": "^3.15.0",
     "lenis": "^1.3.26",
     "next": "16.3.4",
+    "pg": "^8.23.1",
     "react": "19.2.8",
     "react-dom": "19.2.8",
+    "server-only": "^0.0.1",
+    "stripe": "^23.0.0",
+    "web-push": "^3.6.7",
     "zod": "^4.6.1"
   },
   "devDependencies": {
     "@resvg/resvg-js": "^2.6.2",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^22.20.2",
+    "@types/pg": "^8.23.1",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
+    "@types/web-push": "^3.6.4",
     "eslint": "^9.39.5",
     "eslint-config-next": "16.3.4",
     "eslint-config-prettier": "^10.1.8",

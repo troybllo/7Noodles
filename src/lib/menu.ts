@@ -1,68 +1,28 @@
-import { z } from "zod";
-import source from "../../data/menu-source.json";
+import source from "../../data/menu.json";
+import type { MenuCategoryData, MenuData, MenuItem } from "./menu-schema";
 import type { Cents } from "./money";
+
+export type { MenuChoice, MenuItem, MenuOption, MenuTag } from "./menu-schema";
+import type { MenuChoice, MenuOption } from "./menu-schema";
 
 /**
  * The menu, as the site reads it.
  *
- * Today this is the capture of the restaurant's own published menu in
- * data/menu-source.json. When the database goes in, the bodies of these
- * functions change and nothing that calls them does — which is why pages never
- * import the JSON directly.
+ * Today this is the owner's own menu, transcribed into data/menu.json. When
+ * the database goes in, the bodies of these functions change and nothing that
+ * calls them does — which is why pages never import the JSON directly.
  *
- * The data is validated when this module loads. A malformed price or a
- * duplicated slug fails the build, not a customer's page load.
+ * The JSON is validated at build time against src/lib/menu-schema.ts (see
+ * next.config.ts), not here: this module reaches the browser through the cart.
  */
 
-const tagSchema = z.enum(["vegetarian", "vegan"]);
-
-const itemSchema = z.object({
-  slug: z.string().regex(/^[a-z0-9-]+$/),
-  nameEn: z.string().min(1),
-  nameZh: z.string().min(1),
-  priceCents: z.number().int().nonnegative(),
-  spiceLevel: z.number().int().min(0).max(3),
-  tags: z.array(tagSchema),
-  /**
-   * Written by the kitchen, never by us: ingredients matter to anyone with an
-   * allergy. Absent for every dish today, and each page shows these sections
-   * only once they exist.
-   */
-  description: z.string().min(1).optional(),
-  ingredients: z.array(z.string().min(1)).min(1).optional(),
-});
-
-const categorySchema = z.object({
-  slug: z.string().regex(/^[a-z0-9-]+$/),
-  nameEn: z.string().min(1),
-  nameZh: z.string().min(1),
-  items: z.array(itemSchema).min(1),
-});
-
-const menuSchema = z
-  .object({ categories: z.array(categorySchema).min(1) })
-  .refine(
-    (menu) => new Set(menu.categories.map((c) => c.slug)).size === menu.categories.length,
-    { message: "Category slugs must be unique" },
-  )
-  .refine(
-    (menu) => {
-      const slugs = menu.categories.flatMap((c) => c.items.map((i) => i.slug));
-      return new Set(slugs).size === slugs.length;
-    },
-    { message: "Item slugs must be unique across the menu" },
-  );
-
-export type MenuTag = z.infer<typeof tagSchema>;
-export type MenuItem = z.infer<typeof itemSchema>;
-
-export type MenuCategory = z.infer<typeof categorySchema> & {
+export type MenuCategory = MenuCategoryData & {
   itemCount: number;
   minPriceCents: Cents;
   maxPriceCents: Cents;
 };
 
-const menu = menuSchema.parse(source);
+const menu = source as unknown as MenuData;
 
 const categories: MenuCategory[] = menu.categories.map((category) => {
   const prices = category.items.map((item) => item.priceCents);
@@ -118,4 +78,36 @@ export function findDish(
     if (item) return { category, item };
   }
   return undefined;
+}
+
+/** A dish's choices as option id → choice id. */
+export type Selection = Record<string, string>;
+
+/** The first choice of every option, which is what the kitchen makes unasked. */
+export function defaultSelection(item: MenuItem): Selection {
+  return Object.fromEntries(
+    item.options.map((option) => [option.id, option.choices[0]!.id]),
+  );
+}
+
+/**
+ * The chosen choice for each of a dish's options, in the dish's option order,
+ * or undefined if the selection names an option or choice the dish does not
+ * have or leaves one out. A cart saved before the menu changed fails here and
+ * is dropped rather than sent to the kitchen half-understood.
+ */
+export function resolveSelection(
+  item: MenuItem,
+  selection: Selection,
+): { option: MenuOption; choice: MenuChoice }[] | undefined {
+  if (Object.keys(selection).length !== item.options.length) return undefined;
+  const resolved: { option: MenuOption; choice: MenuChoice }[] = [];
+  for (const option of item.options) {
+    const choice = option.choices.find(
+      (candidate) => candidate.id === selection[option.id],
+    );
+    if (!choice) return undefined;
+    resolved.push({ option, choice });
+  }
+  return resolved;
 }

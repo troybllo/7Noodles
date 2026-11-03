@@ -1,4 +1,20 @@
 import type { NextConfig } from "next";
+import menu from "./data/menu.json";
+import { menuSchema } from "./src/lib/menu-schema";
+
+/**
+ * The menu is checked here, once, when the site builds or the dev server
+ * starts: a malformed price, a duplicated slug or a missing field fails the
+ * build. The site itself reads the JSON without re-checking it, so the
+ * validator never ships to the browser (see src/lib/menu-schema.ts).
+ */
+const checked = menuSchema.safeParse(menu);
+if (!checked.success) {
+  const issues = checked.error.issues
+    .map((issue) => `  ${issue.path.join(".")}: ${issue.message}`)
+    .join("\n");
+  throw new Error(`data/menu.json is invalid:\n${issues}`);
+}
 
 /**
  * A Content-Security-Policy is deliberately absent until the third-party
@@ -32,7 +48,11 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     // Contact became Locations when the navigation took the mockup's labels.
-    return [{ source: "/contact", destination: "/locations", permanent: true }];
+    return [
+      { source: "/contact", destination: "/locations", permanent: true },
+      // Sustainability became Events at the client's request.
+      { source: "/sustainability", destination: "/events", permanent: true },
+    ];
   },
   async headers() {
     return [{ source: "/:path*", headers: [...securityHeaders] }];

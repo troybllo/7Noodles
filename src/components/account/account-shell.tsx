@@ -1,13 +1,11 @@
 import type { ReactNode } from "react";
-import { InkArt } from "@/components/brand/ink-art";
-import { StampedText } from "@/components/hand/stamped-text";
+import { Panda7 } from "@/components/brand/panda-7";
 import { TapedFrame } from "@/components/hand/taped-frame";
 import { PageTransition } from "@/components/motion/page-transition";
 
 /**
- * The frame shared by the account pages: the red tiger stalking across cream
- * paper on one side, and the page's content on a taped sheet on the other.
- * On phones the tiger sits small above the sheet.
+ * The frame shared by the account pages: the title and the red panda on one
+ * side, and the page's content on a sheet of paper taped down on the other.
  */
 export function AccountShell({
   id,
@@ -25,24 +23,19 @@ export function AccountShell({
       <main
         id="main"
         data-nav-theme="light"
-        className="paper-cream text-ink relative overflow-hidden px-6 pt-28 pb-24 md:px-10"
+        className="bg-paper text-brand relative overflow-hidden px-6 pt-32 pb-24 md:px-10"
       >
         <div className="mx-auto grid max-w-[1200px] items-center gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
           <div>
-            <h1 className="font-poster text-[clamp(2.5rem,6vw,5rem)] leading-[0.95] uppercase">
-              <StampedText tone="text-ink" shadow="text-chili">
-                {title}
-              </StampedText>
-            </h1>
-            <p className="font-hand mt-4 max-w-[30ch] text-xl leading-snug">{lede}</p>
-            <InkArt
-              art="tiger"
-              className="mt-6 w-full max-w-[13rem] sm:max-w-[20rem] lg:mt-8 lg:max-w-none"
-            />
+            <h1 className="font-display text-display">{title}</h1>
+            <p className="text-brand-deep text-lede mt-5 max-w-[34ch] leading-relaxed">
+              {lede}
+            </p>
+            <Panda7 pose="wave" alt="" className="mt-10 hidden w-48 lg:block" sizes="12rem" />
           </div>
 
           <TapedFrame tilt={1} className="text-base">
-            <div className="px-6 py-8 md:px-10">{children}</div>
+            <div className="bg-paper px-6 py-8 md:px-10">{children}</div>
           </TapedFrame>
         </div>
       </main>

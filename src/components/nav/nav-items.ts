@@ -15,9 +15,7 @@ export type NavItem = NavLink & {
 /**
  * The primary navigation, labelled as in the approved hero mockup.
  *
- * Every link goes somewhere real. Sustainability has no content yet, so its page
- * says so plainly until the owner supplies it. The Chinese labels need a native
- * review.
+ * Every link goes somewhere real. The Chinese labels need a native review.
  */
 export const NAV_ITEMS: NavItem[] = [
   {
@@ -35,10 +33,13 @@ export const NAV_ITEMS: NavItem[] = [
   },
   { href: "/menu", label: "Menus", zh: "菜单" },
   {
-    href: "/sustainability",
-    label: "Sustainability",
-    zh: "可持续",
-    children: [{ href: "/sustainability", label: "Our approach", zh: "我们的做法" }],
+    href: "/events",
+    label: "Events",
+    zh: "活动",
+    children: [
+      { href: "/events#upcoming", label: "What's on", zh: "近期活动" },
+      { href: "/events#past", label: "Past events", zh: "往期回顾" },
+    ],
   },
   { href: "/locations", label: "Locations", zh: "门店" },
   {
@@ -47,6 +48,7 @@ export const NAV_ITEMS: NavItem[] = [
     zh: "探索",
     children: [
       { href: "/about", label: "Our story", zh: "品牌故事" },
+      { href: "/#chapters", label: "How to eat dry noodles", zh: "干拌面怎么吃" },
       { href: "/#showcase", label: "What to order", zh: "招牌推荐" },
       { href: "/#reviews", label: "Reviews", zh: "食客评价" },
     ],

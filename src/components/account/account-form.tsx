@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useId, useState } from "react";
 import { z } from "zod";
-import { TapedFrame } from "@/components/hand/taped-frame";
 import { Field, INPUT } from "@/components/ui/field";
 import { CONTACT } from "@/content/contact";
 
@@ -117,26 +116,26 @@ export function AccountForm({ mode }: { mode: Mode }) {
             {[1, 2, 3].map((step) => (
               <span
                 key={step}
-                className={`h-1.5 w-8 rounded-full ${step <= rating.score ? "bg-chili" : "bg-ink/15"}`}
+                className={`h-1.5 w-8 rounded-full ${step <= rating.score ? "bg-brand" : "bg-brand/15"}`}
               />
             ))}
           </span>
-          <span className="font-hand text-base">Password: {rating.label}</span>
+          <span className="text-sm">Password: {rating.label}</span>
         </div>
       ) : null}
 
       <button
         type="submit"
-        className="bg-ink text-cream mt-2 h-13 rounded-full font-mono text-lg transition-transform hover:-translate-y-0.5 active:translate-y-px"
+        className="bg-brand text-paper hover:bg-brand-deep mt-2 h-13 rounded-full text-base font-semibold transition-colors"
       >
         {register ? "Create account" : "Sign in"}
       </button>
 
-      <p className="font-hand text-lg">
+      <p className="text-sm">
         {register ? "Already have an account? " : "New here? "}
         <Link
           href={register ? "/account/sign-in" : "/account/register"}
-          className="decoration-chili font-bold underline decoration-2 underline-offset-4"
+          className="decoration-brand-deep font-semibold underline decoration-2 underline-offset-4"
         >
           {register ? "Sign in" : "Create an account"}
         </Link>
@@ -144,10 +143,10 @@ export function AccountForm({ mode }: { mode: Mode }) {
 
       <div aria-live="polite">
         {submitted ? (
-          <TapedFrame tape="top" tilt={-1} className="text-sm">
+          <div className="border-brand/30 rounded-sm border-2 border-dashed text-sm">
             <div className="flex flex-col gap-3 px-5 py-5">
-              <p className="font-poster text-xl uppercase">Accounts are on their way</p>
-              <p className="font-hand text-lg leading-snug">
+              <p className="font-display text-xl">Accounts are on their way</p>
+              <p className="leading-relaxed">
                 Accounts open together with online ordering, so nothing has been saved
                 yet. Until then you can order for pickup without one, or call us on{" "}
                 <a href={CONTACT.phone.href} className="font-bold underline">
@@ -157,12 +156,12 @@ export function AccountForm({ mode }: { mode: Mode }) {
               </p>
               <Link
                 href="/order"
-                className="bg-chili text-cream inline-flex h-11 items-center self-start rounded-full px-6 font-mono"
+                className="bg-brand-deep text-paper inline-flex h-11 items-center self-start rounded-full px-6 text-sm font-semibold"
               >
                 Order for pickup
               </Link>
             </div>
-          </TapedFrame>
+          </div>
         ) : null}
       </div>
     </form>

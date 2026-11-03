@@ -1,25 +1,15 @@
 # Font provenance
 
-Both files are subsets cut by `pnpm fonts` (scripts/subset-fonts.mjs), which
-records the pinned source of each face. Anything added here must be recorded
-below before it ships.
+## noto-sans-sc-subset.woff2
 
-## ma-shan-zheng-subset.woff2
+Noto Sans SC (variable, weights 100–900), SIL Open Font License 1.1, from the
+google/fonts repository (`ofl/notosanssc/NotoSansSC[wght].ttf`), checksummed in
+`scripts/subset-fonts.mjs`.
 
-| | |
-|---|---|
-| Face | Ma Shan Zheng, by Ma Shan Zheng |
-| Source | Google Fonts, pinned v18 |
-| Licence | SIL Open Font License 1.1 |
-| Used for | Brush lettering: 豌杂, section marks and the menu's category names |
+Cut down to only the Chinese characters the site sets — collected from `src/`
+and `data/menu.json` by the script, listed in `noto-sans-sc-subset.glyphs.txt`
+— with the weight axis kept, so one ~63 KB file serves every weight. Re-run
+`pnpm fonts` after adding Chinese copy; `src/app/fonts.test.ts` fails until you
+do.
 
-## zhi-mang-xing-subset.woff2
-
-| | |
-|---|---|
-| Face | Zhi Mang Xing, by the Zhi Mang Xing Project Authors |
-| Source | google/fonts repository at a pinned commit, checksummed |
-| Licence | SIL Open Font License 1.1 |
-| Used for | Handwritten Chinese in the hero's notes |
-
-Both licences permit embedding and subsetting for commercial web use.
+Latin text is set in Inter Tight, served through next/font.

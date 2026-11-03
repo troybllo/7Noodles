@@ -1,8 +1,8 @@
 /**
  * The three dishes in the showcase.
  *
- * Names, families and prices are taken verbatim from data/menu-source.json,
- * captured from the restaurant's own menu. One dish per family — a bowl, a
+ * Names, families and prices are taken verbatim from data/menu.json, the
+ * owner's own menu. One dish per family — a bowl, a
  * wonton and a skewer — so the section shows the kitchen's range rather than
  * three bowls of noodles.
  *
@@ -17,37 +17,37 @@ export type ShowcaseDish = {
   family: string;
   priceCents: number;
   /** Which panel ground this dish sits on. */
-  ground: "ink" | "chili" | "cream";
+  ground: "ink" | "chili" | "bone";
   /** What the photograph in this panel should be. */
   shot: string;
 };
 
 export const SHOWCASE: ShowcaseDish[] = [
   {
-    slug: "signature-wanza-noodles-with-minced-pork-yellow-peas",
-    nameZh: "招牌干馏豌杂面",
-    nameEn: "Signature Wanza Noodles",
-    family: "Dry Noodles",
-    priceCents: 1600,
+    slug: "wanza-noodles",
+    nameZh: "招牌豌杂面",
+    nameEn: "Wanza Noodles",
+    family: "Traditional Xiaomian",
+    priceCents: 1500,
     ground: "ink",
     shot: "Wanza noodles, overhead, chopsticks lifting",
   },
   {
-    slug: "wonton-in-red-chili-oil",
+    slug: "wontons-in-red-chili-oil",
     nameZh: "红油抄手",
-    nameEn: "Wonton in Red Chili Oil",
-    family: "Wonton",
-    priceCents: 1400,
+    nameEn: "Sichuan Dumplings with Red Chili Oil",
+    family: "House-Made Sichuan Dumplings",
+    priceCents: 1300,
     ground: "chili",
     shot: "Wontons in red oil, close, three-quarter",
   },
   {
-    slug: "beef-skewers-6-pcs",
-    nameZh: "牛肉串",
+    slug: "beef-skewers",
+    nameZh: "牛肉",
     nameEn: "Beef Skewers",
-    family: "Crispy Fried Skewer",
-    priceCents: 650,
-    ground: "cream",
+    family: "Leshan Fried Skewers",
+    priceCents: 600,
+    ground: "bone",
     shot: "Beef skewers in hand, against dark",
   },
 ];

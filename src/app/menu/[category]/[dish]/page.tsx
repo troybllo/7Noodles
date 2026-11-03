@@ -1,15 +1,14 @@
 import type { Metadata } from "next";
+import { JsonLd } from "@/components/seo/json-ld";
+import { breadcrumbJsonLd, dishJsonLd, pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { ViewTransition } from "react";
 import { notFound } from "next/navigation";
-import { HandUnderline } from "@/components/hand/hand-underline";
-import { StampedText } from "@/components/hand/stamped-text";
-import { TapedFrame } from "@/components/hand/taped-frame";
 import { DishCard } from "@/components/menu/dish-card";
 import { AddToCart } from "@/components/order/add-to-cart";
 import { DishMedia } from "@/components/menu/dish-media";
 import { DishTags } from "@/components/menu/dish-tags";
-import { DragonBackdrop } from "@/components/menu/dragon-backdrop";
+import { AllergyNotice } from "@/components/menu/allergy-notice";
 import { InkRevealGrid } from "@/components/menu/ink-reveal-grid";
 import { CONTACT } from "@/content/contact";
 import { DISH_MEDIA } from "@/content/menu-media";
@@ -34,12 +33,14 @@ export async function generateMetadata({
   if (!found) return {};
   const { category, item } = found;
 
-  return {
+  return pageMetadata({
     title: `${item.nameEn} ${item.nameZh}`,
     description:
       item.description ??
-      `${item.nameEn} (${item.nameZh}), ${formatCad(item.priceCents)}, from the ${category.nameEn.toLowerCase()} at Seven Noodles, Yonge Street, North York.`,
-  };
+      `${item.nameEn} (${item.nameZh}), ${formatCad(item.priceCents)}, from the ${category.nameEn.toLowerCase()} at 7 Noodles 恰小面 on Yonge Street, North York. Order online for pickup.`,
+    path: `/menu/${category.slug}/${item.slug}`,
+    image: DISH_MEDIA[item.slug]?.photo,
+  });
 }
 
 export default async function DishPage({ params }: PageProps<"/menu/[category]/[dish]">) {
@@ -54,10 +55,18 @@ export default async function DishPage({ params }: PageProps<"/menu/[category]/[
       <main
         id="main"
         data-nav-theme="light"
-        className="paper-cream text-ink relative isolate min-h-svh px-6 pt-32 pb-28 md:px-10"
+        className="bg-paper text-brand relative min-h-svh px-6 pt-32 pb-28 md:px-10"
       >
-        <DragonBackdrop tone="cream" />
-
+        <JsonLd
+          data={[
+            dishJsonLd(item, category.slug),
+            breadcrumbJsonLd([
+              { name: "Menu", path: "/menu" },
+              { name: category.nameEn, path: `/menu/${category.slug}` },
+              { name: item.nameEn, path: `/menu/${category.slug}/${item.slug}` },
+            ]),
+          ]}
+        />
         <div className="mx-auto max-w-[1400px]">
           <article className="grid items-center gap-10 lg:grid-cols-2 lg:gap-20">
             {/* Held to a width whose 4:5 height still fits a laptop screen with the
@@ -65,60 +74,58 @@ export default async function DishPage({ params }: PageProps<"/menu/[category]/[
             <div className="w-full lg:max-w-[36rem] lg:justify-self-end">
               {/* Shares its name with the dish's card, so opening a card flies
                   its photograph into this place. */}
-              <TapedFrame tilt={-1.5} className="text-lg">
-                <ViewTransition name={`dish-${item.slug}`} share="morph" default="none">
-                  <DishMedia
-                    media={DISH_MEDIA[item.slug]}
-                    label={item.nameEn}
-                    sizes="(min-width: 1024px) 576px, 100vw"
-                    preload
-                  />
-                </ViewTransition>
-              </TapedFrame>
+              <ViewTransition name={`dish-${item.slug}`} share="morph" default="none">
+                <DishMedia
+                  media={DISH_MEDIA[item.slug]}
+                  label={item.nameEn}
+                  zh={item.nameZh}
+                  sizes="(min-width: 1024px) 576px, 100vw"
+                  preload
+                />
+              </ViewTransition>
             </div>
 
             <div className="flex flex-col items-start">
               <Link
                 href={`/menu/${category.slug}`}
-                className="group font-hand-caps text-ink relative flex items-baseline gap-2 text-base tracking-[0.06em] uppercase"
+                className="eyebrow text-brand-deep hover:text-brand flex items-baseline gap-2 transition-colors"
               >
                 <span aria-hidden="true">←</span>
-                <span lang="zh" className="font-brush text-chili text-xl normal-case">
+                {category.nameEn}
+                <span lang="zh" className="font-cjk text-brand-deep normal-case">
                   {category.nameZh}
-                </span>
-                <span className="relative">
-                  {category.nameEn}
-                  <HandUnderline
-                    seed={31}
-                    className="text-chili absolute inset-x-0 -bottom-1 h-2"
-                  />
                 </span>
               </Link>
 
-              <p lang="zh" className="text-chili mt-10 text-3xl leading-none font-bold">
+              <p
+                lang="zh"
+                className="font-cjk text-brand-deep mt-10 text-2xl leading-none font-bold tracking-[0.08em]"
+              >
                 {item.nameZh}
               </p>
-              <h1 className="font-poster mt-3 text-[clamp(2.25rem,4vw,3.75rem)] leading-[1.05]">
-                <StampedText tone="text-ink" shadow="text-chili">
-                  {item.nameEn}
-                </StampedText>
+              <h1 className="font-display mt-4 text-[clamp(2.25rem,4.2vw,4rem)] leading-[1.02] tracking-[-0.03em] text-balance">
+                {item.nameEn}
               </h1>
-              <p className="mt-6 font-mono text-3xl">{formatCad(item.priceCents)}</p>
+              <p className="mt-6 flex items-baseline gap-3 text-2xl font-semibold tabular-nums">
+                {formatCad(item.priceCents)}
+                {item.portion ? (
+                  <span className="text-brand-deep text-base font-normal">
+                    {item.portion}
+                  </span>
+                ) : null}
+              </p>
 
-              <DishTags item={item} className="mt-6 text-base" />
+              <DishTags item={item} className="mt-6" />
 
               {item.description ? (
-                <p className="text-ink mt-8 max-w-prose text-base leading-relaxed">
+                <p className="text-brand-deep mt-8 max-w-prose text-base leading-relaxed">
                   {item.description}
                 </p>
               ) : null}
 
               {item.ingredients ? (
                 <section aria-labelledby="ingredients" className="mt-10 w-full">
-                  <h2
-                    id="ingredients"
-                    className="font-hand-caps text-xl tracking-[0.06em] uppercase"
-                  >
+                  <h2 id="ingredients" className="eyebrow text-brand-deep">
                     Ingredients
                   </h2>
                   <ul className="mt-4 grid grid-cols-2 gap-x-8 gap-y-2 text-sm sm:grid-cols-3">
@@ -132,13 +139,27 @@ export default async function DishPage({ params }: PageProps<"/menu/[category]/[
                 </section>
               ) : null}
 
-              <div className="mt-10">
-                <AddToCart slug={item.slug} name={item.nameEn} />
+              {item.options.length > 0 ? (
+                <p className="text-brand-deep mt-8 text-sm">
+                  Choose{" "}
+                  {item.options
+                    .map(
+                      (option) =>
+                        `${option.labelEn.toLowerCase()} (${option.choices.map((c) => c.labelEn.toLowerCase()).join(", ")})`,
+                    )
+                    .join("; ")}
+                  .
+                </p>
+              ) : null}
+
+              <div className="mt-8">
+                <AddToCart item={item} />
               </div>
-              <p className="font-hand text-ink/85 mt-4 text-lg">
+              <p className="text-brand-deep mt-4 text-sm">
                 Pickup at {CONTACT.address.street}, {CONTACT.address.locality}.{" "}
                 {CONTACT.hoursSummary}.
               </p>
+              <AllergyNotice legend={false} className="mt-8 max-w-xl" />
             </div>
           </article>
 
@@ -146,15 +167,15 @@ export default async function DishPage({ params }: PageProps<"/menu/[category]/[
             <section aria-labelledby="more-dishes" className="mt-32">
               <h2
                 id="more-dishes"
-                className="font-poster flex flex-wrap items-baseline gap-x-4 text-[clamp(1.75rem,3vw,2.75rem)] leading-tight"
+                className="font-display text-title border-brand/15 flex flex-wrap items-baseline gap-x-4 border-t pt-8"
               >
-                <span>More from</span>
-                <span lang="zh" className="font-brush text-chili">
+                <span>More {category.nameEn.toLowerCase()}</span>
+                <span lang="zh" className="font-cjk text-brand-deep text-lg font-bold">
                   {category.nameZh}
                 </span>
               </h2>
 
-              <InkRevealGrid className="mt-12 grid grid-cols-2 gap-x-5 gap-y-12 lg:grid-cols-3 lg:gap-x-10">
+              <InkRevealGrid className="mt-12 grid grid-cols-2 gap-x-4 gap-y-12 md:gap-x-6 lg:grid-cols-3">
                 {more.map((dish) => (
                   <DishCard key={dish.slug} item={dish} categorySlug={category.slug} />
                 ))}

@@ -1,14 +1,52 @@
 import { describe, expect, it } from "vitest";
-import source from "../../data/menu-source.json";
-import { getCategories, getCategory, getDish, getMoreDishes } from "./menu";
+import source from "../../data/menu.json";
+import {
+  defaultSelection,
+  getCategories,
+  getCategory,
+  getDish,
+  getMoreDishes,
+  resolveSelection,
+} from "./menu";
+import { menuSchema } from "./menu-schema";
+
+describe("menu data file", () => {
+  it("is valid and already carries every default, so the site can read it unparsed", () => {
+    const parsed = menuSchema.parse(source);
+    expect(source.categories).toEqual(parsed.categories);
+  });
+});
 
 describe("menu data layer", () => {
   const categories = getCategories();
 
-  it("exposes every captured category and item", () => {
+  it("exposes every category and item in the owner's menu", () => {
     expect(categories).toHaveLength(source.categories.length);
     const total = categories.reduce((sum, c) => sum + c.itemCount, 0);
-    expect(total).toBe(source.itemCount);
+    expect(total).toBe(source.categories.reduce((sum, c) => sum + c.items.length, 0));
+  });
+
+  it("leaves drinks off the website", () => {
+    expect(categories.map((c) => c.slug)).not.toContain("drinks");
+    const names = categories.flatMap((c) => c.items.map((i) => i.nameEn.toLowerCase()));
+    for (const drink of ["coke", "sprite", "iced tea", "heineken"]) {
+      expect(
+        names.some((name) => name.includes(drink)),
+        drink,
+      ).toBe(false);
+    }
+  });
+
+  it("marks every skewer as containing nuts, which cannot be left off", () => {
+    for (const item of getCategory("leshan-fried-skewers")?.items ?? []) {
+      expect(item.allergens.nuts, item.slug).toBe("contains");
+    }
+  });
+
+  it("gives every dish's default choices a valid selection", () => {
+    for (const item of categories.flatMap((c) => c.items)) {
+      expect(resolveSelection(item, defaultSelection(item)), item.slug).toBeDefined();
+    }
   });
 
   it("uses unique category slugs", () => {
@@ -38,19 +76,19 @@ describe("menu data layer", () => {
   });
 
   it("finds a category by slug and nothing for an unknown one", () => {
-    expect(getCategory("wonton")?.nameZh).toBe("抄手");
+    expect(getCategory("sichuan-wontons")?.nameZh).toBe("川味抄手");
     expect(getCategory("not-a-category")).toBeUndefined();
   });
 
   it("finds a dish only under its own category", () => {
-    const wonton = getCategory("wonton");
-    const dessert = getCategory("dessert");
+    const wonton = getCategory("sichuan-wontons");
+    const dessert = getCategory("desserts");
     const dish = wonton?.items[0];
     if (!wonton || !dessert || !dish) throw new Error("fixture categories missing");
 
-    expect(getDish("wonton", dish.slug)?.item.slug).toBe(dish.slug);
-    expect(getDish("dessert", dish.slug)).toBeUndefined();
-    expect(getDish("wonton", "not-a-dish")).toBeUndefined();
+    expect(getDish("sichuan-wontons", dish.slug)?.item.slug).toBe(dish.slug);
+    expect(getDish("desserts", dish.slug)).toBeUndefined();
+    expect(getDish("sichuan-wontons", "not-a-dish")).toBeUndefined();
   });
 
   it("suggests other dishes from the same category, never the dish itself", () => {

@@ -8,7 +8,7 @@ import { useCart } from "@/lib/cart-store";
 const SHOW_FOR = 2600;
 
 /**
- * A small taped note confirming a dish was added, with a button to view the
+ * A small note confirming a dish was added, with a button to view the
  * order. Announced to screen readers through a polite live region, which stays
  * in the page so the announcement is never missed.
  */
@@ -36,15 +36,15 @@ export function AddedNote() {
       {visible ? (
         <div
           key={visible.at}
-          className="bg-cream text-ink pointer-events-auto flex rotate-[-1.5deg] items-center gap-4 px-5 py-3 shadow-[0_0.5rem_1.5rem_rgb(20_8_6/0.3)] motion-safe:animate-[note-in_320ms_cubic-bezier(0.16,1,0.3,1)]"
+          className="bg-brand text-paper pointer-events-auto flex items-center gap-4 rounded-full py-3 pr-3 pl-6 shadow-[0_0.5rem_1.5rem_rgb(26_21_18/0.3)] motion-safe:animate-[note-in_320ms_cubic-bezier(0.16,1,0.3,1)]"
         >
-          <span className="font-hand text-lg">
-            Added <strong className="font-bold">{visible.name}</strong> to your order
+          <span className="text-sm">
+            Added <strong className="font-semibold">{visible.name}</strong>
           </span>
           <button
             type="button"
             onClick={() => setOpen(true)}
-            className="font-hand-caps text-chili text-base tracking-[0.06em] uppercase underline decoration-2 underline-offset-4"
+            className="bg-paper text-brand rounded-full px-4 py-1.5 text-xs font-bold tracking-[0.08em] uppercase"
           >
             View
           </button>

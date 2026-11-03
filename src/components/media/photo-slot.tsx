@@ -1,7 +1,7 @@
 type PhotoSlotProps = {
   /** What this frame will hold, so the shot list can be read off the build. */
   label: string;
-  /** Background class. Defaults to the neutral raised ink panel. */
+  /** Background class. Defaults to the raised dark panel. */
   tone?: string;
   /** Label colour, for grounds the default would disappear against. */
   labelTone?: string;
@@ -21,8 +21,8 @@ type PhotoSlotProps = {
  */
 export function PhotoSlot({
   label,
-  tone = "bg-ink-soft",
-  labelTone = "text-cream/60",
+  tone = "bg-brand-deep",
+  labelTone = "text-paper",
   compact = false,
   className,
 }: PhotoSlotProps) {
@@ -31,7 +31,7 @@ export function PhotoSlot({
       className={`relative flex h-full w-full items-end ${tone} ${className ?? ""}`}
       style={{
         backgroundImage:
-          "repeating-linear-gradient(135deg, transparent 0 14px, rgba(242,238,229,0.035) 14px 28px)",
+          "repeating-linear-gradient(135deg, transparent 0 14px, rgba(244,239,230,0.035) 14px 28px)",
       }}
     >
       <p

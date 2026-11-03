@@ -1,6 +1,5 @@
-import { Seal } from "@/components/brand/seal";
-import { StampedText } from "@/components/hand/stamped-text";
 import { TapedFrame } from "@/components/hand/taped-frame";
+import { SectionHeading } from "@/components/ui/section-heading";
 import { REVIEWS, type Review } from "@/content/reviews";
 
 function Stars({ rating }: { rating: number }) {
@@ -8,15 +7,14 @@ function Stars({ rating }: { rating: number }) {
     <span
       role="img"
       aria-label={`Rated ${rating} out of 5`}
-      className="text-chili flex gap-1"
+      className="text-brand flex gap-1"
     >
       {Array.from({ length: 5 }, (_, i) => (
         <svg
           key={i}
           aria-hidden="true"
           viewBox="0 0 20 20"
-          className={`size-4 ${i < rating ? "fill-current" : "fill-ink/15"}`}
-          style={{ filter: "url(#rough-edges)" }}
+          className={`size-4 ${i < rating ? "fill-current" : "fill-brand/15"}`}
         >
           <path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 14.9l-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z" />
         </svg>
@@ -35,20 +33,25 @@ const TILTS = [-2, 1.5, -1, 2.5, -1.5, 1, -2.5, 2] as const;
  * them.
  *
  * No portrait. There are none, and a stock face beside a real name would be a
- * fabrication; the initial sits in a seal instead.
+ * fabrication; the initial sits in a disc instead.
  */
 function Card({ review, index }: { review: Review; index: number }) {
   return (
-    <li className="w-[22rem] shrink-0 py-6">
+    <li className="w-[21rem] shrink-0 py-6">
       <TapedFrame tape="top" tilt={TILTS[index % TILTS.length] ?? 0} className="text-sm">
-        <div className="flex h-[23rem] flex-col items-center justify-between px-7 py-8 text-center">
-          <p className="font-hand text-ink my-auto text-lg leading-snug">{review.text}</p>
-          <div className="mt-6 flex flex-col items-center gap-3">
-            <Stars rating={review.rating} />
-            <Seal character={review.name.charAt(0).toUpperCase()} />
-            <div className="flex flex-col gap-0.5">
-              <span className="font-nav text-ink text-base font-bold">{review.name}</span>
-              <span className="text-ink/70 font-mono text-xs">{review.date}</span>
+        <div className="bg-paper text-brand flex h-[22rem] flex-col justify-between p-7">
+          <Stars rating={review.rating} />
+          <p className="my-6 text-lg leading-snug">“{review.text}”</p>
+          <div className="flex items-center gap-3">
+            <span
+              aria-hidden="true"
+              className="bg-brand-deep text-paper flex size-10 rotate-[-4deg] items-center justify-center rounded-[3px] text-sm font-bold"
+            >
+              {review.name.charAt(0).toUpperCase()}
+            </span>
+            <div className="flex flex-col">
+              <span className="text-sm font-semibold">{review.name}</span>
+              <span className="text-brand-deep text-xs">{review.date}</span>
             </div>
           </div>
         </div>
@@ -73,21 +76,18 @@ export function Reviews() {
     <section
       id="reviews"
       data-nav-theme="light"
-      className="paper-cream relative z-10 w-full py-24 md:py-32"
+      className="bg-brand text-paper relative z-10 w-full py-24 md:py-32"
     >
       <div className="px-6 md:px-10">
         <div className="mx-auto max-w-[1700px]">
-          <p className="font-hand-caps text-ink flex items-baseline gap-3 text-lg tracking-[0.06em] uppercase">
-            <span lang="zh" className="font-brush text-chili text-4xl">
-              食客
-            </span>
-            Reviews
-          </p>
-          <h2 className="font-poster mt-4 max-w-3xl text-[clamp(2rem,4vw,3.75rem)] leading-[1.05]">
-            <StampedText tone="text-ink" shadow="text-chili">
-              What people say after the first bowl.
-            </StampedText>
-          </h2>
+          <SectionHeading
+            eyebrow="Reviews"
+            zh="食客评价"
+            tone="dark"
+            className="max-w-4xl"
+          >
+            What people say after the first bowl.
+          </SectionHeading>
         </div>
       </div>
 

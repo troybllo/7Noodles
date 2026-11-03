@@ -10,9 +10,10 @@ import {
   type ReactNode,
 } from "react";
 import { addItem, parseLines, removeItem, setQuantity, type CartLine } from "./cart";
+import type { Selection } from "./menu";
 
 /** Bumped if the stored shape ever changes, so an old cart is discarded rather than misread. */
-const STORAGE_KEY = "seven-noodles:cart:v1";
+const STORAGE_KEY = "seven-noodles:cart:v2";
 const EMPTY: CartLine[] = [];
 
 let lines: CartLine[] = EMPTY;
@@ -63,9 +64,10 @@ function subscribe(listener: () => void) {
 
 type CartContextValue = {
   lines: CartLine[];
-  add: (slug: string, quantity?: number) => void;
-  set: (slug: string, quantity: number) => void;
-  remove: (slug: string) => void;
+  add: (slug: string, selection?: Selection, quantity?: number) => void;
+  /** Sets a line's quantity by its key (see `lineKey`). */
+  set: (key: string, quantity: number) => void;
+  remove: (key: string) => void;
   clear: () => void;
   /** Whether the cart drawer is open. */
   open: boolean;
@@ -96,14 +98,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const [lastAdded, setLastAdded] = useState<CartContextValue["lastAdded"]>(null);
 
-  const add = useCallback((slug: string, quantity = 1) => {
-    commit(addItem(lines, slug, quantity));
+  const add = useCallback((slug: string, selection: Selection = {}, quantity = 1) => {
+    commit(addItem(lines, slug, selection, quantity));
     setLastAdded({ slug, at: Date.now() });
   }, []);
-  const set = useCallback((slug: string, quantity: number) => {
-    commit(setQuantity(lines, slug, quantity));
+  const set = useCallback((key: string, quantity: number) => {
+    commit(setQuantity(lines, key, quantity));
   }, []);
-  const remove = useCallback((slug: string) => commit(removeItem(lines, slug)), []);
+  const remove = useCallback((key: string) => commit(removeItem(lines, key)), []);
   const clear = useCallback(() => commit(EMPTY), []);
 
   const value = useMemo(

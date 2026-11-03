@@ -3,54 +3,36 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { HandUnderline } from "@/components/hand/hand-underline";
+import { Wordmark } from "@/components/brand/wordmark";
 import { CartButton } from "@/components/order/cart-button";
-import { roughPath } from "@/design/hand-drawn";
 import { isCurrent, NAV_ITEMS, type NavItem } from "./nav-items";
 
-/** A hand-drawn chevron, as a thick rounded tick under the baseline. */
 function Chevron({ open }: { open: boolean }) {
   return (
     <svg
       aria-hidden="true"
-      viewBox="0 0 14 8"
+      viewBox="0 0 12 8"
       fill="none"
       stroke="currentColor"
-      strokeWidth={2.6}
+      strokeWidth={1.6}
       strokeLinecap="round"
       strokeLinejoin="round"
-      className={`h-[0.62em] w-[1.3em] transition-transform duration-[--duration-base] ease-[--ease-out-expo] ${open ? "rotate-180" : ""}`}
+      className={`h-[0.45em] w-[0.7em] opacity-70 transition-transform duration-[--duration-base] ease-[--ease-out-expo] ${open ? "rotate-180" : ""}`}
     >
-      <path d="M1.5 1.8 Q 7 7.4 12.5 1.6" />
+      <path d="M1.5 1.75 6 6.25l4.5-4.5" />
     </svg>
   );
 }
 
-/** A head and shoulders, drawn by hand, for the account link. */
-const ACCOUNT_ICON = [
-  roughPath(
-    [
-      [12, 3],
-      [16.5, 5],
-      [16.5, 10],
-      [12, 12.5],
-      [7.5, 10],
-      [7.5, 5],
-      [12, 3],
-    ],
-    { seed: 21, wobble: 0.3 },
-  ),
-  roughPath(
-    [
-      [3, 22],
-      [5, 16.5],
-      [12, 14.5],
-      [19, 16.5],
-      [21, 22],
-    ],
-    { seed: 23, wobble: 0.3 },
-  ),
-];
+/** A rule under the current page's link, drawn in from the left on hover. */
+function Underline({ current }: { current: boolean }) {
+  return (
+    <span
+      aria-hidden="true"
+      className={`absolute inset-x-0 -bottom-1 h-px origin-left bg-current transition-transform duration-[--duration-base] ease-[--ease-out-expo] group-hover:scale-x-100 ${current ? "scale-x-100" : "scale-x-0"}`}
+    />
+  );
+}
 
 /** How far the page scrolls before the large bar settles into the compact one. */
 const COMPACT_AFTER = 48;
@@ -72,24 +54,55 @@ function useScrolled(): boolean {
   );
 }
 
-/** Eases every size and position change between the large and compact bar. */
+const LARGE = "(min-width: 64rem)";
+
+/** Whether the screen is at the `lg` breakpoint, where the bar can hide. */
+function useLarge(): boolean {
+  return useSyncExternalStore(
+    (onChange) => {
+      const query = window.matchMedia(LARGE);
+      query.addEventListener("change", onChange);
+      return () => query.removeEventListener("change", onChange);
+    },
+    () => window.matchMedia(LARGE).matches,
+    () => false,
+  );
+}
+
+/**
+ * Whether the home page's hero, which carries its own name and navigation,
+ * has scrolled out from under the bar. True on the server so the bar is
+ * hidden in the home page's static HTML rather than flashing over the hero.
+ */
+function useHeroInView(active: boolean): boolean {
+  return useSyncExternalStore(
+    subscribeToScroll,
+    () => {
+      if (!active) return false;
+      const hero = document.getElementById("hero");
+      return hero ? hero.getBoundingClientRect().bottom > 80 : false;
+    },
+    () => active,
+  );
+}
+
+/** Eases every size change between the large and compact bar. */
 const SETTLE = "duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]";
 
-const LABEL = `font-nav relative flex items-center gap-[0.6em] font-bold uppercase [text-shadow:var(--bar-label-shadow)]`;
+const LABEL = "relative flex items-center gap-1.5 uppercase";
 
 /**
  * The site's navigation bar.
  *
- * At the top of the home page it is large and laid out exactly as the approved
- * hero mockup, in the same design units as the hero (`--u`, one pixel of the
- * 1074 x 600 mockup), sitting straight on the red paper. Once the reader
- * scrolls, or on any other page, it settles into a compact bar: the logo
- * shrinks to the left, the links gather to the right, and a surface slides in
- * behind them.
+ * On the home page, on large screens, it stays out of sight while the hero is
+ * on screen — the
+ * hero carries the name and its own row of links, as in the Bokman reference
+ * — and slides in once the hero has scrolled away. On every other page it is
+ * a compact bar from the start.
  *
  * Colour follows whatever is under the bar. On every scroll it looks at the
  * page beneath its own position and takes the nearest `data-nav-theme`
- * (red, dark or light), which sets the label colour and the compact surface.
+ * (dark or light), which sets the label colour and the compact surface.
  * Nested themes work, so a light block inside a dark section reads as light.
  *
  * Below `lg` it is a logo and a Menu button opening a full-screen menu.
@@ -100,6 +113,8 @@ export function TopNav() {
   const pathname = usePathname();
   const scrolled = useScrolled();
   const compact = pathname !== "/" || scrolled;
+  const hidden = useHeroInView(pathname === "/");
+  const large = useLarge();
 
   // Held in state rather than written to the element, so a re-render can
   // never put back the initial value over what the probe found.
@@ -194,7 +209,7 @@ export function TopNav() {
     <>
       <a
         href="#main"
-        className="bg-ink text-rice sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[60] focus:px-4 focus:py-2 focus:text-sm"
+        className="bg-brand text-paper sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[60] focus:rounded-full focus:px-4 focus:py-2 focus:text-sm"
       >
         Skip to content
       </a>
@@ -203,67 +218,42 @@ export function TopNav() {
         ref={header}
         data-bar={bar}
         data-compact={compact}
-        className="frame-stage group/nav fixed inset-x-0 top-0 z-50"
+        // Only large screens hide it: below `lg` the bar holds the Menu button,
+        // and the hero's own row of links is a desktop layout. Hidden, it is
+        // also inert, so keyboard focus never lands on links out of sight.
+        inert={hidden && large}
+        className={`group/nav fixed inset-x-0 top-0 z-50 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${hidden ? "lg:pointer-events-none lg:-translate-y-full" : ""}`}
         // Named so page transitions leave the bar in place; see globals.css.
         style={{ viewTransitionName: "site-nav" }}
       >
         {/* The compact bar's surface, faded in once the page has scrolled. */}
         <div
           aria-hidden="true"
-          className={`pointer-events-none absolute inset-0 bg-transparent opacity-0 backdrop-blur-md transition-opacity group-data-[compact=true]/nav:opacity-100 ${SETTLE}`}
-          style={{ boxShadow: "var(--bar-edge)" }}
+          className={`pointer-events-none absolute inset-0 opacity-0 backdrop-blur-md transition-opacity group-data-[compact=true]/nav:opacity-100 ${SETTLE}`}
+          style={{ background: "var(--bar-surface)", boxShadow: "var(--bar-edge)" }}
         />
 
         <div
           ref={barRow}
           data-nav-bar
-          className={`frame relative mx-auto flex h-20 items-center justify-between px-6 transition-[height] group-data-[compact=true]/nav:h-14 lg:block lg:h-[calc(var(--u)*90)] lg:w-[calc(var(--u)*1074)] lg:px-0 lg:group-data-[compact=true]/nav:h-16 ${SETTLE}`}
+          className={`relative mx-auto flex h-20 max-w-[1400px] items-center justify-between gap-8 px-6 transition-[height] group-data-[compact=true]/nav:h-16 md:px-10 lg:h-24 ${SETTLE}`}
+          style={{ color: "var(--bar-label)" }}
         >
-          {/*
-            The client's logo, used as a mask and filled with the bar's label
-            colour, so it inverts with the bar. Large, the box is placed so the
-            drawn logo lands on the mockup's 211 x 52 at (69, 35); compact, it
-            sits in the bar's left margin.
-          */}
           <Link
             href="/"
-            aria-label="Seven Noodles, home"
+
             onClick={closeAll}
-            className={`block transition-[left,top] lg:absolute lg:top-[calc(var(--u)*26.5)] lg:left-[calc(var(--u)*58.7)] lg:group-data-[compact=true]/nav:top-3 lg:group-data-[compact=true]/nav:left-[calc(var(--u)*40)] ${SETTLE}`}
+            className={`shrink-0 text-[1.6rem] transition-[font-size] group-data-[compact=true]/nav:text-[1.35rem] lg:text-[1.9rem] ${SETTLE}`}
           >
-            <span
-              aria-hidden="true"
-              className={`block aspect-[283/85] h-11 transition-[height] group-data-[compact=true]/nav:h-9 lg:h-[calc(var(--u)*69.2)] lg:group-data-[compact=true]/nav:h-10 ${SETTLE}`}
-              style={{
-                backgroundColor: "var(--bar-label)",
-                maskImage: "url(/brand/logo-horizontal-light.png)",
-                WebkitMaskImage: "url(/brand/logo-horizontal-light.png)",
-                maskSize: "contain",
-                WebkitMaskSize: "contain",
-                maskRepeat: "no-repeat",
-                WebkitMaskRepeat: "no-repeat",
-              }}
-            />
+            <Wordmark />
           </Link>
 
-          <nav
-            aria-label="Primary"
-            className={`hidden transition-[left,top,translate] lg:absolute lg:top-[calc(var(--u)*43)] lg:left-[calc(var(--u)*365)] lg:block lg:group-data-[compact=true]/nav:top-1/2 lg:group-data-[compact=true]/nav:left-[calc(100%-var(--u)*40-6rem)] lg:group-data-[compact=true]/nav:-translate-x-full lg:group-data-[compact=true]/nav:-translate-y-1/2 ${SETTLE}`}
-          >
-            <ul
-              className={`flex w-max items-center gap-[calc(var(--u)*38)] text-[calc(var(--u)*14.5)] whitespace-nowrap transition-[gap,font-size] group-data-[compact=true]/nav:gap-7 group-data-[compact=true]/nav:text-[0.8rem] ${SETTLE}`}
-            >
+          <nav aria-label="Primary" className="hidden lg:block">
+            <ul className="flex items-center gap-10 text-[0.8125rem] tracking-[0.02em] whitespace-nowrap">
               {NAV_ITEMS.map((item, index) => {
                 const current = isCurrent(item, pathname);
                 const menuId = `nav-menu-${index}`;
                 const open = openMenu === item.label;
-                const underline = (
-                  <HandUnderline
-                    seed={index * 13 + 5}
-                    drawn={current}
-                    className="absolute inset-x-0 -bottom-[0.45em] h-[0.5em]"
-                  />
-                );
 
                 return (
                   <li
@@ -279,11 +269,10 @@ export function TopNav() {
                         aria-controls={menuId}
                         onClick={() => setOpenMenu(open ? null : item.label)}
                         className={`group ${LABEL}`}
-                        style={{ color: "var(--bar-label)" }}
                       >
                         {item.label}
                         <Chevron open={open} />
-                        {underline}
+                        <Underline current={current} />
                       </button>
                     ) : (
                       <Link
@@ -291,10 +280,9 @@ export function TopNav() {
                         aria-current={current ? "page" : undefined}
                         onClick={closeAll}
                         className={`group ${LABEL}`}
-                        style={{ color: "var(--bar-label)" }}
                       >
                         {item.label}
-                        {underline}
+                        <Underline current={current} />
                       </Link>
                     )}
 
@@ -304,22 +292,19 @@ export function TopNav() {
                         hidden={!open}
                         // The padding bridges the gap under the label, so the
                         // pointer can travel down without the menu closing.
-                        className="absolute top-full left-[-1.2em] pt-[1.1em]"
+                        className="absolute top-full -left-4 pt-4"
                       >
-                        <ul className="paper-cream text-ink min-w-[15em] rounded-[0.9em] px-[0.4em] py-[0.5em] text-[1.05em] shadow-[0_0.8em_2em_rgb(40_6_4/0.35)]">
-                          {item.children.map((child, childIndex) => (
+                        <ul className="bg-paper text-brand border-brand min-w-56 border p-2">
+                          {item.children.map((child) => (
                             <li key={child.href + child.label}>
                               <Link
                                 href={child.href}
                                 onClick={closeAll}
-                                className="group font-nav relative block rounded-[0.5em] px-[0.8em] py-[0.55em] font-bold whitespace-nowrap"
+                                className="hover:bg-brand hover:text-paper flex items-baseline justify-between gap-6 px-4 py-2.5 text-sm transition-colors"
                               >
-                                <span className="relative">
-                                  {child.label}
-                                  <HandUnderline
-                                    seed={index * 29 + childIndex * 7 + 3}
-                                    className="text-chili absolute inset-x-0 -bottom-[0.35em] h-[0.45em]"
-                                  />
+                                {child.label}
+                                <span lang="zh" className="font-cjk text-xs">
+                                  {child.zh}
                                 </span>
                               </Link>
                             </li>
@@ -333,44 +318,41 @@ export function TopNav() {
             </ul>
           </nav>
 
-          {/*
-            The order and the account. Large, the bowl sits after the last link
-            at the mockup's scale; compact, both gather at the right edge.
-          */}
-          <div
-            className={`flex items-center gap-5 transition-[left,top,translate] lg:absolute lg:top-[calc(var(--u)*41)] lg:left-[calc(var(--u)*1016)] lg:h-[calc(var(--u)*20)] lg:group-data-[compact=true]/nav:top-1/2 lg:group-data-[compact=true]/nav:left-[calc(100%-var(--u)*40)] lg:group-data-[compact=true]/nav:h-6 lg:group-data-[compact=true]/nav:-translate-x-full lg:group-data-[compact=true]/nav:-translate-y-1/2 ${SETTLE}`}
-          >
+          <div className="flex items-center gap-5">
             <Link
               href="/account"
               aria-label="Your account"
               onClick={closeAll}
-              className="hidden h-6 lg:group-data-[compact=true]/nav:block"
-              style={{ color: "var(--bar-label)" }}
+              className="hidden size-6 lg:block"
             >
               <svg
                 aria-hidden="true"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth={2}
+                strokeWidth={1.6}
                 strokeLinecap="round"
-                strokeLinejoin="round"
-                className="h-full w-auto"
+                className="size-full"
               >
-                {ACCOUNT_ICON.map((d) => (
-                  <path key={d} d={d} />
-                ))}
+                <circle cx="12" cy="8" r="4" />
+                <path d="M4 21c1.2-4 4.3-6 8-6s6.8 2 8 6" />
               </svg>
             </Link>
-            <CartButton className="h-6 lg:h-full" />
+            <Link
+              href="/order"
+              onClick={closeAll}
+              className="hidden h-8 items-center rounded-full border border-current px-5 text-[0.75rem] tracking-[0.14em] uppercase transition-colors hover:bg-[var(--bar-label)] hover:text-[var(--bar-surface)] lg:inline-flex"
+            >
+              Order now
+            </Link>
+            <CartButton className="h-6" />
 
             <button
               type="button"
               onClick={() => setMobileOpen((value) => !value)}
               aria-expanded={mobileOpen}
               aria-controls="mobile-nav"
-              className="font-nav text-sm font-bold tracking-[0.06em] uppercase lg:hidden"
-              style={{ color: "var(--bar-label)" }}
+              className="text-sm font-semibold tracking-[0.08em] uppercase lg:hidden"
             >
               {mobileOpen ? "Close" : "Menu"}
             </button>
@@ -381,7 +363,7 @@ export function TopNav() {
       <div
         id="mobile-nav"
         hidden={!mobileOpen}
-        className="paper-red text-cream fixed inset-0 z-40 overflow-y-auto px-8 pt-28 pb-12 lg:hidden"
+        className="bg-brand text-paper fixed inset-0 z-40 overflow-y-auto px-8 pt-28 pb-12 lg:hidden"
       >
         <ul className="flex flex-col gap-7">
           {NAV_ITEMS.map((item) => (
@@ -389,20 +371,18 @@ export function TopNav() {
               {item.children ? (
                 <>
                   <p className="flex items-baseline gap-3">
-                    <span className="font-poster text-parchment text-4xl uppercase">
-                      {item.label}
-                    </span>
-                    <span lang="zh" className="text-cream/80 text-lg">
+                    <span className="font-display text-4xl">{item.label}</span>
+                    <span lang="zh" className="font-cjk text-paper text-base font-black">
                       {item.zh}
                     </span>
                   </p>
-                  <ul className="mt-2 flex flex-col gap-1.5 pl-1">
+                  <ul className="mt-3 flex flex-col gap-2 pl-1">
                     {item.children.map((child) => (
                       <li key={child.href + child.label}>
                         <Link
                           href={child.href}
                           onClick={closeAll}
-                          className="font-nav text-cream text-lg font-bold"
+                          className="text-paper text-lg"
                         >
                           {child.label}
                         </Link>
@@ -416,10 +396,8 @@ export function TopNav() {
                   onClick={closeAll}
                   className="flex items-baseline gap-3"
                 >
-                  <span className="font-poster text-parchment text-4xl uppercase">
-                    {item.label}
-                  </span>
-                  <span lang="zh" className="text-cream/80 text-lg">
+                  <span className="font-display text-4xl">{item.label}</span>
+                  <span lang="zh" className="font-cjk text-paper text-base font-black">
                     {item.zh}
                   </span>
                 </Link>
@@ -432,10 +410,8 @@ export function TopNav() {
               onClick={closeAll}
               className="flex items-baseline gap-3"
             >
-              <span className="font-poster text-parchment text-4xl uppercase">
-                Account
-              </span>
-              <span lang="zh" className="text-cream/80 text-lg">
+              <span className="font-display text-4xl">Account</span>
+              <span lang="zh" className="font-cjk text-paper text-base font-black">
                 账户
               </span>
             </Link>

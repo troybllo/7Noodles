@@ -4,10 +4,11 @@ import Link from "next/link";
 import { totals } from "@/lib/cart";
 import { useCart } from "@/lib/cart-store";
 import { formatCad } from "@/lib/money";
+import { TapedFrame } from "@/components/hand/taped-frame";
 
 /**
- * The running order beside the ordering menu: a taped note on desktop that
- * stays in view, and a bar pinned to the bottom of the screen on phones.
+ * The running order beside the ordering menu: a slip of paper taped up on
+ * desktop that stays in view, and a bar pinned to the bottom of the screen on phones.
  * Both open the full order in the drawer.
  */
 export function OrderSummary() {
@@ -17,46 +18,47 @@ export function OrderSummary() {
 
   return (
     <>
-      <aside
-        aria-label="Your order"
-        className="bg-cream text-ink sticky top-24 hidden rotate-[1deg] flex-col gap-4 p-6 shadow-[0_0.5rem_1.5rem_rgb(20_8_6/0.25)] lg:flex"
-      >
-        <h2 className="font-poster text-2xl uppercase">Your order</h2>
-        <p className="font-hand text-lg">
-          {empty
-            ? "Add a dish to start."
-            : `${sum.itemCount} ${sum.itemCount === 1 ? "dish" : "dishes"}`}
-        </p>
-        <dl className="flex flex-col gap-1 font-mono text-sm">
-          <div className="flex justify-between">
-            <dt>Subtotal</dt>
-            <dd>{formatCad(sum.subtotalCents)}</dd>
+      <aside aria-label="Your order" className="sticky top-36 hidden lg:block">
+        <TapedFrame tape="top" tilt={1} className="text-sm">
+          <div className="bg-paper text-brand flex flex-col gap-4 p-6">
+            <h2 className="font-display text-2xl">Your order</h2>
+            <p className="text-brand-deep text-sm">
+              {empty
+                ? "Add a dish to start."
+                : `${sum.itemCount} ${sum.itemCount === 1 ? "dish" : "dishes"}`}
+            </p>
+            <dl className="flex flex-col gap-1 text-sm tabular-nums">
+              <div className="flex justify-between">
+                <dt>Subtotal</dt>
+                <dd>{formatCad(sum.subtotalCents)}</dd>
+              </div>
+              <div className="flex justify-between">
+                <dt>HST</dt>
+                <dd>{formatCad(sum.taxCents)}</dd>
+              </div>
+              <div className="border-brand/20 mt-1 flex justify-between border-t pt-2 text-base font-semibold">
+                <dt>Total</dt>
+                <dd>{formatCad(sum.totalCents)}</dd>
+              </div>
+            </dl>
+            <button
+              type="button"
+              onClick={() => setOpen(true)}
+              disabled={empty}
+              className="border-brand/30 hover:border-brand h-11 rounded-full border text-sm font-semibold transition-colors disabled:opacity-40"
+            >
+              View order
+            </button>
+            {empty ? null : (
+              <Link
+                href="/checkout"
+                className="bg-brand-deep text-paper inline-flex h-12 items-center justify-center rounded-full text-sm font-semibold transition-colors hover:bg-[#5e150c]"
+              >
+                Checkout
+              </Link>
+            )}
           </div>
-          <div className="flex justify-between">
-            <dt>HST</dt>
-            <dd>{formatCad(sum.taxCents)}</dd>
-          </div>
-          <div className="border-ink/30 mt-1 flex justify-between border-t pt-2 text-base">
-            <dt>Total</dt>
-            <dd>{formatCad(sum.totalCents)}</dd>
-          </div>
-        </dl>
-        <button
-          type="button"
-          onClick={() => setOpen(true)}
-          disabled={empty}
-          className="border-ink h-11 rounded-full border-2 font-mono disabled:opacity-40"
-        >
-          View order
-        </button>
-        {empty ? null : (
-          <Link
-            href="/checkout"
-            className="bg-ink text-cream inline-flex h-12 items-center justify-center rounded-full font-mono"
-          >
-            Checkout
-          </Link>
-        )}
+        </TapedFrame>
       </aside>
 
       {empty ? null : (
@@ -64,12 +66,12 @@ export function OrderSummary() {
           <button
             type="button"
             onClick={() => setOpen(true)}
-            className="bg-ink text-cream flex h-14 w-full items-center justify-between rounded-full px-6 font-mono shadow-[0_0.5rem_1.5rem_rgb(20_8_6/0.35)]"
+            className="bg-brand text-paper flex h-14 w-full items-center justify-between rounded-full px-6 text-sm font-semibold shadow-[0_0.5rem_1.5rem_rgb(26_21_18/0.35)]"
           >
             <span>
               View order · {sum.itemCount} {sum.itemCount === 1 ? "dish" : "dishes"}
             </span>
-            <span>{formatCad(sum.totalCents)}</span>
+            <span className="tabular-nums">{formatCad(sum.totalCents)}</span>
           </button>
         </div>
       )}

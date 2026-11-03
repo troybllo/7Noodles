@@ -1,27 +1,30 @@
 # Photograph provenance
 
-The restaurant's own menu photography, copied from its previous ordering
-platform (7noodles.com, served from cdn3.didevelop.com) on 2026-09-13.
+## dishes/
 
-Self-hosted rather than linked: that CDN belongs to the old platform and stops
-serving these files once the subscription is cancelled.
+The restaurant's own shoot, supplied by the client in `7noodle websize/`
+(3456 × 5184 JPEGs, each labelled with the dish in Chinese and English).
 
-Only the restaurant's product photographs were taken. The old site also shows
-customer-uploaded photos; those belong to the customers who took them and are
-not used.
+Every photograph was checked against the menu before use — all labels were
+correct. One shot was chosen per dish, resized to 1200 px wide and converted
+to WebP (quality 78), about 95 KB each. The source file for each is recorded in
+the commit that added it, and `src/content/menu-media.ts` maps slug to file.
 
-These are interim. They stand in until the commissioned shoot.
+The skewers were only photographed as mixed platters, so the skewer section
+uses platter shots (`leshan-skewers-*.webp`) captioned with what is visible,
+never as a single skewer dish.
 
-| File | What it shows | Source size | Note |
-|---|---|---|---|
-| braised-beef-chilli-broth.jpg | Braised beef in chilli broth, branded enamel bowl | 769 x 769 | |
-| beef-noodle-soup.jpg | Beef noodle soup with greens, on wood, dried chillies | 799 x 800 | |
-| mouth-watering-chicken.jpg | Sliced chicken in red chilli oil with peanuts and scallion | 385 x 385 | Lowest resolution; soft on high-density screens at large sizes |
-| tossed-dry-dish.jpg | A dry tossed dish with greens, branded enamel bowl | 846 x 846 | |
+Not used:
 
-Descriptions are of what is visible, not the old platform's labels, which were
-wrong — the braised beef was labelled "Beef Skewers" and the chicken "Wonton".
-Exact menu names for each photograph need confirming with the owner.
+- `DNU*` — the client's "do not use" alternates.
+- `7Noodles__MG_9872–9880` — a cream dessert tray that is not on the menu.
+- Drinks (iced teas, Coconut Sweetie, the fermented rice drink) — drinks are
+  not on the website.
 
-Converted from PNG to JPEG at quality 90–92 with metadata stripped; no
-transparency was present.
+The previous interim photographs, copied from the old ordering platform, were
+retired once the shoot arrived; they remain in git history.
+
+## 7noodle websize/
+
+The client's originals (~250 MB). Kept out of git and out of deploys — see
+`.gitignore` — since only the converted `dishes/` files are served.

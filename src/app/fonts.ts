@@ -1,104 +1,40 @@
-import {
-  Archivo,
-  Fredoka,
-  Gochi_Hand,
-  Kalam,
-  Roboto_Mono,
-  Rubik,
-} from "next/font/google";
+import { Inter, Lora } from "next/font/google";
 import localFont from "next/font/local";
 
 /**
- * Archivo carries both a weight and a width axis, which is what lets display
- * type sit at Black/Expanded while body copy uses the same family at normal
- * width. One family, no second download.
+ * The brand guide's type (data/brand/, page 3): Lora Bold for headings,
+ * Inter Bold for subheadings, Inter for body copy, and Lora Italic as the
+ * decoration face. Both are variable, so one file each covers every weight.
  */
-export const archivo = Archivo({
-  variable: "--font-archivo",
+export const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-  axes: ["wdth"],
+  display: "swap",
+});
+
+export const lora = Lora({
+  variable: "--font-lora",
+  subsets: ["latin"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 
 /**
- * Brush calligraphy, for the restaurant's name and section marks.
+ * The guide's Chinese faces — HelloFont ID MoQu for titles, Canva's Rhyming
+ * Mandarin script and HelloFont ZJ ZhuoHei for body — come with Canva for use
+ * in Canva designs; putting them on a website needs a web licence from the
+ * foundry. Until one is bought, the site sets Chinese in:
  *
- * Self-hosted and cut down to only the characters the site sets — 3.8 KB from
- * a 5.6 MB original. See scripts/subset-fonts.mjs; add characters there and
- * re-run `pnpm fonts` before setting anything new in this face.
- *
- * `display: block` rather than swap: this face carries the brand mark, and a
- * flash of the fallback sans in its place is worse than a beat of nothing.
- * At 3.8 KB the block period is imperceptible.
+ * Noto Sans SC for every Chinese character, from small labels to the huge
+ * 恰小面 in the hero — self-hosted and cut to only the characters the site
+ * sets, with the weight axis kept, so one ~63 KB file serves 400 to 900.
+ * Google's own CSS for this family is ~300 unicode-range rules and a file per
+ * slice. Built by scripts/subset-fonts.mjs (`pnpm fonts`).
  */
-export const maShanZheng = localFont({
-  src: "../../public/fonts/ma-shan-zheng-subset.woff2",
-  variable: "--font-brush-face",
-  display: "block",
-  weight: "400",
+export const notoSansSc = localFont({
+  src: "../../public/fonts/noto-sans-sc-subset.woff2",
+  variable: "--font-noto-sans-sc",
+  weight: "100 900",
   style: "normal",
-});
-
-/**
- * The handmade redesign's faces, each matched against the approved hero
- * mockup by overlaying rendered candidates on its lettering.
- *
- *   Rubik Bold      poster lettering ("7 NOODLES"), worn and roughened in CSS
- *   Kalam           handwritten lines, such as the hero's tagline
- *   Gochi Hand      small handwritten capitals in notes and callouts
- *   Roboto Mono     the typewritten label on buttons
- *   Fredoka         the rounded, chunky navigation
- */
-export const rubik = Rubik({
-  variable: "--font-rubik",
-  weight: "700",
-  subsets: ["latin"],
   display: "swap",
 });
-
-export const kalam = Kalam({
-  variable: "--font-kalam",
-  weight: "400",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-export const gochiHand = Gochi_Hand({
-  variable: "--font-gochi-hand",
-  weight: "400",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-export const robotoMono = Roboto_Mono({
-  variable: "--font-roboto-mono",
-  weight: "400",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-export const fredoka = Fredoka({
-  variable: "--font-fredoka",
-  weight: "700",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-/**
- * Brush handwriting in Chinese, for notes and callouts, subset to the glyphs
- * the site sets; add characters in scripts/subset-fonts.mjs first.
- */
-export const zhiMangXing = localFont({
-  src: "../../public/fonts/zhi-mang-xing-subset.woff2",
-  variable: "--font-hand-cjk-face",
-  display: "swap",
-  weight: "400",
-  style: "normal",
-});
-
-/**
- * Chinese body text is served from the reader's system face until the
- * translation pass, when the same subsetting pipeline will cut a proper one.
- */
-export const CJK_STACK =
-  '"PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans SC", "Noto Sans SC", sans-serif';

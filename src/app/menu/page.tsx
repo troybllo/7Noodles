@@ -1,18 +1,22 @@
 import type { Metadata } from "next";
-import { StampedText } from "@/components/hand/stamped-text";
-import { CategoryCollage } from "@/components/menu/category-collage";
+import { JsonLd } from "@/components/seo/json-ld";
+import { menuJsonLd, pageMetadata } from "@/lib/seo";
+import { AllergyNotice } from "@/components/menu/allergy-notice";
 import { CategoryTabs } from "@/components/menu/category-tabs";
-import { DragonBackdrop } from "@/components/menu/dragon-backdrop";
+import { DishCard } from "@/components/menu/dish-card";
 import { InkRevealGrid } from "@/components/menu/ink-reveal-grid";
-import { MenuOrnaments } from "@/components/menu/menu-ornaments";
-import { getCategories } from "@/lib/menu";
+import { MenuMargins } from "@/components/menu/menu-margins";
 import { PageTransition } from "@/components/motion/page-transition";
+import { Button } from "@/components/ui/button";
+import { SectionHeading } from "@/components/ui/section-heading";
+import { getCategories } from "@/lib/menu";
 
-export const metadata: Metadata = {
-  title: "Menu",
+export const metadata: Metadata = pageMetadata({
+  title: "Menu: Sichuan Noodles, Wontons & Skewers",
   description:
-    "Sichuan and Chongqing noodles, noodle soups, wontons, Leshan fried skewers, cold appetisers, desserts and drinks at Seven Noodles in North York.",
-};
+    "The full menu at 7 Noodles 恰小面 in North York: Chongqing xiaomian, wok-fried chef's specials, noodle soups, Sichuan wontons, Leshan fried skewers, appetizers and desserts, with prices.",
+  path: "/menu",
+});
 
 export default function MenuPage() {
   const categories = getCategories();
@@ -21,57 +25,64 @@ export default function MenuPage() {
     <PageTransition id="menu">
       <main
         id="main"
-        data-nav-theme="red"
-        className="paper-red text-cream relative isolate min-h-svh px-6 pt-32 pb-24 md:px-10"
+        data-nav-theme="light"
+        className="bg-paper text-brand relative min-h-svh px-6 pt-32 pb-28 md:px-10"
       >
-        <DragonBackdrop tone="red" />
-        <MenuOrnaments />
+        <JsonLd data={menuJsonLd()} />
+        <MenuMargins />
+        <div className="relative z-10 mx-auto max-w-[1400px]">
+          <div className="grid gap-10 lg:grid-cols-[1fr_minmax(0,30rem)] lg:items-end">
+            <SectionHeading as="h1" eyebrow="Our menu" zh="菜单">
+              Noodles, wontons &amp; skewers
+            </SectionHeading>
+            <div className="flex flex-col gap-5">
+              <AllergyNotice />
+              <Button href="/order" tone="solid" className="self-start">
+                Order for pickup
+              </Button>
+            </div>
+          </div>
 
-        <div className="relative mx-auto max-w-5xl">
-          <CategoryTabs categories={categories} anchors tone="red" />
+          <CategoryTabs categories={categories} anchors className="mt-14" />
 
-          <header className="mt-14 text-center">
-            <p lang="zh" className="font-brush text-parchment text-5xl leading-none">
-              菜单
-            </p>
-            <h1 className="font-poster mt-3 text-[clamp(3rem,7vw,6rem)] leading-none uppercase">
-              <StampedText>Menu</StampedText>
-            </h1>
-          </header>
-
-          <InkRevealGrid className="mt-20 flex flex-col gap-28 md:gap-36">
-            {categories.map((category, index) => (
+          <div className="mt-10 flex flex-col gap-28 md:gap-36">
+            {categories.map((category) => (
               <section
                 key={category.slug}
                 id={category.slug}
                 aria-labelledby={`${category.slug}-title`}
-                className="scroll-mt-28"
+                className="scroll-mt-36"
               >
-                <header className="mb-10 text-center">
-                  <p
-                    lang="zh"
-                    className="font-brush text-parchment text-4xl leading-none"
-                  >
-                    {category.nameZh}
-                  </p>
-                  <h2
-                    id={`${category.slug}-title`}
-                    className="font-poster mt-3 text-[clamp(1.9rem,3.8vw,3.25rem)] leading-tight uppercase"
-                  >
-                    <StampedText>{category.nameEn}</StampedText>
-                  </h2>
-                  <p className="font-hand text-cream mt-2 text-xl">
-                    {category.itemCount} {category.itemCount === 1 ? "dish" : "dishes"}
-                  </p>
+                <header className="border-brand/15 mb-10 flex flex-col gap-3 border-t pt-8 md:flex-row md:items-end md:justify-between">
+                  <div>
+                    <p
+                      lang="zh"
+                      className="font-cjk text-brand-deep text-base font-bold tracking-[0.15em]"
+                    >
+                      {category.nameZh}
+                    </p>
+                    <h2
+                      id={`${category.slug}-title`}
+                      className="font-display text-title mt-2"
+                    >
+                      {category.nameEn}
+                    </h2>
+                  </div>
+                  {category.note ? (
+                    <p className="text-brand-deep max-w-[46ch] text-sm leading-relaxed md:text-right">
+                      {category.note}
+                    </p>
+                  ) : null}
                 </header>
 
-                <CategoryCollage
-                  category={category}
-                  tilt={index % 2 === 0 ? -1.2 : 1.2}
-                />
+                <InkRevealGrid className="grid grid-cols-2 gap-x-4 gap-y-12 md:gap-x-6 lg:grid-cols-4">
+                  {category.items.map((item) => (
+                    <DishCard key={item.slug} item={item} categorySlug={category.slug} />
+                  ))}
+                </InkRevealGrid>
               </section>
             ))}
-          </InkRevealGrid>
+          </div>
         </div>
       </main>
     </PageTransition>

@@ -27,41 +27,48 @@ export function CartLines({
       <ul className="flex flex-col">
         {priced.map((line) => (
           <li
-            key={line.slug}
-            className="border-ink/20 flex items-start justify-between gap-4 border-b border-dashed py-4"
+            key={line.key}
+            className="border-brand/15 flex items-start justify-between gap-4 border-b py-4"
           >
             <div className="min-w-0">
               <Link
                 href={`/menu/${line.category.slug}/${line.slug}`}
                 {...(onNavigate ? { onClick: onNavigate } : {})}
-                className="font-nav text-ink block leading-snug font-bold hover:underline"
+                className="font-display text-brand block text-lg leading-snug hover:underline"
               >
                 {line.item.nameEn}
               </Link>
-              <span lang="zh" className="text-ink/70 block text-sm">
+              <span lang="zh" className="font-cjk text-brand-deep block text-sm">
                 {line.item.nameZh}
               </span>
+              {line.choices.length > 0 ? (
+                <span className="text-brand-deep mt-1 block text-sm">
+                  {line.choices.map(({ choice }) => choice.labelEn).join(" · ")}
+                </span>
+              ) : null}
               {editable ? (
                 <div className="mt-3">
                   <QuantityStepper
                     size="sm"
                     quantity={line.quantity}
-                    onChange={(next) => set(line.slug, next)}
+                    onChange={(next) => set(line.key, next)}
                     label={line.item.nameEn}
                   />
                 </div>
               ) : (
-                <span className="text-ink/80 mt-1 block font-mono text-sm">
+                <span className="text-brand-deep mt-1 block text-sm tabular-nums">
                   × {line.quantity}
                 </span>
               )}
             </div>
-            <span className="shrink-0 font-mono">{formatCad(line.lineTotalCents)}</span>
+            <span className="shrink-0 tabular-nums">
+              {formatCad(line.lineTotalCents)}
+            </span>
           </li>
         ))}
       </ul>
 
-      <dl className="mt-5 flex flex-col gap-1.5 font-mono text-sm">
+      <dl className="mt-5 flex flex-col gap-1.5 text-sm tabular-nums">
         <div className="flex justify-between">
           <dt>Subtotal</dt>
           <dd>{formatCad(sum.subtotalCents)}</dd>
@@ -70,7 +77,7 @@ export function CartLines({
           <dt>HST (13%)</dt>
           <dd>{formatCad(sum.taxCents)}</dd>
         </div>
-        <div className="border-ink/30 mt-2 flex justify-between border-t pt-3 text-lg">
+        <div className="border-brand/30 mt-2 flex justify-between border-t pt-3 text-lg font-semibold">
           <dt>Total</dt>
           <dd>{formatCad(sum.totalCents)}</dd>
         </div>

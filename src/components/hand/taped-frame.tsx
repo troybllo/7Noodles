@@ -26,7 +26,7 @@ function Tape({ className, style }: { className: string; style?: CSSProperties }
 }
 
 /**
- * Something pressed onto the page like a photograph in a scrapbook: a cream
+ * Something pressed onto the page like a photograph in a scrapbook: a paper
  * paper border, a soft shadow, a slight turn, and tape holding it down.
  *
  * The frame is decoration around its content; the content keeps its own
@@ -41,7 +41,7 @@ export function TapedFrame({
 }: TapedFrameProps) {
   return (
     <div
-      className={`bg-cream relative p-[0.45em] shadow-[0_0.35em_0.9em_rgb(40_20_10/0.22)] ${className ?? ""}`}
+      className={`bg-paper relative p-[0.45em] shadow-[0_0.35em_0.9em_rgb(40_20_10/0.22)] ${className ?? ""}`}
       style={{ rotate: `${tilt}deg`, ...style }}
     >
       {tape === "corners" ? (

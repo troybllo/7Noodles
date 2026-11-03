@@ -34,6 +34,12 @@ export const CONTACT = {
     { day: "Sunday", open: "11:00", close: "22:00" },
   ],
   hoursSummary: "Open daily, 11:00 — 22:00",
+  /**
+   * Shown at checkout. PLACEHOLDER until the owner confirms the restaurant's
+   * own cancellation and refund policy.
+   */
+  orderPolicy:
+    "Need to change or cancel? Call us before your pickup time and we'll sort it out.",
   map: {
     /**
      * Keyless Google Maps embed. It works, but it is not a documented Google

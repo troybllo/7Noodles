@@ -1,17 +1,19 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { LegalPage } from "@/components/legal/legal-page";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Terms & Conditions",
-  description: "The terms for ordering from Seven Noodles.",
-};
+  description: "The terms for ordering from 7 Noodles.",
+  path: "/terms",
+});
 
 export default function TermsPage() {
   return (
     <LegalPage
       id="terms"
       title="Terms & Conditions"
-      zh="条款"
+      zh="服务条款"
       intro="The terms for ordering from us. They will be published here before online ordering opens."
       sections={[
         {

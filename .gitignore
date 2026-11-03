@@ -32,7 +32,7 @@ yarn-error.log*
 
 # env files
 .env*
-!.env.example
+.env.example
 
 # vercel
 .vercel
@@ -40,3 +40,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# The client's original shoot (~250 MB). Only public/photos/dishes is served.
+/public/photos/7noodle websize/
+
+# The client's original brand files from Canva (~60 MB). The site serves
+# optimised copies from public/brand/.
+/data/brand/

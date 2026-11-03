@@ -6,10 +6,10 @@ import { useEffect, useRef } from "react";
 import { totals } from "@/lib/cart";
 import { useCart } from "@/lib/cart-store";
 import { CartLines } from "./cart-lines";
-import { EmptyBowl } from "./empty-bowl";
+import { Panda7 } from "@/components/brand/panda-7";
 
 /**
- * The order, in a panel sliding in from the right on cream paper.
+ * The order, in a panel sliding in from the right.
  *
  * A native modal `<dialog>`: the browser traps focus inside it, makes the page
  * behind inert, closes it on Escape and returns focus to the button that
@@ -42,22 +42,22 @@ export function CartDrawer() {
       onClick={(event) => {
         if (event.target === event.currentTarget) setOpen(false);
       }}
-      className="paper-cream text-ink m-0 ml-auto h-dvh max-h-none w-full max-w-md p-0 shadow-[-1rem_0_3rem_rgb(20_8_6/0.35)] backdrop:bg-[rgb(18_16_14/0.55)] open:flex"
+      className="bg-paper text-brand backdrop:bg-brand/55 m-0 ml-auto h-dvh max-h-none w-full max-w-md p-0 shadow-[-1rem_0_3rem_rgb(26_21_18/0.3)] backdrop:backdrop-blur-sm open:flex"
     >
       <div className="flex w-full flex-col px-6 pt-6 pb-8">
         <div className="flex items-center justify-between">
-          <h2 id="cart-title" className="font-poster text-3xl uppercase">
+          <h2 id="cart-title" className="font-display text-3xl">
             Your order
           </h2>
           <button
             type="button"
             onClick={() => setOpen(false)}
-            className="font-hand-caps text-ink text-base tracking-[0.06em] uppercase underline decoration-2 underline-offset-4"
+            className="text-sm font-semibold underline underline-offset-4"
           >
             Close
           </button>
         </div>
-        <p className="font-hand text-ink/80 mt-1 text-lg">
+        <p className="text-brand-deep mt-1 text-sm">
           {itemCount === 0
             ? "Nothing in the bowl yet."
             : `${itemCount} ${itemCount === 1 ? "dish" : "dishes"} for pickup`}
@@ -65,10 +65,10 @@ export function CartDrawer() {
 
         {itemCount === 0 ? (
           <div className="flex flex-1 flex-col items-center justify-center gap-6 text-center">
-            <EmptyBowl className="text-chili w-40" />
+            <Panda7 pose="eating" alt="" className="w-36" sizes="9rem" />
             <Link
               href="/order"
-              className="bg-ink text-cream inline-flex h-12 items-center rounded-full px-8 font-mono"
+              className="bg-brand text-paper inline-flex h-12 items-center rounded-full px-8 text-sm font-semibold"
             >
               Start an order
             </Link>
@@ -80,7 +80,7 @@ export function CartDrawer() {
             </div>
             <Link
               href="/checkout"
-              className="bg-ink text-cream mt-6 inline-flex h-14 items-center justify-center rounded-full font-mono text-lg transition-transform hover:-translate-y-0.5 active:translate-y-px"
+              className="bg-brand-deep text-paper mt-6 inline-flex h-14 items-center justify-center rounded-full text-base font-semibold transition-colors hover:bg-[#5e150c]"
             >
               Checkout
             </Link>

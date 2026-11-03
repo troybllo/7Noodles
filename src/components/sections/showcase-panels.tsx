@@ -1,7 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import { formatCad } from "@/lib/money";
 import { PhotoSlot } from "@/components/media/photo-slot";
+import { CATEGORY_COVERS, DISH_MEDIA } from "@/content/menu-media";
+import { findDish } from "@/lib/menu";
 import { useExpandingPanels } from "@/components/motion/use-expanding-panels";
 import { SHOWCASE, type ShowcaseDish } from "@/content/showcase";
 
@@ -14,31 +17,28 @@ const HOLD = 1.1;
 /** How long that hand-over takes. */
 const SETTLE = 1.3;
 
-/**
- * The three grounds of the black, white and red palette: ink, red paper and
- * cream paper, each with the text set on it and the tone of its placeholder.
- */
+/** Each panel's ground, the text set on it and the tone of its placeholder. */
 const GROUND: Record<
   ShowcaseDish["ground"],
   { panel: string; text: string; sub: string; shade: string }
 > = {
   ink: {
-    panel: "bg-ink",
-    text: "text-rice",
-    sub: "text-rice/75",
-    shade: "bg-ink-soft",
+    panel: "bg-brand",
+    text: "text-paper",
+    sub: "text-paper",
+    shade: "bg-brand-deep",
   },
   chili: {
-    panel: "paper-red",
-    text: "text-cream",
-    sub: "text-cream/80",
-    shade: "bg-chili-deep",
+    panel: "bg-brand-deep",
+    text: "text-paper",
+    sub: "text-paper",
+    shade: "bg-[#5e150c]",
   },
-  cream: {
-    panel: "paper-cream",
-    text: "text-ink",
-    sub: "text-ink/70",
-    shade: "bg-cream-paper",
+  bone: {
+    panel: "bg-paper",
+    text: "text-brand",
+    sub: "text-brand-deep",
+    shade: "bg-brand-soft",
   },
 };
 
@@ -57,6 +57,12 @@ export function ShowcasePanels() {
       {SHOWCASE.map((dish, index) => {
         const active = index === open;
         const tone = GROUND[dish.ground];
+        // The dish's own photograph, or its category's where it has none (the
+        // skewers are photographed only as a platter).
+        const category = findDish(dish.slug)?.category.slug;
+        const photo =
+          DISH_MEDIA[dish.slug]?.photo ??
+          (category ? CATEGORY_COVERS[category] : undefined);
 
         return (
           <li
@@ -85,8 +91,18 @@ export function ShowcasePanels() {
                 collapsed label is not rendered at all.
               */}
               <span className="block h-[58%] w-full overflow-hidden">
-                <span className="block h-full w-full md:w-[66.6cqw]">
-                  <PhotoSlot label={dish.shot} tone={tone.shade} />
+                <span className="relative block h-full w-full md:w-[66.6cqw]">
+                  {photo ? (
+                    <Image
+                      src={photo.src}
+                      alt={photo.alt}
+                      fill
+                      sizes="(min-width: 768px) 66vw, 100vw"
+                      className="object-cover"
+                    />
+                  ) : (
+                    <PhotoSlot label={dish.shot} tone={tone.shade} />
+                  )}
                 </span>
               </span>
 
@@ -98,19 +114,15 @@ export function ShowcasePanels() {
                     active ? "md:opacity-100 md:delay-150" : "md:opacity-0"
                   }`}
                 >
-                  <span lang="zh" className="text-title leading-none font-bold">
+                  <span lang="zh" className="font-cjk text-2xl leading-none font-bold">
                     {dish.nameZh}
                   </span>
-                  <span className="flex flex-col gap-1">
-                    <span className="font-poster text-xl leading-tight md:text-2xl">
+                  <span className="flex flex-col gap-1.5">
+                    <span className="font-display text-2xl leading-tight md:text-3xl">
                       {dish.nameEn}
                     </span>
-                    <span
-                      className={`font-hand-caps text-sm tracking-[0.06em] uppercase ${tone.sub}`}
-                    >
-                      {dish.family}
-                    </span>
-                    <span className="font-mono text-base">
+                    <span className={`eyebrow ${tone.sub}`}>{dish.family}</span>
+                    <span className="text-base tabular-nums">
                       {formatCad(dish.priceCents)}
                     </span>
                   </span>
@@ -124,7 +136,7 @@ export function ShowcasePanels() {
                 >
                   <span
                     lang="zh"
-                    className="text-lg font-bold tracking-[0.22em] whitespace-nowrap"
+                    className="font-cjk text-lg font-bold tracking-[0.22em] whitespace-nowrap"
                     style={{ writingMode: "vertical-rl" }}
                   >
                     {dish.nameZh}

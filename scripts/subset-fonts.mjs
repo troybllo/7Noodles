@@ -1,155 +1,59 @@
 /**
- * Builds the self-hosted Chinese webfonts.
+ * Builds the self-hosted Chinese webfont.
  *
- * Ma Shan Zheng is 5.6 MB unsubset. Google serves it as 92 unicode-range
- * slices so a browser only fetches what it renders, but shipping the whole
- * family through next/font to set three characters is not a trade worth
- * making. This cuts a woff2 containing only the glyphs the site actually sets.
+ * Noto Sans SC served by Google's CSS API costs a page ~300 `@font-face`
+ * rules (one per unicode-range slice, per weight) — about 100 KB of render-
+ * blocking CSS — plus a font file for every slice a page touches. The site
+ * sets a few hundred distinct characters, so this cuts one variable woff2
+ * holding exactly those, at every weight from 400 to 900.
  *
- * Run with `pnpm fonts`. The output is committed, so a clean checkout builds
- * without reaching the network — CI never depends on a font host being up.
- * Faces shipped in an archive are unpacked with bsdtar (libarchive), which
- * macOS includes; on Linux install libarchive-tools.
+ * The characters are not listed by hand: every Chinese character in src/ and
+ * in data/menu.json is collected, so a new dish or label is covered by
+ * re-running `pnpm fonts`. A test (src/app/fonts.test.ts) fails if the site
+ * sets a character the committed font lacks.
  *
- * When Chinese copy is added, add its characters to the face's glyphs and
- * re-run. The same pipeline covers the full translation pass.
+ * The output is committed, so a clean checkout builds without the network.
  */
 
-import { execFile } from "node:child_process";
 import { createHash } from "node:crypto";
-import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
+import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
-import { promisify } from "node:util";
 import harfbuzz from "harfbuzzjs";
 import subsetFont from "subset-font";
+import { siteGlyphs } from "./site-glyphs.mjs";
 
 const ROOT = join(import.meta.dirname, "..");
-const OUT_DIR = join(ROOT, "public", "fonts");
+const OUT = join(ROOT, "public", "fonts", "noto-sans-sc-subset.woff2");
 
-/**
- * Every character in the menu's category names, read from the menu itself.
- * Written out by hand, a new or renamed category would be easy to miss; derived
- * here, re-running this script is the whole fix.
- */
-const menu = JSON.parse(await readFile(join(ROOT, "data", "menu-source.json"), "utf8"));
-const CATEGORY_GLYPHS = menu.categories.map((category) => category.nameZh).join("");
+/** SIL OFL 1.1. Pinned by checksum so a font revision cannot change the site unnoticed. */
+const SOURCE = {
+  url: "https://raw.githubusercontent.com/google/fonts/main/ofl/notosanssc/NotoSansSC%5Bwght%5D.ttf",
+  sha256: "a3041811a78c361b1de50f953c805e0244951c21c5bd412f7232ef0d899af0da",
+};
 
-/** Each character once, in first-seen order. */
-const unique = (text) => [...new Set([...text])].join("");
+{
+  const glyphs = await siteGlyphs();
+  const response = await fetch(SOURCE.url);
+  if (!response.ok) throw new Error(`${response.status} fetching ${SOURCE.url}`);
+  const original = Buffer.from(await response.arrayBuffer());
+  const sha = createHash("sha256").update(original).digest("hex");
+  if (SOURCE.sha256 && sha !== SOURCE.sha256)
+    throw new Error(`checksum mismatch: ${sha}`);
 
-const FACES = [
-  {
-    family: "Ma Shan Zheng",
-    // Pinned so a font revision cannot silently change the brand mark.
-    source: {
-      url: "https://fonts.gstatic.com/s/mashanzheng/v18/NaPecZTRCLxvwo41b4gvzkXaRMQ.ttf",
-    },
-    file: "ma-shan-zheng-subset.woff2",
-    /**
-     * Every character set in this face, anywhere on the site.
-     *   恰小面 豌杂        the restaurant's name, and the dish over the hero's bowl
-     *   招牌 麻辣鲜香      the showcase and story marks
-     *   菜单 川味 品牌故事 食客  menu, about and reviews headings
-     *   白墨纸红          the colour mosaic's swatch names
-     *   花椒 辣椒          the about page's 麻辣 diagram
-     *   隐私 条款 可持续     the legal and sustainability page marks
-     *   and every category name on the menu, derived above. Dish names stay
-     *   in the reader's system face: they are small, and one of them (嬢) is
-     *   a character this face does not have.
-     */
-    glyphs: unique(
-      `恰小面招牌麻辣鲜香豌杂菜单川味品牌故事食客白墨纸红花椒辣隐私条款可持续${CATEGORY_GLYPHS}`,
-    ),
-  },
-  {
-    family: "Zhi Mang Xing",
-    /**
-     * Brush handwriting for notes and callouts drawn over photographs, matched
-     * against the approved hero mockup. SIL OFL 1.1.
-     *
-     * Taken from the google/fonts repository at a pinned commit and
-     * checksummed: the files Google's CSS API serves for Chinese faces are
-     * partial subsets.
-     */
-    source: {
-      url: "https://raw.githubusercontent.com/google/fonts/b12c22f97f4769802373d8de6a0f4115eabb9a24/ofl/zhimangxing/ZhiMangXing-Regular.ttf",
-      sha256: "644e0cae9b40f0b10ab729a01bd32032e3973bac22be3dccae01bf6ae7fde969",
-    },
-    file: "zhi-mang-xing-subset.woff2",
-    /**
-     *   秘制肉沫 糯糯豌豆  the hero's callouts (src/content/hero.ts)
-     */
-    glyphs: unique("秘制肉沫糯糯豌豆"),
-  },
-];
-
-const run = promisify(execFile);
-const hb = await harfbuzz;
-
-async function download(family, url) {
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error(`${family}: ${response.status} fetching ${url}`);
-  }
-  return Buffer.from(await response.arrayBuffer());
-}
-
-async function load({ family, source }) {
-  const body = await download(family, source.url);
-
-  if (source.sha256) {
-    const actual = createHash("sha256").update(body).digest("hex");
-    if (actual !== source.sha256) {
-      throw new Error(`${family}: checksum mismatch for ${source.url} (got ${actual})`);
-    }
-  }
-  if (!source.entry) return body;
-
-  const dir = await mkdtemp(join(tmpdir(), "subset-fonts-"));
-  try {
-    const archive = join(dir, "source");
-    await writeFile(archive, body);
-    await run("bsdtar", ["-xf", archive, "-C", dir, source.entry]);
-    return await readFile(join(dir, source.entry));
-  } finally {
-    await rm(dir, { recursive: true, force: true });
-  }
-}
-
-/**
- * The subsetter drops characters a face does not contain without complaint,
- * and the browser then sets them in a fallback face. Fail here instead.
- */
-function assertCoverage(family, font, glyphs) {
-  const face = hb.createFace(hb.createBlob(font), 0);
+  // Fail rather than let a character fall back to a system face.
+  const hb = await harfbuzz;
+  const face = hb.createFace(hb.createBlob(original), 0);
   const covered = new Set(face.collectUnicodes());
   face.destroy();
-
-  const missing = [...glyphs].filter((glyph) => !covered.has(glyph.codePointAt(0)));
-  if (missing.length > 0) {
-    throw new Error(`${family} has no glyph for: ${missing.join(" ")}`);
-  }
-}
-
-async function build(face) {
-  const { family, file, glyphs } = face;
-  const original = await load(face);
-  assertCoverage(family, original, glyphs);
+  const missing = [...glyphs].filter((g) => !covered.has(g.codePointAt(0)));
+  if (missing.length)
+    throw new Error(`Noto Sans SC has no glyph for: ${missing.join(" ")}`);
 
   const subset = await subsetFont(original, glyphs, { targetFormat: "woff2" });
-
-  await mkdir(OUT_DIR, { recursive: true });
-  await writeFile(join(OUT_DIR, file), subset);
-
-  const kb = (n) => `${(n / 1024).toFixed(1)} KB`;
-  const saved = (1 - subset.length / original.length) * 100;
+  await mkdir(join(ROOT, "public", "fonts"), { recursive: true });
+  await writeFile(OUT, subset);
+  await writeFile(OUT.replace(/\.woff2$/, ".glyphs.txt"), glyphs + "\n");
   console.log(
-    `${family}: ${kb(original.length)} -> ${kb(subset.length)} ` +
-      `(${saved.toFixed(2)}% smaller, ${[...glyphs].length} glyphs: ${glyphs})`,
+    `Noto Sans SC: ${(original.length / 1024).toFixed(0)} KB -> ${(subset.length / 1024).toFixed(1)} KB, ${[...glyphs].length} glyphs (source sha256 ${sha})`,
   );
-}
-
-for (const face of FACES) {
-  await build(face);
 }

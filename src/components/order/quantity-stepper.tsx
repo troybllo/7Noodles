@@ -6,11 +6,11 @@ type QuantityStepperProps = {
   /** Names the dish, so the buttons read "Remove one Dandan Noodle". */
   label: string;
   size?: "sm" | "md";
-  tone?: "ink" | "cream";
+  tone?: "ink" | "bone";
 };
 
 /**
- * Minus, the count, plus: a pill in the typewriter face. Going below one asks
+ * Minus, the count, plus, in a pill. Going below one asks
  * the parent to remove the dish; the parent decides what that means.
  */
 export function QuantityStepper({
@@ -20,7 +20,7 @@ export function QuantityStepper({
   size = "md",
   tone = "ink",
 }: QuantityStepperProps) {
-  const ring = tone === "ink" ? "border-ink text-ink" : "border-cream text-cream";
+  const ring = tone === "ink" ? "border-brand text-brand" : "border-paper text-paper";
   const box = size === "sm" ? "h-9 text-sm" : "h-11 text-base";
   const button = size === "sm" ? "w-9" : "w-11";
 
@@ -28,7 +28,7 @@ export function QuantityStepper({
     <div
       role="group"
       aria-label={`Quantity of ${label}`}
-      className={`inline-flex items-center rounded-full border-2 font-mono ${ring} ${box}`}
+      className={`inline-flex items-center rounded-full border font-semibold ${ring} ${box}`}
     >
       <button
         type="button"

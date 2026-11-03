@@ -40,7 +40,7 @@ const pad = (value: number) => String(value).padStart(2, "0");
 
 /** The wall-clock date, weekday and minute of the day for `now` in the time zone. */
 function wallClock(now: Date, timeZone: string) {
-  const parts = Object.fromEntries(
+  const parts: Record<string, string> = Object.fromEntries(
     new Intl.DateTimeFormat("en-CA", {
       timeZone,
       year: "numeric",
@@ -100,4 +100,39 @@ export function pickupSlots(
   }
 
   return [];
+}
+
+/**
+ * The instant a slot's value names. Slot values are Toronto wall-clock times
+ * without a zone ("2026-11-14T18:30"); the database stores real instants.
+ * Correct across daylight saving: the offset is read for that very moment.
+ */
+export function slotInstant(value: string): Date {
+  // Strictly the slot format: Date parsing alone accepts far too much.
+  if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(value))
+    throw new Error(`Not a pickup slot: ${value}`);
+  const asUtc = new Date(`${value}:00Z`);
+  if (Number.isNaN(asUtc.getTime())) throw new Error(`Not a pickup slot: ${value}`);
+  const parts: Record<string, string> = Object.fromEntries(
+    new Intl.DateTimeFormat("en-CA", {
+      timeZone: RESTAURANT_TIME_ZONE,
+      hourCycle: "h23",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    })
+      .formatToParts(asUtc)
+      .map((p) => [p.type, p.value]),
+  );
+  const part = (type: string) => Number(parts[type]);
+  const wall = Date.UTC(
+    part("year"),
+    part("month") - 1,
+    part("day"),
+    part("hour"),
+    part("minute"),
+  );
+  return new Date(asUtc.getTime() - (wall - asUtc.getTime()));
 }
