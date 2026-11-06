@@ -24,7 +24,11 @@ export function Field({
       </label>
       {children}
       {error ? (
-        <p id={`${id}-error`} className="text-brand-deep text-sm leading-snug">
+        <p
+          id={`${id}-error`}
+          className="text-brand flex items-start gap-1.5 text-sm leading-snug font-semibold"
+        >
+          <span aria-hidden="true">!</span>
           {error}
         </p>
       ) : null}
@@ -33,4 +37,4 @@ export function Field({
 }
 
 export const INPUT =
-  "border-brand/25 bg-paper focus-visible:border-brand h-12 rounded-xl border px-4 text-base outline-none transition-colors aria-[invalid=true]:border-brand";
+  "border-brand/25 bg-paper h-12 rounded-xl border px-4 text-base transition-colors focus-visible:border-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand aria-[invalid=true]:border-2 aria-[invalid=true]:border-brand";

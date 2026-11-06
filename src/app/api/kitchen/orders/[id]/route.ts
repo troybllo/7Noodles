@@ -1,19 +1,32 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { advanceOrder } from "@/lib/orders/repo";
-import { ORDER_STATUSES, type OrderStatus } from "@/lib/orders/status";
+import { requireKitchen } from "@/lib/orders/require-kitchen";
+import { isOrderStatus } from "@/lib/orders/status";
 
-/** Moves an order on the board: { to: "preparing" | "ready" | ... }. Behind the PIN (proxy.ts). */
+/**
+ * Moves an order on the board: { from, to }. `from` is the status the device
+ * was showing; if another device has moved the order since, this is a 409.
+ */
 export async function POST(
   request: NextRequest,
   ctx: RouteContext<"/api/kitchen/orders/[id]">,
 ) {
+  const denied = await requireKitchen(request);
+  if (denied) return denied;
   const { id } = await ctx.params;
-  const body = (await request.json().catch(() => ({}))) as { to?: string };
-  if (!body.to || !ORDER_STATUSES.includes(body.to as OrderStatus)) {
-    return NextResponse.json({ error: "Unknown status" }, { status: 400 });
+  const body = (await request.json().catch(() => ({}))) as {
+    from?: unknown;
+    to?: unknown;
+  };
+  if (!isOrderStatus(body.from) || !isOrderStatus(body.to)) {
+    return NextResponse.json({ error: "Send { from, to } statuses" }, { status: 400 });
   }
-  const order = await advanceOrder(id, body.to as OrderStatus);
-  if (!order)
-    return NextResponse.json({ error: "That move isn't allowed" }, { status: 409 });
+  const order = await advanceOrder(id, body.from, body.to);
+  if (!order) {
+    return NextResponse.json(
+      { error: "Someone else has already moved this order." },
+      { status: 409 },
+    );
+  }
   return NextResponse.json({ order });
 }

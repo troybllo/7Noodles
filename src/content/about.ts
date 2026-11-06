@@ -12,7 +12,10 @@ export const ABOUT = {
   heading: "Our story",
   headingZh: "品牌故事",
   /** The brand's line, in both languages. */
-  tagline: { en: "Come for a bowl. Stay for a little warmth.", zh: "一筷入魂，恰一碗川味人间" },
+  tagline: {
+    en: "Come for a bowl. Stay for a little warmth.",
+    zh: "一筷入魂，恰一碗川味人间",
+  },
   lede: "In Sichuan and Chongqing, a bowl of noodles is part of everyday life.",
   story: {
     everyday: {

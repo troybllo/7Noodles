@@ -3,7 +3,7 @@ import { Logo } from "@/components/brand/logo";
 import { Panda7 } from "@/components/brand/panda-7";
 import { CONTACT } from "@/content/contact";
 
-/** Either side of the seal in the bottom row, after the Bokman reference. */
+/** The links either side of the mark in the bottom row. */
 const LEFT = [
   { href: "/locations", label: "Contact" },
   { href: "/events", label: "Events" },
@@ -39,9 +39,8 @@ function FooterLink({
 }
 
 /**
- * The foot of every page. Above, Panda 7 with the brand line. Below, one row
- * of small capitals with the logo's round mark at its centre, as Bokman
- * closes its page.
+ * The foot of every page: Panda 7 with the brand line, then one row of links
+ * with the logo's round mark at its centre.
  */
 export function SiteFooter() {
   return (

@@ -8,17 +8,9 @@ import { useReducedMotion } from "./use-reduced-motion";
 type Build = (context: { gsap: typeof gsap; scope: HTMLElement }) => void;
 
 /**
- * Runs a GSAP setup function scoped to an element, and reverts everything it
- * created on unmount.
- *
- * `gsap.context` is what makes the cleanup complete: every tween, timeline and
- * ScrollTrigger created inside `build` is tracked and killed together, which
- * matters under the App Router where a route can mount and unmount repeatedly
- * without a full page load.
- *
- * The setup is skipped entirely when the reader has asked for reduced motion,
- * so components must render their finished, readable state by default and
- * treat animation as an enhancement on top of it.
+ * Runs a GSAP setup scoped to an element in a `gsap.context`, so every tween
+ * and ScrollTrigger it makes is reverted on unmount. Skipped under reduced
+ * motion: components render their finished state, and animation is extra.
  */
 export function useGsap<T extends HTMLElement = HTMLDivElement>(
   build: Build,

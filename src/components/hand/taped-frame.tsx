@@ -15,7 +15,7 @@ function Tape({ className, style }: { className: string; style?: CSSProperties }
   return (
     <span
       aria-hidden="true"
-      className={`pointer-events-none absolute z-10 h-[1.6em] w-[5.5em] bg-[rgb(238_226_196/0.78)] shadow-[0_1px_2px_rgb(40_20_10/0.18)] ${className}`}
+      className={`shadow-tape pointer-events-none absolute z-10 h-[1.6em] w-[5.5em] bg-[rgb(238_226_196/0.78)] ${className}`}
       style={{
         clipPath:
           "polygon(3% 8%, 9% 0, 17% 10%, 26% 2%, 100% 0, 96% 22%, 100% 44%, 95% 66%, 100% 100%, 88% 92%, 79% 100%, 0 100%, 5% 78%, 0 56%, 4% 34%)",
@@ -41,7 +41,7 @@ export function TapedFrame({
 }: TapedFrameProps) {
   return (
     <div
-      className={`bg-paper relative p-[0.45em] shadow-[0_0.35em_0.9em_rgb(40_20_10/0.22)] ${className ?? ""}`}
+      className={`bg-paper shadow-lift relative p-[0.45em] ${className ?? ""}`}
       style={{ rotate: `${tilt}deg`, ...style }}
     >
       {tape === "corners" ? (

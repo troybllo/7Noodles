@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { DURATION, EASE } from "@/components/motion/motion-tokens";
 import { useGsap } from "./use-gsap";
 
 /**
@@ -14,7 +15,7 @@ import { useGsap } from "./use-gsap";
 export function DrawOn({
   children,
   className,
-  duration = 1.6,
+  duration = DURATION.draw,
 }: {
   children: ReactNode;
   className?: string;
@@ -31,7 +32,7 @@ export function DrawOn({
       {
         strokeDashoffset: 0,
         duration: duration / 2,
-        ease: "power2.inOut",
+        ease: EASE.inOut,
         stagger: { amount: duration / 2 },
         scrollTrigger: { trigger: element, start: "top 80%", once: true },
       },

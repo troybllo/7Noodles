@@ -45,6 +45,12 @@ export const HST_RATE = 0.13;
 /** The most of any one dish a single online order can hold. */
 export const MAX_QUANTITY = 20;
 
+/** The largest online order: anything bigger is a catering call, not a pickup. */
+export const MAX_ITEMS = 50;
+
+/** Stripe takes at most 100 line items; HST is one of them. */
+export const MAX_LINES = 40;
+
 const clamp = (quantity: number) =>
   Math.max(0, Math.min(MAX_QUANTITY, Math.floor(quantity)));
 
@@ -145,21 +151,23 @@ const isSelection = (value: unknown): value is Selection =>
   !Array.isArray(value) &&
   Object.values(value).every((choice) => typeof choice === "string");
 
-/** Parses whatever was stored or posted, keeping only well-formed lines. */
+/**
+ * Parses whatever was stored or posted, keeping only well-formed lines and
+ * merging repeats of the same dish and choices, so the per-dish cap holds
+ * however the lines were sent.
+ */
 export function parseLines(value: unknown): CartLine[] {
   if (!Array.isArray(value)) return [];
-  return value.flatMap((entry) => {
-    if (typeof entry !== "object" || entry === null) return [];
+  return value.reduce<CartLine[]>((lines, entry) => {
+    if (typeof entry !== "object" || entry === null) return lines;
     const { slug, selection, quantity } = entry as Partial<CartLine>;
-    if (typeof slug !== "string" || typeof quantity !== "number") return [];
-    const clamped = clamp(quantity);
-    if (clamped === 0) return [];
-    return [
-      {
-        slug,
-        selection: isSelection(selection) ? { ...selection } : {},
-        quantity: clamped,
-      },
-    ];
-  });
+    if (typeof slug !== "string" || typeof quantity !== "number") return lines;
+    return addItem(lines, slug, isSelection(selection) ? { ...selection } : {}, quantity);
+  }, []);
+}
+
+/** Whether an order is small enough to take online. */
+export function withinOrderLimits(lines: CartLine[]): boolean {
+  const items = lines.reduce((sum, line) => sum + line.quantity, 0);
+  return lines.length <= MAX_LINES && items <= MAX_ITEMS;
 }

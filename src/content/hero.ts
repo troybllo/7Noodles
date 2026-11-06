@@ -1,8 +1,4 @@
-/**
- * Hero copy, after the Bokman reference: the name, two photographs, the name
- * again in Chinese, and a row of links beneath. Both photographs are from
- * the restaurant's shoot: the signature wanza, and the signature braised beef.
- */
+/** Hero copy: the name, its two photographs (the signature wanza and braised beef), and the call to action. */
 export const HERO = {
   title: "Seven Noodles",
   nameZh: "恰小面",

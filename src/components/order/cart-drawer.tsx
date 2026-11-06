@@ -1,11 +1,11 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { totals } from "@/lib/cart";
 import { useCart } from "@/lib/cart-store";
 import { CartLines } from "./cart-lines";
+import { Button } from "@/components/ui/button";
 import { Panda7 } from "@/components/brand/panda-7";
 
 /**
@@ -42,7 +42,7 @@ export function CartDrawer() {
       onClick={(event) => {
         if (event.target === event.currentTarget) setOpen(false);
       }}
-      className="bg-paper text-brand backdrop:bg-brand/55 m-0 ml-auto h-dvh max-h-none w-full max-w-md p-0 shadow-[-1rem_0_3rem_rgb(26_21_18/0.3)] backdrop:backdrop-blur-sm open:flex"
+      className="bg-paper text-brand backdrop:bg-brand/55 shadow-drawer m-0 ml-auto h-dvh max-h-none w-full max-w-md p-0 backdrop:backdrop-blur-sm open:flex"
     >
       <div className="flex w-full flex-col px-6 pt-6 pb-8">
         <div className="flex items-center justify-between">
@@ -65,25 +65,24 @@ export function CartDrawer() {
 
         {itemCount === 0 ? (
           <div className="flex flex-1 flex-col items-center justify-center gap-6 text-center">
-            <Panda7 pose="eating" alt="" className="w-36" sizes="9rem" />
-            <Link
-              href="/order"
-              className="bg-brand text-paper inline-flex h-12 items-center rounded-full px-8 text-sm font-semibold"
-            >
+            <Panda7 pose="wave" alt="" className="w-36" sizes="9rem" />
+            <Button href="/order" size="lg" onClick={() => setOpen(false)}>
               Start an order
-            </Link>
+            </Button>
           </div>
         ) : (
           <>
             <div className="-mx-6 mt-4 flex-1 overflow-y-auto px-6">
               <CartLines onNavigate={() => setOpen(false)} />
             </div>
-            <Link
+            <Button
               href="/checkout"
-              className="bg-brand-deep text-paper mt-6 inline-flex h-14 items-center justify-center rounded-full text-base font-semibold transition-colors hover:bg-[#5e150c]"
+              size="xl"
+              className="mt-6"
+              onClick={() => setOpen(false)}
             >
               Checkout
-            </Link>
+            </Button>
           </>
         )}
       </div>

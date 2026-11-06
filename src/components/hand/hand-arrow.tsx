@@ -11,7 +11,7 @@ type HandArrowProps = {
 };
 
 /**
- * An arrow drawn in chalk, after the hero mockup: the line gone over twice with
+ * An arrow drawn in chalk: the line gone over twice with
  * a light hand, so it doubles and frays, ending in an open triangular head
  * lightly filled in.
  *

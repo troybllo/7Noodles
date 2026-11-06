@@ -12,11 +12,7 @@ export type NavItem = NavLink & {
   children?: NavLink[];
 };
 
-/**
- * The primary navigation, labelled as in the approved hero mockup.
- *
- * Every link goes somewhere real. The Chinese labels need a native review.
- */
+/** The primary navigation. */
 export const NAV_ITEMS: NavItem[] = [
   {
     href: "/order",

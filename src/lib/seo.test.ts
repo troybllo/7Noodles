@@ -1,11 +1,19 @@
 import { describe, expect, it } from "vitest";
 import { CONTACT } from "@/content/contact";
 import { getCategories } from "./menu";
-import { absolute, eventsJsonLd, menuJsonLd, pageMetadata, restaurantJsonLd } from "./seo";
+import {
+  absolute,
+  eventsJsonLd,
+  menuJsonLd,
+  pageMetadata,
+  restaurantJsonLd,
+} from "./seo";
 
 describe("structured data", () => {
   it("gives the restaurant's hours for every day it opens", () => {
-    const days = restaurantJsonLd().openingHoursSpecification.flatMap((spec) => spec.dayOfWeek);
+    const days = restaurantJsonLd().openingHoursSpecification.flatMap(
+      (spec) => spec.dayOfWeek,
+    );
     expect(days).toHaveLength(CONTACT.hours.length);
   });
 
@@ -25,7 +33,12 @@ describe("structured data", () => {
 
   it("places events at the restaurant", () => {
     const [event] = eventsJsonLd([
-      { slug: "x", title: "Tasting", date: "2026-11-14", description: "A night of noodles." },
+      {
+        slug: "x",
+        title: "Tasting",
+        date: "2026-11-14",
+        description: "A night of noodles.",
+      },
     ]);
     expect(event?.location["@id"]).toBe(restaurantJsonLd()["@id"]);
     expect(event?.startDate).toBe("2026-11-14");

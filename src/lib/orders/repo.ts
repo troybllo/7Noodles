@@ -67,7 +67,7 @@ export type NewOrder = {
   pickupAt: Date;
 };
 
-/** Saves an order awaiting payment. Retries the short code on the rare clash. */
+/** Saves an order awaiting payment, retrying the short code if it clashes with a live order. */
 export async function createOrder(order: NewOrder): Promise<Order> {
   const id = randomBytes(12).toString("base64url");
   for (let attempt = 0; attempt < 5; attempt++) {
@@ -96,7 +96,7 @@ export async function createOrder(order: NewOrder): Promise<Order> {
       const clash =
         error instanceof Error &&
         "constraint" in error &&
-        error.constraint === "orders_code_key";
+        error.constraint === "orders_live_code";
       if (!clash) throw error;
     }
   }
@@ -113,27 +113,35 @@ export async function attachCheckoutSession(
   );
 }
 
+/** The Stripe checkout session an order was paid through. */
+export type PaidSession = { sessionId: string; orderId: string | undefined };
+
 /**
- * Marks an order paid, once. Stripe can deliver the same event more than once;
- * only the first delivery moves the order and returns it, so the kitchen is
- * alerted exactly once.
+ * Marks an order paid, once. Stripe may deliver an event twice; only the first
+ * delivery moves the order and returns it, so the kitchen is alerted once.
+ * The order id from the session's metadata covers a webhook that arrives
+ * before the session id was saved.
  */
-export async function markPaid(sessionId: string): Promise<Order | null> {
+export async function markPaid({
+  sessionId,
+  orderId,
+}: PaidSession): Promise<Order | null> {
   const { rows } = await db().query<Row>(
-    `update orders set status = 'new', paid_at = now(), updated_at = now()
-     where stripe_session_id = $1 and status = 'pending_payment'
+    `update orders set status = 'new', paid_at = now(), updated_at = now(),
+       stripe_session_id = $1
+     where (stripe_session_id = $1 or id = $2) and status = 'pending_payment'
      returning *`,
-    [sessionId],
+    [sessionId, orderId ?? null],
   );
   return rows[0] ? fromRow(rows[0]) : null;
 }
 
-/** A payment page abandoned or expired: the order never reaches the kitchen. */
-export async function markExpired(sessionId: string): Promise<void> {
+/** An abandoned, expired or failed payment: the order never reaches the kitchen. */
+export async function markUnpaid({ sessionId, orderId }: PaidSession): Promise<void> {
   await db().query(
     `update orders set status = 'cancelled', updated_at = now()
-     where stripe_session_id = $1 and status = 'pending_payment'`,
-    [sessionId],
+     where (stripe_session_id = $1 or id = $2) and status = 'pending_payment'`,
+    [sessionId, orderId ?? null],
   );
 }
 
@@ -144,23 +152,33 @@ export async function getOrder(id: string): Promise<Order | null> {
 
 /** Paid orders still in play, plus anything picked up in the last two hours. */
 export async function listKitchenOrders(): Promise<Order[]> {
+  // Two indexed reads rather than one OR, which would scan every order ever.
   const { rows } = await db().query<Row>(
-    `select * from orders
-     where status in ('new', 'preparing', 'ready')
-        or (status = 'picked_up' and updated_at > now() - interval '2 hours')
-     order by pickup_at asc`,
+    `select * from (
+       select * from orders where status in ('new', 'preparing', 'ready')
+       union all
+       select * from orders
+       where status = 'picked_up' and updated_at > now() - interval '2 hours'
+     ) board order by pickup_at asc`,
   );
   return rows.map(fromRow);
 }
 
-/** Moves an order on the board, if the move is allowed from where it is now. */
-export async function advanceOrder(id: string, to: OrderStatus): Promise<Order | null> {
-  const current = await getOrder(id);
-  if (!current || !kitchenCanMove(current.status, to)) return null;
+/**
+ * Moves an order on the board from the status the device last saw. If another
+ * device moved it first, nothing changes and null comes back, so a stale
+ * screen can never cancel an order someone else has already finished.
+ */
+export async function advanceOrder(
+  id: string,
+  from: OrderStatus,
+  to: OrderStatus,
+): Promise<Order | null> {
+  if (!kitchenCanMove(from, to)) return null;
   const { rows } = await db().query<Row>(
     `update orders set status = $3, updated_at = now()
      where id = $1 and status = $2 returning *`,
-    [id, current.status, to],
+    [id, from, to],
   );
   return rows[0] ? fromRow(rows[0]) : null;
 }

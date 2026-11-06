@@ -1,9 +1,8 @@
 /**
- * The kitchen's sign-in: a staff PIN exchanged for a signed, expiring cookie.
- *
- * The cookie is `<expiry>.<signature>`, an HMAC-SHA256 of the expiry under
- * KITCHEN_SECRET. Web Crypto only, so the same code runs in proxy.ts and in
- * route handlers. Nothing secret is stored in the browser.
+ * The kitchen's sign-in: a staff PIN exchanged for a signed, expiring cookie,
+ * `<expiry>.<hmac>`. The HMAC key mixes KITCHEN_SECRET with the PIN, so
+ * changing the PIN signs every device out. Web Crypto only, so the same code
+ * runs in proxy.ts and in route handlers.
  */
 
 export const KITCHEN_COOKIE = "kitchen_session";
@@ -11,12 +10,14 @@ export const KITCHEN_COOKIE = "kitchen_session";
 /** A kitchen tablet stays signed in for 30 days. */
 export const SESSION_SECONDS = 60 * 60 * 24 * 30;
 
+export type SessionKey = { secret: string; pin: string };
+
 const encoder = new TextEncoder();
 
-async function hmac(secret: string, message: string): Promise<string> {
+async function hmac({ secret, pin }: SessionKey, message: string): Promise<string> {
   const key = await crypto.subtle.importKey(
     "raw",
-    encoder.encode(secret),
+    encoder.encode(`${secret}:${pin}`),
     { name: "HMAC", hash: "SHA-256" },
     false,
     ["sign"],
@@ -25,21 +26,22 @@ async function hmac(secret: string, message: string): Promise<string> {
   return Buffer.from(signature).toString("base64url");
 }
 
-/** Compares without leaking, through timing, how much of the input matched. */
+/** Compares in time that depends only on the longer input, not on what matched. */
 export function safeEqual(a: string, b: string): boolean {
-  if (a.length !== b.length) return false;
-  let diff = 0;
-  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  const length = Math.max(a.length, b.length);
+  let diff = a.length ^ b.length;
+  for (let i = 0; i < length; i++)
+    diff |= (a.charCodeAt(i) || 0) ^ (b.charCodeAt(i) || 0);
   return diff === 0;
 }
 
-export async function signSession(secret: string, now = Date.now()): Promise<string> {
+export async function signSession(key: SessionKey, now = Date.now()): Promise<string> {
   const expires = Math.floor(now / 1000) + SESSION_SECONDS;
-  return `${expires}.${await hmac(secret, String(expires))}`;
+  return `${expires}.${await hmac(key, String(expires))}`;
 }
 
 export async function verifySession(
-  secret: string,
+  key: SessionKey,
   token: string | undefined,
   now = Date.now(),
 ): Promise<boolean> {
@@ -47,5 +49,17 @@ export async function verifySession(
   const [expires, signature] = token.split(".");
   if (!expires || !signature || !/^\d+$/.test(expires)) return false;
   if (Number(expires) * 1000 < now) return false;
-  return safeEqual(signature, await hmac(secret, expires));
+  return safeEqual(signature, await hmac(key, expires));
+}
+
+/** The session key from the environment, or null when the kitchen isn't configured. */
+export function sessionKeyFromEnv(): SessionKey | null {
+  const { KITCHEN_SECRET: secret, KITCHEN_PIN: pin } = process.env;
+  return secret && pin ? { secret, pin } : null;
+}
+
+/** Whether a request carries a valid kitchen session cookie. */
+export async function isKitchenSession(token: string | undefined): Promise<boolean> {
+  const key = sessionKeyFromEnv();
+  return key ? verifySession(key, token) : false;
 }

@@ -5,6 +5,7 @@ import { lineKey, quantityOf } from "@/lib/cart";
 import { useCart } from "@/lib/cart-store";
 import { defaultSelection, type MenuItem, type Selection } from "@/lib/menu";
 import { formatCad } from "@/lib/money";
+import { Button } from "@/components/ui/button";
 import { QuantityStepper } from "./quantity-stepper";
 
 type AddToCartProps = {
@@ -67,7 +68,7 @@ export function AddToCart({ item, variant = "button", tone = "ink" }: AddToCartP
               ? `Add another ${name} (${quantity} in your order)`
               : `Add ${name} to your order`
           }
-          className="bg-brand text-paper relative flex size-11 items-center justify-center rounded-full text-xl shadow-[0_0.3rem_0.9rem_rgb(26_21_18/0.3)] transition-transform duration-[--duration-fast] hover:scale-105 active:scale-95"
+          className="bg-brand text-paper shadow-float relative flex size-11 items-center justify-center rounded-full text-xl transition-transform duration-(--duration-fast) hover:scale-105 active:scale-95"
         >
           +
           {quantity > 0 ? (
@@ -94,13 +95,10 @@ export function AddToCart({ item, variant = "button", tone = "ink" }: AddToCartP
 
   return (
     <>
-      <button
-        type="button"
+      <Button
         onClick={start}
         aria-label={`Add ${name} to your order`}
-        className={`inline-flex h-11 items-center justify-center gap-2 rounded-full px-6 text-sm font-semibold tracking-wide transition-transform duration-[--duration-fast] hover:-translate-y-0.5 active:translate-y-px active:scale-[0.98] ${
-          tone === "ink" ? "bg-brand text-paper" : "bg-paper text-brand"
-        }`}
+        tone={tone === "ink" ? "solid" : "inverse"}
       >
         {hasOptions ? "Choose & add" : "Add to order"}
         {hasOptions && quantity > 0 ? (
@@ -108,7 +106,7 @@ export function AddToCart({ item, variant = "button", tone = "ink" }: AddToCartP
             {quantity}
           </span>
         ) : null}
-      </button>
+      </Button>
       {options}
     </>
   );
@@ -136,6 +134,8 @@ function OptionSheet({
     <dialog
       ref={ref}
       aria-labelledby={titleId}
+      // However it closes (Add, Cancel, Escape, the backdrop), it opens fresh next time.
+      onClose={() => setSelection(defaultSelection(item))}
       onClick={(event) => {
         // A click on the backdrop lands on the dialog itself.
         if (event.target === event.currentTarget) event.currentTarget.close();
@@ -144,10 +144,7 @@ function OptionSheet({
     >
       <form
         method="dialog"
-        onSubmit={() => {
-          onAdd(selection);
-          setSelection(defaultSelection(item));
-        }}
+        onSubmit={() => onAdd(selection)}
         className="flex flex-col gap-6 p-6 sm:p-8"
       >
         <header>
@@ -168,7 +165,7 @@ function OptionSheet({
               {option.choices.map((choice) => (
                 <label
                   key={choice.id}
-                  className="border-brand/20 has-[:checked]:border-brand has-[:checked]:bg-brand has-[:checked]:text-paper has-[:focus-visible]:outline-paper cursor-pointer rounded-full border px-4 py-2 text-sm transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2"
+                  className="border-brand/20 has-[:checked]:border-brand has-[:checked]:bg-brand has-[:checked]:text-paper has-[:focus-visible]:outline-brand cursor-pointer rounded-full border px-4 py-2 text-sm transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2"
                 >
                   <input
                     type="radio"
@@ -198,12 +195,7 @@ function OptionSheet({
           >
             Cancel
           </button>
-          <button
-            type="submit"
-            className="bg-brand text-paper inline-flex h-11 items-center rounded-full px-6 text-sm font-semibold"
-          >
-            Add · {formatCad(item.priceCents + delta)}
-          </button>
+          <Button type="submit">Add · {formatCad(item.priceCents + delta)}</Button>
         </div>
       </form>
     </dialog>

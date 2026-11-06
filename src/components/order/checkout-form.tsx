@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import {
   startTransition,
   useActionState,
@@ -25,6 +24,7 @@ import { Field, INPUT } from "@/components/ui/field";
 import { TapedFrame } from "@/components/hand/taped-frame";
 import { CartLines } from "./cart-lines";
 import { Panda7 } from "@/components/brand/panda-7";
+import { Button } from "@/components/ui/button";
 import { AllergyNotice } from "@/components/menu/allergy-notice";
 
 /** Pickup times, computed in the browser once it has a clock. None on the server. */
@@ -59,14 +59,11 @@ export function CheckoutForm() {
   if (priced.length === 0) {
     return (
       <div className="flex flex-col items-center gap-6 py-16 text-center">
-        <Panda7 pose="eating" alt="" className="w-40" />
+        <Panda7 pose="wave" alt="" className="w-40" sizes="10rem" />
         <p className="font-display text-2xl">Your order is empty.</p>
-        <Link
-          href="/order"
-          className="bg-brand text-paper inline-flex h-12 items-center rounded-full px-8 text-sm font-semibold"
-        >
+        <Button href="/order" size="lg">
           Start an order
-        </Link>
+        </Button>
       </div>
     );
   }
@@ -175,13 +172,9 @@ export function CheckoutForm() {
 
         <p className="text-brand-deep text-sm">{CONTACT.orderPolicy}</p>
 
-        <button
-          type="submit"
-          disabled={pending}
-          className="bg-brand-deep text-paper h-14 rounded-full text-base font-semibold tabular-nums transition-colors hover:bg-[#5e150c] disabled:opacity-60 sm:self-start sm:px-12"
-        >
+        <Button type="submit" size="xl" disabled={pending} className="sm:self-start">
           {pending ? "Opening secure payment…" : `Pay ${formatCad(sum.totalCents)}`}
-        </button>
+        </Button>
         <p className="text-brand-deep -mt-3 text-xs">
           Card, Apple Pay or Google Pay, on Stripe&rsquo;s secure page. Your order goes to
           the kitchen as soon as it&rsquo;s paid.
@@ -201,12 +194,14 @@ export function CheckoutForm() {
                   Online orders are paused while the kitchen catches up, so this order
                   hasn&rsquo;t been sent. Please call it in and we&rsquo;ll have it ready:
                 </p>
-                <a
+                <Button
                   href={CONTACT.phone.href}
-                  className="bg-brand-deep text-paper inline-flex h-12 items-center justify-center self-start rounded-full px-8 font-semibold"
+                  size="lg"
+                  arrow={false}
+                  className="self-start"
                 >
                   Call {CONTACT.phone.display}
-                </a>
+                </Button>
                 <p className="eyebrow text-brand-deep">Your order, to read out</p>
                 <ul className="text-sm">
                   {priced.map((line) => (

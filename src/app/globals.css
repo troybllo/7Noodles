@@ -24,6 +24,12 @@
   --color-ink: #110c05; /* Ink Black */
   --color-bamboo: #aeb975; /* Bamboo Green */
 
+  /* Paper lifted off the page (taped slips, cards), and things floating above it. */
+  --shadow-tape: 0 1px 2px rgb(40 20 10 / 0.18);
+  --shadow-lift: 0 0.35em 0.9em rgb(40 20 10 / 0.22);
+  --shadow-float: 0 0.5rem 1.5rem rgb(17 12 5 / 0.3);
+  --shadow-drawer: -1rem 0 3rem rgb(17 12 5 / 0.3);
+
   /* Badge inks, on ivory. */
   --color-jade: #3d6a44;
   --color-sea: #2b5f7a;
@@ -39,9 +45,7 @@
   --font-sans:
     var(--font-inter), ui-sans-serif, system-ui, "PingFang SC", "Microsoft YaHei",
     sans-serif;
-  --font-display: var(--font-lora), Georgia, serif, var(--font-cjk);
-  /* The guide's decoration face: Lora Italic. */
-  --font-accent: var(--font-lora), Georgia, serif;
+  --font-display: var(--font-oilvare), Georgia, serif, var(--font-cjk);
 
   --text-hero: clamp(3.5rem, 13vw, 13rem);
   --text-display: clamp(2.5rem, 6.4vw, 6rem);
@@ -49,22 +53,15 @@
   --text-lede: clamp(1.0625rem, 1.3vw, 1.3125rem);
 
   /* =======================================================================
-     Motion
-
-     Durations and curves are tokens so the whole site can be retimed from
-     one place, and so no component invents its own easing.
+     Motion. GSAP mirrors these in components/motion/motion-tokens.ts.
      ======================================================================= */
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
   --ease-out-soft: cubic-bezier(0.33, 1, 0.68, 1);
 
-  /* Continuous marquee. Each track holds its content twice, so moving it by
-     exactly half its width lands on an identical frame and the loop has no
-     seam. Pure keyframes: they run on the compositor with no JavaScript
-     ticker, and the global reduced-motion rule below stops them. */
+  /* The track holds its row twice; moving it by half its width loops without a seam. */
   --animate-marquee-left: marquee-left 80s linear infinite;
-  --animate-marquee-right: marquee-right 80s linear infinite;
 
   @keyframes marquee-left {
     from {
@@ -75,99 +72,6 @@
     }
   }
 
-  @keyframes marquee-right {
-    from {
-      transform: translate3d(-50%, 0, 0);
-    }
-    to {
-      transform: translate3d(0, 0, 0);
-    }
-  }
-
-  /* The flame. Never still, never frantic: a slow lean with a quicker
-     shiver over it. Rests upright under reduced motion. */
-  --animate-flicker: flicker 2.6s ease-in-out infinite;
-  --animate-flicker-fast: flicker-fast 0.9s ease-in-out infinite;
-
-  @keyframes flicker {
-    0%,
-    100% {
-      transform: rotate(0deg) scale(1, 1);
-    }
-    30% {
-      transform: rotate(-2.5deg) scale(0.98, 1.04);
-    }
-    60% {
-      transform: rotate(2deg) scale(1.02, 0.97);
-    }
-  }
-
-  @keyframes flicker-fast {
-    0%,
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-    50% {
-      opacity: 0.82;
-      transform: scale(0.94, 1.06);
-    }
-  }
-
-  /* The red panda: a tail that swings, ears that twitch, eyes that blink.
-     Each is mostly at rest so the mascot reads as alive, not busy. */
-  --animate-tail: tail 4.8s ease-in-out infinite;
-  --animate-ear: ear 6s ease-in-out infinite;
-  --animate-blink: blink 5.2s step-end infinite;
-  --animate-bob: bob 5s ease-in-out infinite;
-
-  @keyframes tail {
-    0%,
-    100% {
-      transform: rotate(0deg);
-    }
-    50% {
-      transform: rotate(9deg);
-    }
-  }
-
-  @keyframes ear {
-    0%,
-    88%,
-    100% {
-      transform: rotate(0deg);
-    }
-    92% {
-      transform: rotate(-10deg);
-    }
-    96% {
-      transform: rotate(4deg);
-    }
-  }
-
-  @keyframes blink {
-    0%,
-    94%,
-    100% {
-      transform: scaleY(1);
-    }
-    96% {
-      transform: scaleY(0.1);
-    }
-  }
-
-  @keyframes bob {
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-3%);
-    }
-  }
-
-  /* Steam off a hot bowl, and chilli slices drifting on the paper. Both come
-     to rest at their starting frame under reduced motion. */
   /* The menu margins' drawings keep up a gentle loop while shown: hanging
      things sway, loose things drift, steam rises. Each starts and ends at
      rest, so reduced motion simply shows the drawing still. */
@@ -205,33 +109,6 @@
     }
   }
 
-  --animate-steam: steam 5.5s ease-out infinite;
-  --animate-drift: drift 9s ease-in-out infinite;
-
-  @keyframes steam {
-    0% {
-      opacity: 0;
-      transform: translateY(12%) scaleX(0.9);
-    }
-    30% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-      transform: translateY(-38%) scaleX(1.15);
-    }
-  }
-
-  @keyframes drift {
-    0%,
-    100% {
-      transform: translate(0, 0) rotate(0deg);
-    }
-    50% {
-      transform: translate(4%, -7%) rotate(9deg);
-    }
-  }
-
   @keyframes reveal-late {
     to {
       opacity: 1;
@@ -248,7 +125,6 @@
   --duration-fast: 160ms;
   --duration-base: 320ms;
   --duration-slow: 640ms;
-  --duration-reveal: 900ms;
 }
 
 /* =========================================================================
@@ -256,18 +132,6 @@
    ========================================================================= */
 
 @layer components {
-  /* The mockup frame. Large-screen compositions after the approved hero mockup
-     are laid out in its own pixels: --u is one pixel of the 1074 x 600 design,
-     scaled so the whole frame fits the viewport's width and height. cqw rather
-     than vw, so a scrollbar never pushes the frame wider than the page. */
-  .frame-stage {
-    container-type: inline-size;
-  }
-
-  .frame {
-    --u: min(calc(100cqw / 1074), calc(100dvh / 600));
-  }
-
   /* Small caps label above a heading: "01 — Noodles". */
   .eyebrow {
     font-size: 0.75rem;
@@ -297,34 +161,29 @@
   /* Wide inner layers (the showcase panels, the photo row's bleed) must never
      widen the page. `clip`, not `hidden`: it creates no scroll container, so
      sticky sections still stick. */
+  html,
   body {
     overflow-x: clip;
   }
 
-  /* Display type, per the brand guide: Lora Bold in capitals. */
+  /* Oilvare has one weight; never let the browser fake a bold. */
   .font-display {
-    font-weight: 700;
-    letter-spacing: -0.01em;
+    font-weight: 400;
+    font-synthesis: none;
+    letter-spacing: 0.005em;
     text-transform: uppercase;
   }
 
-  .font-accent {
-    font-style: italic;
-  }
-
   .text-hero {
-    letter-spacing: -0.02em;
-    line-height: 0.9;
+    line-height: 0.92;
   }
 
   .text-display {
-    letter-spacing: -0.015em;
-    line-height: 0.98;
+    line-height: 1;
   }
 
   .text-title {
-    letter-spacing: -0.01em;
-    line-height: 1.08;
+    line-height: 1.1;
   }
 
   /* The navigation bar's colours, chosen by the section under it (each
@@ -361,6 +220,20 @@
       scroll-behavior: auto !important;
     }
   }
+}
+
+/* The hero's pieces wait hidden from the first paint, so its intro never
+   flashes the finished state first. Only with JavaScript and motion on. */
+@media (prefers-reduced-motion: no-preference) {
+  /* Opacity only: a CSS transform here would be read back by GSAP as an offset. */
+  html.js #hero :is([data-rise], [data-stamp], [data-seal], [data-row]) {
+    opacity: 0;
+  }
+}
+
+/* An open dialog (the cart, the menu, a dish's options) holds the page still. */
+html:has(dialog[open]) {
+  overflow: hidden;
 }
 
 /* Printing one kitchen ticket: the board marks it, and hides the rest. */

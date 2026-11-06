@@ -39,7 +39,7 @@ export function CategoryTabs({
       <ul className="flex w-max gap-2">
         {categories.map((category) => {
           const isActive = category.slug === active;
-          const pill = `flex items-baseline gap-2 rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors duration-[--duration-fast] ${
+          const pill = `flex items-baseline gap-2 rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors duration-(--duration-fast) ${
             isActive
               ? "border-brand bg-brand text-paper border"
               : "border-brand/30 text-brand hover:border-brand border"

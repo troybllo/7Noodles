@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { gsap } from "gsap";
 import { useGsap } from "./use-gsap";
+import { EASE } from "@/components/motion/motion-tokens";
 import { useReducedMotion } from "./use-reduced-motion";
 
 /** The accordion only exists from this width up. Below it panels stack. */
@@ -23,16 +24,9 @@ type Options = {
 };
 
 /**
- * The expanding-panel mechanic behind the showcase.
- *
- * Tweens `flex-grow` rather than a transform. `scaleX` would distort the
- * photography and the type, and counter-scaling the children back is fragile.
- * A handful of panels animating a bounded layout is the cheaper trade, and
- * `contain: layout paint` on each panel — applied by the caller — stops the
- * recalculation escaping its own subtree.
- *
- * Only the behaviour lives here. The two sections that use it look nothing
- * alike, so their markup stays their own.
+ * Expanding panels: hovering or focusing one widens it. Tweens `flex-grow`
+ * rather than scaling, which would distort the photographs; each panel's
+ * `contain: layout paint` keeps the relayout local.
  */
 export function useExpandingPanels<T extends HTMLElement = HTMLLIElement>(
   count: number,
@@ -51,7 +45,7 @@ export function useExpandingPanels<T extends HTMLElement = HTMLLIElement>(
       gsap.to(panel, {
         flexGrow: i === index ? openGrow : closedGrow,
         duration: 0.7,
-        ease: "power3.inOut",
+        ease: EASE.inOut,
         overwrite: "auto",
       });
     });
@@ -82,7 +76,7 @@ export function useExpandingPanels<T extends HTMLElement = HTMLLIElement>(
           .to(items, {
             flexGrow: (i: number) => (i === initial ? openGrow : closedGrow),
             duration: entrance.settle,
-            ease: "power3.inOut",
+            ease: EASE.inOut,
           });
       });
 
@@ -92,13 +86,8 @@ export function useExpandingPanels<T extends HTMLElement = HTMLLIElement>(
   );
 
   /**
-   * Props every panel needs, so a caller cannot forget the containment.
-   *
-   * The zero flex-basis that makes the grow values divide the row is a class
-   * scoped to the accordion's breakpoint, not an inline style. Below it the
-   * panels stack in a column whose height comes from its content, and a zero
-   * basis there collapses every panel to nothing — which is how the showcase
-   * once vanished on phones.
+   * Props every panel needs. The zero flex-basis is scoped to the accordion's
+   * breakpoint: below it, panels stack and a zero basis would collapse them.
    */
   const panelProps = (index: number) => ({
     ref: (node: T | null) => {

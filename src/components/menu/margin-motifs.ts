@@ -58,36 +58,64 @@ function strand(
   return line(points, seed, 2.2);
 }
 
-const CHOPSTICKS: MotifPath[] = [
+/** A fork held tines-down at the top of the margin, the noodles hanging from it. */
+const FORK: MotifPath[] = [
   {
     d: line(
       [
-        [8, 10],
-        [52, 84],
+        [50, 2],
+        [50, 54],
       ],
       3,
-      0.6,
+      0.5,
     ),
     width: 3.5,
   },
   {
     d: line(
       [
-        [30, 4],
-        [56, 86],
+        [36, 90],
+        [36, 68],
+        [40, 58],
+        [50, 55],
+        [60, 58],
+        [64, 68],
+        [64, 90],
       ],
       5,
-      0.6,
+      0.5,
     ),
-    width: 3.5,
+    width: 3,
+  },
+  {
+    d: line(
+      [
+        [45.5, 64],
+        [45.5, 90],
+      ],
+      7,
+      0.4,
+    ),
+    width: 2.6,
+  },
+  {
+    d: line(
+      [
+        [54.5, 64],
+        [54.5, 90],
+      ],
+      9,
+      0.4,
+    ),
+    width: 2.6,
   },
 ];
 
-/** Traditional xiaomian: noodles lifted on chopsticks. */
+/** Traditional xiaomian: noodles lifted on a fork. */
 const noodles: Motif = {
   idle: "sway",
   paths: [
-    ...CHOPSTICKS,
+    ...FORK,
     { d: strand(11, 0, 22), width: 2.4 },
     { d: strand(23, 1.1, 18), width: 2, opacity: 0.6 },
     { d: strand(37, 2.3, 26), width: 1.6, opacity: 0.45 },

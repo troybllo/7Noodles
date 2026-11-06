@@ -21,8 +21,6 @@
     "verify": "pnpm typecheck && pnpm lint && pnpm format:check && pnpm test",
     "fonts": "node scripts/subset-fonts.mjs",
     "brushes": "node scripts/generate-brushes.mjs",
-    "ornaments": "node scripts/generate-ornaments.mjs",
-    "textures": "node scripts/generate-textures.mjs",
     "db:migrate": "node --env-file=.env.local scripts/migrate.mjs"
   },
   "dependencies": {

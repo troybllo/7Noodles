@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { formatCad } from "@/lib/money";
 import { getOrder } from "@/lib/orders/repo";
+import { formatDayAndClock } from "@/lib/time";
 import { CONTACT } from "@/content/contact";
 import { OrderStatusTracker } from "./status-tracker";
 
@@ -9,14 +10,6 @@ export const metadata: Metadata = {
   title: "Your order",
   robots: { index: false, follow: false },
 };
-
-const pickup = (at: Date) =>
-  new Intl.DateTimeFormat("en-CA", {
-    timeZone: "America/Toronto",
-    weekday: "long",
-    hour: "numeric",
-    minute: "2-digit",
-  }).format(at);
 
 /** Where Stripe sends the customer after paying, and the link to keep. */
 export default async function OrderPage({ params }: PageProps<"/order/[id]">) {
@@ -37,8 +30,9 @@ export default async function OrderPage({ params }: PageProps<"/order/[id]">) {
             Thank you, {order.customerName.split(" ")[0]}
           </h1>
           <p className="mt-6 text-lg">
-            Pickup <strong>{pickup(order.pickupAt)}</strong> at {CONTACT.address.street},{" "}
-            {CONTACT.address.locality}. Give your order code at the counter.
+            Pickup <strong>{formatDayAndClock(order.pickupAt)}</strong> at{" "}
+            {CONTACT.address.street}, {CONTACT.address.locality}. Give your order code at
+            the counter.
           </p>
           <OrderStatusTracker id={order.id} initial={order.status} />
           <p className="text-brand-deep mt-10 text-sm">

@@ -5,6 +5,8 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { Wordmark } from "@/components/brand/wordmark";
 import { CartButton } from "@/components/order/cart-button";
+import { useMediaQuery } from "@/lib/use-media-query";
+import { MobileNav } from "./mobile-nav";
 import { isCurrent, NAV_ITEMS, type NavItem } from "./nav-items";
 
 function Chevron({ open }: { open: boolean }) {
@@ -17,7 +19,7 @@ function Chevron({ open }: { open: boolean }) {
       strokeWidth={1.6}
       strokeLinecap="round"
       strokeLinejoin="round"
-      className={`h-[0.45em] w-[0.7em] opacity-70 transition-transform duration-[--duration-base] ease-[--ease-out-expo] ${open ? "rotate-180" : ""}`}
+      className={`h-[0.45em] w-[0.7em] opacity-70 transition-transform duration-(--duration-base) ease-(--ease-out-expo) ${open ? "rotate-180" : ""}`}
     >
       <path d="M1.5 1.75 6 6.25l4.5-4.5" />
     </svg>
@@ -29,10 +31,13 @@ function Underline({ current }: { current: boolean }) {
   return (
     <span
       aria-hidden="true"
-      className={`absolute inset-x-0 -bottom-1 h-px origin-left bg-current transition-transform duration-[--duration-base] ease-[--ease-out-expo] group-hover:scale-x-100 ${current ? "scale-x-100" : "scale-x-0"}`}
+      className={`absolute inset-x-0 -bottom-1 h-px origin-left bg-current transition-transform duration-(--duration-base) ease-(--ease-out-expo) group-hover:scale-x-100 ${current ? "scale-x-100" : "scale-x-0"}`}
     />
   );
 }
+
+const menuIdOf = (label: string) =>
+  `nav-menu-${label.toLowerCase().replace(/\W+/g, "-")}`;
 
 /** How far the page scrolls before the large bar settles into the compact one. */
 const COMPACT_AFTER = 48;
@@ -50,21 +55,6 @@ function useScrolled(): boolean {
   return useSyncExternalStore(
     subscribeToScroll,
     () => window.scrollY > COMPACT_AFTER,
-    () => false,
-  );
-}
-
-const LARGE = "(min-width: 64rem)";
-
-/** Whether the screen is at the `lg` breakpoint, where the bar can hide. */
-function useLarge(): boolean {
-  return useSyncExternalStore(
-    (onChange) => {
-      const query = window.matchMedia(LARGE);
-      query.addEventListener("change", onChange);
-      return () => query.removeEventListener("change", onChange);
-    },
-    () => window.matchMedia(LARGE).matches,
     () => false,
   );
 }
@@ -87,39 +77,34 @@ function useHeroInView(active: boolean): boolean {
 }
 
 /** Eases every size change between the large and compact bar. */
-const SETTLE = "duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]";
+const SETTLE = "duration-500 ease-(--ease-out-expo)";
 
 const LABEL = "relative flex items-center gap-1.5 uppercase";
 
 /**
  * The site's navigation bar.
  *
- * On the home page, on large screens, it stays out of sight while the hero is
- * on screen — the
- * hero carries the name and its own row of links, as in the Bokman reference
- * — and slides in once the hero has scrolled away. On every other page it is
- * a compact bar from the start.
+ * On the home page, on large screens, it stays hidden while the hero (which
+ * has its own row of links) is on screen. Elsewhere it is compact from the
+ * start. Its colours follow the nearest `data-nav-theme` under it.
  *
- * Colour follows whatever is under the bar. On every scroll it looks at the
- * page beneath its own position and takes the nearest `data-nav-theme`
- * (dark or light), which sets the label colour and the compact surface.
- * Nested themes work, so a light block inside a dark section reads as light.
- *
- * Below `lg` it is a logo and a Menu button opening a full-screen menu.
- * Items with children open a small menu on hover or click, closing on Escape,
- * on a press elsewhere, or when a link is followed.
+ * Below `lg` it is the logo, the cart and a Menu button (see MobileNav).
+ * Items with children open a small menu on hover or click, closing on Escape
+ * (focus goes back to the trigger), a press elsewhere, or a followed link.
  */
 export function TopNav() {
   const pathname = usePathname();
   const scrolled = useScrolled();
   const compact = pathname !== "/" || scrolled;
   const hidden = useHeroInView(pathname === "/");
-  const large = useLarge();
+  const large = useMediaQuery("(min-width: 64rem)", false);
 
   // Held in state rather than written to the element, so a re-render can
   // never put back the initial value over what the probe found.
   const [bar, setBar] = useState("light");
-  const [mobileOpen, setMobileOpen] = useState(false);
+  // Open for the page it was opened on, so navigating anywhere closes it.
+  const [mobileOpenOn, setMobileOpenOn] = useState<string | null>(null);
+  const mobileOpen = mobileOpenOn === pathname;
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const header = useRef<HTMLElement>(null);
   const barRow = useRef<HTMLDivElement>(null);
@@ -179,7 +164,11 @@ export function TopNav() {
     if (!openMenu) return;
 
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setOpenMenu(null);
+      if (event.key !== "Escape") return;
+      document
+        .querySelector<HTMLElement>(`[aria-controls="${menuIdOf(openMenu)}"]`)
+        ?.focus();
+      setOpenMenu(null);
     };
     const onPointer = (event: PointerEvent) => {
       if (!barRow.current?.contains(event.target as Node)) setOpenMenu(null);
@@ -195,7 +184,7 @@ export function TopNav() {
 
   const closeAll = () => {
     setOpenMenu(null);
-    setMobileOpen(false);
+    setMobileOpenOn(null);
   };
 
   const hoverOpen = (item: NavItem) => (event: React.PointerEvent) => {
@@ -250,9 +239,9 @@ export function TopNav() {
 
           <nav aria-label="Primary" className="hidden lg:block">
             <ul className="flex items-center gap-10 text-[0.8125rem] tracking-[0.02em] whitespace-nowrap">
-              {NAV_ITEMS.map((item, index) => {
+              {NAV_ITEMS.map((item) => {
                 const current = isCurrent(item, pathname);
-                const menuId = `nav-menu-${index}`;
+                const menuId = menuIdOf(item.label);
                 const open = openMenu === item.label;
 
                 return (
@@ -320,25 +309,6 @@ export function TopNav() {
 
           <div className="flex items-center gap-5">
             <Link
-              href="/account"
-              aria-label="Your account"
-              onClick={closeAll}
-              className="hidden size-6 lg:block"
-            >
-              <svg
-                aria-hidden="true"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={1.6}
-                strokeLinecap="round"
-                className="size-full"
-              >
-                <circle cx="12" cy="8" r="4" />
-                <path d="M4 21c1.2-4 4.3-6 8-6s6.8 2 8 6" />
-              </svg>
-            </Link>
-            <Link
               href="/order"
               onClick={closeAll}
               className="hidden h-8 items-center rounded-full border border-current px-5 text-[0.75rem] tracking-[0.14em] uppercase transition-colors hover:bg-[var(--bar-label)] hover:text-[var(--bar-surface)] lg:inline-flex"
@@ -349,75 +319,18 @@ export function TopNav() {
 
             <button
               type="button"
-              onClick={() => setMobileOpen((value) => !value)}
+              onClick={() => setMobileOpenOn(pathname)}
               aria-expanded={mobileOpen}
               aria-controls="mobile-nav"
               className="text-sm font-semibold tracking-[0.08em] uppercase lg:hidden"
             >
-              {mobileOpen ? "Close" : "Menu"}
+              Menu
             </button>
           </div>
         </div>
       </header>
 
-      <div
-        id="mobile-nav"
-        hidden={!mobileOpen}
-        className="bg-brand text-paper fixed inset-0 z-40 overflow-y-auto px-8 pt-28 pb-12 lg:hidden"
-      >
-        <ul className="flex flex-col gap-7">
-          {NAV_ITEMS.map((item) => (
-            <li key={item.label}>
-              {item.children ? (
-                <>
-                  <p className="flex items-baseline gap-3">
-                    <span className="font-display text-4xl">{item.label}</span>
-                    <span lang="zh" className="font-cjk text-paper text-base font-black">
-                      {item.zh}
-                    </span>
-                  </p>
-                  <ul className="mt-3 flex flex-col gap-2 pl-1">
-                    {item.children.map((child) => (
-                      <li key={child.href + child.label}>
-                        <Link
-                          href={child.href}
-                          onClick={closeAll}
-                          className="text-paper text-lg"
-                        >
-                          {child.label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              ) : (
-                <Link
-                  href={item.href}
-                  onClick={closeAll}
-                  className="flex items-baseline gap-3"
-                >
-                  <span className="font-display text-4xl">{item.label}</span>
-                  <span lang="zh" className="font-cjk text-paper text-base font-black">
-                    {item.zh}
-                  </span>
-                </Link>
-              )}
-            </li>
-          ))}
-          <li>
-            <Link
-              href="/account"
-              onClick={closeAll}
-              className="flex items-baseline gap-3"
-            >
-              <span className="font-display text-4xl">Account</span>
-              <span lang="zh" className="font-cjk text-paper text-base font-black">
-                账户
-              </span>
-            </Link>
-          </li>
-        </ul>
-      </div>
+      <MobileNav open={mobileOpen} onClose={() => setMobileOpenOn(null)} />
     </>
   );
 }

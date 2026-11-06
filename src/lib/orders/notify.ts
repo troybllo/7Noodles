@@ -1,21 +1,15 @@
 import "server-only";
 import webpush from "web-push";
 import { formatCad } from "@/lib/money";
+import { formatClock } from "@/lib/time";
 import { orderEnv } from "./env";
 import { deletePushSubscription, listPushSubscriptions, type Order } from "./repo";
 import { describeLine } from "./snapshot";
 
-const pickupTime = (at: Date) =>
-  new Intl.DateTimeFormat("en-CA", {
-    timeZone: "America/Toronto",
-    hour: "numeric",
-    minute: "2-digit",
-  }).format(at);
-
 /** The order as one notification: who, when, what, how much. */
 export function summarize(order: Order): { title: string; body: string } {
   return {
-    title: `New order ${order.code} · pickup ${pickupTime(order.pickupAt)}`,
+    title: `New order ${order.code} · pickup ${formatClock(order.pickupAt)}`,
     body: `${order.customerName} · ${formatCad(order.totalCents)}\n${order.lines.map(describeLine).join("\n")}`,
   };
 }

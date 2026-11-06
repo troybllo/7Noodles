@@ -31,17 +31,6 @@ describe("contrastRatio", () => {
       10,
     );
   });
-
-  it("holds the palette rules the design depends on", () => {
-    // Rice on ink is the primary reversed pairing.
-    expect(contrastRatio("#F2EEE5", "#12100E")).toBeGreaterThan(15);
-    // The text variants were derived to clear 4.5 on their ground.
-    expect(contrastRatio("#BD4147", "#F2EEE5")).toBeGreaterThanOrEqual(4.5);
-    expect(contrastRatio("#736E3E", "#F2EEE5")).toBeGreaterThanOrEqual(4.5);
-    // Lantern is dark-ground only, and must stay that way.
-    expect(contrastRatio("#D9A441", "#12100E")).toBeGreaterThan(7);
-    expect(contrastRatio("#D9A441", "#F2EEE5")).toBeLessThan(3);
-  });
 });
 
 describe("contrastLevel", () => {

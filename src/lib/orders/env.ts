@@ -15,7 +15,7 @@ const schema = z.object({
   DATABASE_URL: z.string().min(1),
   STRIPE_SECRET_KEY: optional(z.string().startsWith("sk_")),
   STRIPE_WEBHOOK_SECRET: optional(z.string().startsWith("whsec_")),
-  KITCHEN_PIN: z.string().regex(/^\d{4,8}$/, "KITCHEN_PIN must be 4–8 digits"),
+  KITCHEN_PIN: z.string().regex(/^\d{6,10}$/, "KITCHEN_PIN must be 6–10 digits"),
   KITCHEN_SECRET: z.string().min(32, "KITCHEN_SECRET must be at least 32 characters"),
   VAPID_PUBLIC_KEY: z.string().min(1),
   VAPID_PRIVATE_KEY: z.string().min(1),

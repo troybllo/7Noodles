@@ -1,21 +1,12 @@
 /**
- * Photography and video for the menu, keyed by slug.
- *
- * From the restaurant's shoot (public/photos/7noodle websize, labelled by
- * dish). One shot per dish, chosen and checked against the menu, resized to
- * 1200px wide and converted to WebP in public/photos/dishes. Dishes without
- * an entry show their designed placeholder until they are photographed.
- *
- * A `video` adds the hover loop.
+ * Dish photography, keyed by slug: the restaurant's shoot, one shot per dish,
+ * 1200px WebP in public/photos/dishes. A dish without an entry shows its
+ * Chinese name as a tile.
  */
 
 export type Media = { src: string; alt: string };
 
-export type DishMedia = {
-  photo?: Media;
-  /** 2–3s silent loop, 4:5, with the photo used as its poster. */
-  video?: { src: string };
-};
+export type DishMedia = { photo?: Media };
 
 /** The photograph that leads each category on the menu and the home page. */
 export const CATEGORY_COVERS: Partial<Record<string, Media>> = {

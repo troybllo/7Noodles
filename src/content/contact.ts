@@ -1,12 +1,6 @@
 /**
- * Contact details — the one place they are written down.
- *
- * The hero card, the contact section and, later, the structured data all read
- * from here, so an address or an opening hour cannot drift between them.
- *
- * Address, phone and hours are the restaurant's own published details, as
- * listed on its previous site and public listings. Email is deliberately absent:
- * none was found for this restaurant, and it is not ours to invent. Add it here
+ * The restaurant's contact details, written down once: every section, the
+ * footer and the structured data read them from here. No email yet; add one
  * when the owner supplies it.
  */
 
@@ -34,29 +28,16 @@ export const CONTACT = {
     { day: "Sunday", open: "11:00", close: "22:00" },
   ],
   hoursSummary: "Open daily, 11:00 — 22:00",
-  /**
-   * Shown at checkout. PLACEHOLDER until the owner confirms the restaurant's
-   * own cancellation and refund policy.
-   */
+  /** Shown at checkout. TODO(owner): replace with the restaurant's own cancellation policy. */
   orderPolicy:
     "Need to change or cancel? Call us before your pickup time and we'll sort it out.",
   map: {
-    /**
-     * Keyless Google Maps embed. It works, but it is not a documented Google
-     * contract. Before launch, swap to the official Maps Embed API, which is
-     * free and unlimited but needs a key from the client's Google Cloud
-     * project.
-     */
+    /** Keyless embed. TODO(launch): the official Maps Embed API, with the client's key. */
     embedSrc: `https://maps.google.com/maps?q=${encodeURIComponent(ADDRESS_QUERY)}&z=16&output=embed`,
     /** The documented Maps URLs format; needs no key. */
     directionsHref: `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(ADDRESS_QUERY)}`,
   },
-  /**
-   * TO CONFIRM WITH THE OWNER. Two public Instagram accounts give this
-   * restaurant's address: @7noodles_qia (used here, named for the brand) and
-   * @qia7noodles. Neither is linked from the restaurant's own site or its BIA
-   * listing, so which one is official has not been verified.
-   */
+  /** TODO(owner): confirm which account is official (@7noodles_qia or @qia7noodles). */
   instagram: {
     handle: "@7noodles_qia",
     href: "https://www.instagram.com/7noodles_qia/",

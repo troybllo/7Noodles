@@ -3,12 +3,9 @@ import Link from "next/link";
 import { CONTACT } from "@/content/contact";
 
 /**
- * Where and when, after the Bokman reference: CONTACT & OPENING HOURS in
- * capitals, the address and ways in beside the week's hours in two plain
- * columns, and a photograph on the right. The locations page adds the map.
- *
- * Every detail comes from content/contact.ts, so this section, the footer and
- * the structured data cannot disagree.
+ * Where and when: the address and ways in beside the week's hours, and a
+ * photograph. The locations page adds the map. Everything comes from
+ * content/contact.ts, so this, the footer and the structured data agree.
  */
 export function Contact({
   headingLevel = 2,
@@ -93,7 +90,7 @@ export function Contact({
       </div>
 
       {map ? (
-        <div className="border-brand relative mt-16 aspect-[16/7] min-h-[20rem] overflow-hidden border">
+        <div className="border-brand relative mt-16 h-80 overflow-hidden border md:aspect-[16/7] md:h-auto">
           {/* Lazy, so the third-party frame costs nothing until it is reached. */}
           <iframe
             title={`Map showing ${CONTACT.name} at ${CONTACT.address.street}, ${CONTACT.address.locality}`}

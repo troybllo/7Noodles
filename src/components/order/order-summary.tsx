@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { totals } from "@/lib/cart";
 import { useCart } from "@/lib/cart-store";
 import { formatCad } from "@/lib/money";
+import { Button } from "@/components/ui/button";
 import { TapedFrame } from "@/components/hand/taped-frame";
 
 /**
@@ -41,21 +41,13 @@ export function OrderSummary() {
                 <dd>{formatCad(sum.totalCents)}</dd>
               </div>
             </dl>
-            <button
-              type="button"
-              onClick={() => setOpen(true)}
-              disabled={empty}
-              className="border-brand/30 hover:border-brand h-11 rounded-full border text-sm font-semibold transition-colors disabled:opacity-40"
-            >
+            <Button tone="outline" onClick={() => setOpen(true)} disabled={empty}>
               View order
-            </button>
+            </Button>
             {empty ? null : (
-              <Link
-                href="/checkout"
-                className="bg-brand-deep text-paper inline-flex h-12 items-center justify-center rounded-full text-sm font-semibold transition-colors hover:bg-[#5e150c]"
-              >
+              <Button href="/checkout" size="lg">
                 Checkout
-              </Link>
+              </Button>
             )}
           </div>
         </TapedFrame>
@@ -66,7 +58,7 @@ export function OrderSummary() {
           <button
             type="button"
             onClick={() => setOpen(true)}
-            className="bg-brand text-paper flex h-14 w-full items-center justify-between rounded-full px-6 text-sm font-semibold shadow-[0_0.5rem_1.5rem_rgb(26_21_18/0.35)]"
+            className="bg-brand text-paper shadow-float flex h-14 w-full items-center justify-between rounded-full px-6 text-sm font-semibold"
           >
             <span>
               View order · {sum.itemCount} {sum.itemCount === 1 ? "dish" : "dishes"}

@@ -4,9 +4,8 @@ import { RevealFrame } from "@/components/motion/reveal-frame";
 import { STORY } from "@/content/story";
 
 /**
- * The red band, after the Bokman reference: one statement set large in white
- * on red, filling in as it scrolls through, then a row of three photographs
- * opening upward, the last of which bleeds off the edge.
+ * The red band: one statement that fills in as it scrolls through, then
+ * three photographs opening upward, the last bleeding off the edge.
  */
 export function Story() {
   return (

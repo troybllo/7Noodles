@@ -6,10 +6,17 @@ import Image from "next/image";
  * artwork with its transparent background, in public/brand/.
  */
 const POSES = {
-  eating: { width: 734, height: 796, alt: "Panda 7 eating a bowl of noodles with chopsticks" },
   wave: { width: 698, height: 536, alt: "Panda 7 waving hello" },
-  chef: { width: 567, height: 581, alt: "Panda 7 in a chef's hat, tossing noodles in a wok" },
-  spicy: { width: 481, height: 435, alt: "Panda 7 tasting something spicy, tongue out among chilies" },
+  chef: {
+    width: 567,
+    height: 581,
+    alt: "Panda 7 in a chef's hat, tossing noodles in a wok",
+  },
+  spicy: {
+    width: 481,
+    height: 435,
+    alt: "Panda 7 tasting something spicy, tongue out among chilies",
+  },
   standing: { width: 527, height: 626, alt: "Panda 7 standing in a flame apron" },
 } as const;
 

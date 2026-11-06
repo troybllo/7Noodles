@@ -9,7 +9,7 @@ import { SiteFooter } from "@/components/nav/site-footer";
 import { SiteOnly } from "@/components/nav/site-only";
 import { TopNav } from "@/components/nav/top-nav";
 import { SITE_NAME, SITE_NAME_FULL } from "@/lib/seo";
-import { inter, lora, notoSansSc } from "./fonts";
+import { inter, notoSansSc, oilvare } from "./fonts";
 import "./globals.css";
 
 const DESCRIPTION =
@@ -47,12 +47,21 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
-      lang="en"
-      className={[inter, lora, notoSansSc]
+      lang="en-CA"
+      suppressHydrationWarning
+      className={[inter, oilvare, notoSansSc]
         .map((font) => font.variable)
         .concat("h-full antialiased")
         .join(" ")}
     >
+      <head>
+        {/* Before first paint: lets CSS hide what the hero is about to animate in (globals.css, html.js). */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "document.documentElement.classList.add('js')",
+          }}
+        />
+      </head>
       <body className="bg-paper text-brand flex min-h-full flex-col font-sans">
         <SmoothScroll />
         <InkOrigin />

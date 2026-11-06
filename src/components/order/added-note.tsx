@@ -36,7 +36,7 @@ export function AddedNote() {
       {visible ? (
         <div
           key={visible.at}
-          className="bg-brand text-paper pointer-events-auto flex items-center gap-4 rounded-full py-3 pr-3 pl-6 shadow-[0_0.5rem_1.5rem_rgb(26_21_18/0.3)] motion-safe:animate-[note-in_320ms_cubic-bezier(0.16,1,0.3,1)]"
+          className="bg-brand text-paper shadow-float pointer-events-auto flex items-center gap-4 rounded-full py-3 pr-3 pl-6 motion-safe:animate-[note-in_320ms_cubic-bezier(0.16,1,0.3,1)]"
         >
           <span className="text-sm">
             Added <strong className="font-semibold">{visible.name}</strong>

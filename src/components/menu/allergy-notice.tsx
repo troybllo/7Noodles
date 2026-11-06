@@ -15,7 +15,7 @@ export function AllergyNotice({
   return (
     <aside
       aria-label="Allergies"
-      className={`bg-paper rotate-[-0.6deg] px-5 py-4 text-sm shadow-[0_0.35em_0.9em_rgb(40_20_10/0.22)] sm:px-6 ${className ?? ""}`}
+      className={`bg-paper shadow-lift rotate-[-0.6deg] px-5 py-4 text-sm sm:px-6 ${className ?? ""}`}
     >
       <p className="text-brand leading-relaxed">
         <strong className="font-semibold">

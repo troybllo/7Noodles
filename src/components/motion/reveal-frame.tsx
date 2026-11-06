@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { DURATION, EASE } from "@/components/motion/motion-tokens";
 import { useGsap } from "@/components/motion/use-gsap";
 
 type RevealFrameProps = {
@@ -32,9 +33,9 @@ export function RevealFrame({ children, className, delay = 0 }: RevealFrameProps
     const trigger = { trigger: element, start: "top 85%", once: true };
     gsap.to(state, {
       p: 1,
-      duration: 1.3,
+      duration: DURATION.reveal,
       delay,
-      ease: "expo.out",
+      ease: EASE.out,
       onUpdate: () => {
         wipe.style.clipPath = shape(state.p);
       },
@@ -46,7 +47,7 @@ export function RevealFrame({ children, className, delay = 0 }: RevealFrameProps
     gsap.fromTo(
       inner,
       { scale: 1.18 },
-      { scale: 1, duration: 1.8, delay, ease: "expo.out", scrollTrigger: trigger },
+      { scale: 1, duration: 1.8, delay, ease: EASE.out, scrollTrigger: trigger },
     );
   });
 

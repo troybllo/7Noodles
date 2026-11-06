@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Logo } from "@/components/brand/logo";
 import { SignInForm } from "./sign-in-form";
 
 export const metadata: Metadata = {
@@ -9,13 +10,8 @@ export const metadata: Metadata = {
 export default function KitchenSignInPage() {
   return (
     <main className="bg-brand text-paper flex min-h-svh flex-col items-center justify-center gap-8 px-6">
-      <p className="text-4xl font-extrabold tracking-[-0.02em] uppercase">
-        Seven Noodles{" "}
-        <span lang="zh" className="font-cjk font-black">
-          恰小面
-        </span>
-      </p>
-      <p className="eyebrow">Kitchen orders</p>
+      <Logo className="w-64" title="7 Noodles 恰小面" />
+      <h1 className="eyebrow">Kitchen orders</h1>
       <SignInForm />
     </main>
   );

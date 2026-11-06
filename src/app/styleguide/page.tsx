@@ -92,7 +92,7 @@ const EASINGS = [
 
 export default function StyleGuidePage() {
   return (
-    <main className="bg-paper text-brand w-full px-6 py-16">
+    <main id="main" className="bg-paper text-brand w-full px-6 py-16">
       <div className="mx-auto max-w-6xl">
         <header>
           <p className="text-brand-deep text-sm font-medium tracking-[0.2em] uppercase">
@@ -117,16 +117,14 @@ export default function StyleGuidePage() {
 
         <Section
           title="Type"
-          note="One grotesk, after the Bokman reference: Inter Tight in heavy capitals for the name, regular capitals for titles, sentence case for everything else. Noto Sans SC at black weight for the Chinese, as heavy as the English beside it."
+          note="Oilvare Base in capitals for display and headings, Inter for everything read, Noto Sans SC for the Chinese."
         >
           <div className="flex flex-col gap-10">
             <div>
               <p className="text-brand-deep text-xs tracking-wide uppercase">
                 text-hero · the wordmark
               </p>
-              <p className="font-display text-hero mt-2">
-                <span className="text-paper">7</span> Noodles
-              </p>
+              <p className="font-display text-hero mt-2">Seven Noodles</p>
             </div>
 
             <div>
@@ -196,7 +194,7 @@ export default function StyleGuidePage() {
 
         <Section title="Mascot" note="Panda 7, from the brand guide.">
           <div className="flex flex-wrap items-end gap-10">
-            {(["eating", "wave", "chef", "spicy", "standing"] as const).map((pose) => (
+            {(["wave", "chef", "spicy", "standing"] as const).map((pose) => (
               <Panda7 key={pose} pose={pose} className="w-40" sizes="10rem" />
             ))}
           </div>
@@ -207,8 +205,9 @@ export default function StyleGuidePage() {
             {[
               "wanza-noodles",
               "mala-noodle-soup",
-              "squid-ball-skewers",
-              "spinach-and-peanuts",
+              "shrimp-and-pork-wonton-noodle-soup",
+              "wontons-in-sesame-sauce",
+              "yellow-pea-noodles",
               "super-spicy-beef-or-chicken-noodles",
             ].map((slug) => {
               const item = findDish(slug)?.item;
@@ -269,9 +268,8 @@ export default function StyleGuidePage() {
               麻辣
             </p>
             <p className="text-lede max-w-xl">
-              Numbing, then hot. <span className="text-paper">Ember</span> and{" "}
-              <span className="text-paper">flame</span> carry highlights here and only
-              here — on bone they stop being text at all.
+              Numbing, then hot. <span className="text-gold">Embroidery Gold</span> is the
+              one accent that reads on red.
             </p>
             <div className="flex flex-wrap gap-3">
               <Button href="/styleguide" tone="solid">

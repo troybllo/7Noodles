@@ -1,16 +1,5 @@
 import Link from "next/link";
-import type { ReactNode } from "react";
-
-type ButtonProps = {
-  href: string;
-  children: ReactNode;
-  /** `solid` red, `inverse` white for red bands, `outline` for the second action. */
-  tone?: "solid" | "inverse" | "outline";
-  size?: "lg" | "md" | "sm";
-  /** Opens in a new tab, for links that leave the site. */
-  external?: boolean;
-  className?: string;
-};
+import type { ComponentProps, ReactNode } from "react";
 
 const TONE = {
   solid: "bg-brand text-paper hover:bg-brand-deep",
@@ -19,37 +8,93 @@ const TONE = {
 } as const;
 
 const SIZE = {
-  lg: "h-12 px-8 text-[0.8125rem]",
-  md: "h-10 px-6 text-[0.75rem]",
   sm: "h-8 px-5 text-[0.6875rem]",
+  md: "h-10 px-6 text-[0.75rem]",
+  lg: "h-12 px-8 text-[0.8125rem]",
+  /** The one action that finishes a step: checkout, pay. */
+  xl: "h-14 px-10 text-sm",
 } as const;
 
-/**
- * The site's call to action, after Bokman's BOOK A TABLE: a pill in small,
- * spaced capitals, with an arrow that slides on hover.
- * A link underneath, because every action on this site goes somewhere.
- */
-export function Button({
-  href,
-  children,
+export type ButtonTone = keyof typeof TONE;
+export type ButtonSize = keyof typeof SIZE;
+
+type Look = {
+  children: ReactNode;
+  tone?: ButtonTone | undefined;
+  size?: ButtonSize | undefined;
+  /** The arrow that slides on hover. On by default for links. */
+  arrow?: boolean | undefined;
+  className?: string | undefined;
+};
+
+type LinkButton = Look & {
+  href: string;
+  /** Opens in a new tab, for links that leave the site. */
+  external?: boolean | undefined;
+  onClick?: (() => void) | undefined;
+};
+
+type PlainButton = Look &
+  Omit<ComponentProps<"button">, "className" | "children"> & {
+    href?: undefined;
+  };
+
+export function buttonClass({
   tone = "solid",
   size = "md",
-  external = false,
   className,
-}: ButtonProps) {
-  const classes = `group inline-flex items-center justify-center gap-2.5 rounded-full tracking-[0.14em] uppercase transition-[background-color,transform] duration-[--duration-fast] ease-[--ease-out-soft] active:scale-[0.98] ${TONE[tone]} ${SIZE[size]} ${className ?? ""}`;
+}: Pick<Look, "tone" | "size" | "className"> = {}): string {
+  return `group inline-flex items-center justify-center gap-2.5 rounded-full font-medium tracking-[0.14em] uppercase tabular-nums transition-[background-color,transform,opacity] duration-(--duration-fast) ease-(--ease-out-soft) active:scale-[0.98] disabled:pointer-events-none disabled:opacity-60 ${TONE[tone]} ${SIZE[size]} ${className ?? ""}`;
+}
+
+function Arrow() {
+  return (
+    <span
+      aria-hidden="true"
+      className="transition-transform duration-(--duration-base) ease-(--ease-out-expo) group-hover:translate-x-1"
+    >
+      →
+    </span>
+  );
+}
+
+/** The site's pill action: a link when given `href`, otherwise a `<button>`. */
+export function Button(props: LinkButton | PlainButton) {
+  if (props.href === undefined) {
+    const {
+      children,
+      tone,
+      size,
+      arrow = false,
+      className,
+      type = "button",
+      ...rest
+    } = props;
+    return (
+      <button type={type} className={buttonClass({ tone, size, className })} {...rest}>
+        {children}
+        {arrow ? <Arrow /> : null}
+      </button>
+    );
+  }
+
+  const {
+    href,
+    children,
+    tone,
+    size,
+    arrow = true,
+    className,
+    external,
+    onClick,
+  } = props;
+  const classes = buttonClass({ tone, size, className });
   const content = (
     <>
       {children}
-      <span
-        aria-hidden="true"
-        className="transition-transform duration-[--duration-base] ease-[--ease-out-expo] group-hover:translate-x-1"
-      >
-        →
-      </span>
+      {arrow ? <Arrow /> : null}
     </>
   );
-
   if (external) {
     return (
       <a href={href} target="_blank" rel="noopener noreferrer" className={classes}>
@@ -58,9 +103,8 @@ export function Button({
       </a>
     );
   }
-
   return (
-    <Link href={href} className={classes}>
+    <Link href={href} className={classes} {...(onClick ? { onClick } : {})}>
       {content}
     </Link>
   );

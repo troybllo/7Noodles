@@ -21,11 +21,7 @@ const SIZE = {
   title: "text-title",
 } as const;
 
-/**
- * Every heading on the site: Inter Tight capitals, with its Chinese set as a quiet
- * vertical accent rather than a second, competing headline. That is the whole
- * of the site's Chinese ornament — one thoughtful mark per section.
- */
+/** A section's heading: an eyebrow with its Chinese label, then the title in the display face. */
 export function SectionHeading({
   eyebrow,
   children,

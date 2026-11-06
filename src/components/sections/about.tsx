@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/logo";
-import { PhotoSlot } from "@/components/media/photo-slot";
+import Image from "next/image";
+import { DISH_MEDIA } from "@/content/menu-media";
 import { TapedFrame } from "@/components/hand/taped-frame";
 import { ABOUT } from "@/content/about";
 
@@ -13,16 +14,34 @@ import { ABOUT } from "@/content/about";
  * detail moves past — the reason the column is wide is that it is the anchor,
  * not a margin note.
  */
+/** Behind the logo, under a wash of red. Swap for photographs of the room once it is shot. */
+const BACKDROP = ["dandan-noodles", "signature-braised-beef-noodle-soup"];
+
 export function About() {
   return (
     <section id="about" data-nav-theme="dark" className="relative z-10 w-full">
-      {/* The mark over the room. */}
+      {/* The logo over two bowls. */}
       <div className="bg-brand relative isolate flex min-h-[60svh] items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0 grid grid-cols-1 md:grid-cols-2">
-          <PhotoSlot label="Room from the doorway, low light" tone="bg-brand-deep" />
-          <PhotoSlot label="Pass and kitchen, steam, night" tone="bg-brand" />
+          {BACKDROP.map((slug, index) => {
+            const photo = DISH_MEDIA[slug]?.photo;
+            return photo ? (
+              <div
+                key={slug}
+                className={`relative ${index > 0 ? "hidden md:block" : ""}`}
+              >
+                <Image
+                  src={photo.src}
+                  alt=""
+                  fill
+                  sizes="(min-width: 768px) 50vw, 100vw"
+                  className="object-cover"
+                />
+              </div>
+            ) : null;
+          })}
         </div>
-        <div className="from-brand/80 via-brand/40 absolute inset-0 z-0 bg-gradient-to-t to-transparent" />
+        <div className="bg-brand/75 absolute inset-0 z-0" />
 
         <p
           aria-hidden="true"
@@ -35,7 +54,7 @@ export function About() {
 
         <div className="text-paper relative z-10 flex flex-col items-center gap-5 text-center">
           <Logo className="w-[min(80vw,34rem)]" />
-          <p className="font-accent text-lede">{ABOUT.tagline.en}</p>
+          <p className="font-display text-lede">{ABOUT.tagline.en}</p>
         </div>
       </div>
 

@@ -23,7 +23,7 @@ export const HOW_TO_EAT = {
   title: "How to eat dry noodles",
   titleZh: "干拌面怎么吃",
   intro:
-    "Our dry noodles — 干拌面 — arrive with the sauce waiting at the bottom of the bowl. A few seconds with your chopsticks is what turns a bowl of noodles into the dish.",
+    "Our dry noodles — 干拌面 — arrive with the sauce waiting at the bottom of the bowl. A few seconds with your fork is what turns a bowl of noodles into the dish.",
   steps: [
     {
       title: "Find the sauce",

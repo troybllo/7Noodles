@@ -1,5 +1,6 @@
 import { TapedFrame } from "@/components/hand/taped-frame";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { Marquee } from "@/components/ui/marquee";
 import { REVIEWS, type Review } from "@/content/reviews";
 
 function Stars({ rating }: { rating: number }) {
@@ -75,7 +76,7 @@ export function Reviews() {
   return (
     <section
       id="reviews"
-      data-nav-theme="light"
+      data-nav-theme="dark"
       className="bg-brand text-paper relative z-10 w-full py-24 md:py-32"
     >
       <div className="px-6 md:px-10">
@@ -91,23 +92,12 @@ export function Reviews() {
         </div>
       </div>
 
-      <div className="marquee-fade mt-14 overflow-hidden motion-reduce:overflow-x-auto">
-        <div className="animate-marquee-left flex w-max gap-8 pr-8 hover:[animation-play-state:paused] motion-reduce:animate-none">
-          <ul className="flex gap-8">
-            {REVIEWS.map((review, index) => (
-              <Card key={`${review.name}-${review.date}`} review={review} index={index} />
-            ))}
-          </ul>
-          <ul aria-hidden="true" className="flex gap-8 motion-reduce:hidden">
-            {REVIEWS.map((review, index) => (
-              <Card
-                key={`copy-${review.name}-${review.date}`}
-                review={review}
-                index={index}
-              />
-            ))}
-          </ul>
-        </div>
+      <div className="mt-14">
+        <Marquee label="Reviews">
+          {REVIEWS.map((review, index) => (
+            <Card key={`${review.name}-${review.date}`} review={review} index={index} />
+          ))}
+        </Marquee>
       </div>
     </section>
   );

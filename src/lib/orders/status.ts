@@ -18,6 +18,10 @@ export const ORDER_STATUSES = [
 
 export type OrderStatus = (typeof ORDER_STATUSES)[number];
 
+export function isOrderStatus(value: unknown): value is OrderStatus {
+  return ORDER_STATUSES.includes(value as OrderStatus);
+}
+
 const NEXT: Record<OrderStatus, readonly OrderStatus[]> = {
   pending_payment: ["new", "cancelled"],
   new: ["preparing", "cancelled"],

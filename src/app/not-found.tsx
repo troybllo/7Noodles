@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 
 /**
  * Any address the site does not have, and any dish or category that does not
- * exist: the red panda peeking over the edge, and the two ways back.
+ * exist, with the two ways back.
  */
 export default function NotFound() {
   return (

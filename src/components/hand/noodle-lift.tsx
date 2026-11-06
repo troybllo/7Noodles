@@ -3,25 +3,25 @@ import { roughPath, seeded, type Point } from "@/design/hand-drawn";
 const WIDTH = 400;
 const HEIGHT = 600;
 
-/** A chopstick entering from the right, tapering to a rounded tip at x = 96. */
-function chopstick(tipY: number, endY: number, seed: number): string {
-  const middle = (tipY + endY) / 2;
-  const outline: Point[] = [
-    [400, endY - 7],
-    [260, middle - 5],
-    [96, tipY - 4],
-    [96, tipY + 4],
-    [260, middle + 6],
-    [400, endY + 8],
-  ];
-  const tip = `M 96 ${tipY - 4} C 88 ${tipY - 4}, 88 ${tipY + 4}, 96 ${tipY + 4}`;
-  return `${roughPath(outline, { seed, wobble: 0.6 })} ${tip}`;
+/** The fork's tines: four, pointing left, their tips at x = 100. */
+const TINES = [0, 1, 2, 3].map((i) => ({ top: 102 + i * 10, bottom: 108 + i * 10 }));
+
+/**
+ * A fork entering from the right, rising gently to its handle end: one closed
+ * outline, from the top of the handle round each tine and back.
+ */
+function fork(): string {
+  let d = "M 400 64 L 222 110 C 208 113, 198 103, 184 102";
+  for (const { top, bottom } of TINES) {
+    d += ` L 106 ${top} Q 98 ${top + 3}, 106 ${bottom} L 178 ${bottom}`;
+  }
+  return `${d} L 184 138 C 198 137, 208 127, 222 124 L 400 84 Z`;
 }
 
 type Strand = { key: string; d: string; width: number };
 
 /**
- * The noodles: each strand hangs over the sticks, arcs across them and falls in
+ * The noodles: each strand hangs over the tines, arcs across them and falls in
  * a long uneven sway, a few swinging out into a loop on the way down. Thicker
  * strands are drawn as a tube, the same line again a few pixels over.
  */
@@ -30,8 +30,8 @@ function strands(): Strand[] {
   const out: Strand[] = [];
 
   for (let i = 0; i < 13; i += 1) {
-    const x = 110 + i * 14 + (rand() - 0.5) * 12;
-    const y = 118 + (x - 96) * 0.06;
+    const x = 104 + i * 6 + (rand() - 0.5) * 6;
+    const y = 120;
     const length = 300 + rand() * 230;
     const drift = (rand() - 0.5) * 60;
 
@@ -84,13 +84,10 @@ function strands(): Strand[] {
 const STRANDS = strands();
 
 /**
- * Noodles lifted on chopsticks, drawn in a single colour of line — an original
- * drawing in the manner of a line-art food poster.
- *
- * Every stroke is seeded, so the drawing is identical on the server and in the
- * browser, and every stroke carries `data-draw` and `pathLength="1"`, so a
- * `DrawOn` parent can draw it on. Lines are `currentColor`; the sticks are
- * filled with `--noodle-ground` so they sit in front of the strands.
+ * Noodles lifted on a fork, in a single colour of line. Seeded, so the server
+ * and browser draw the same thing; every stroke carries `data-draw` for a
+ * `DrawOn` parent. The fork is filled with `--noodle-ground` so it sits in
+ * front of the strands.
  */
 export function NoodleLift({ className }: { className?: string }) {
   return (
@@ -115,14 +112,7 @@ export function NoodleLift({ className }: { className?: string }) {
       <path
         data-draw
         pathLength={1}
-        d={chopstick(112, 60, 7)}
-        strokeWidth={2.4}
-        style={{ fill: "var(--noodle-ground, transparent)" }}
-      />
-      <path
-        data-draw
-        pathLength={1}
-        d={chopstick(128, 84, 9)}
+        d={fork()}
         strokeWidth={2.4}
         style={{ fill: "var(--noodle-ground, transparent)" }}
       />

@@ -1,10 +1,9 @@
 import { EVENTS, type RestaurantEvent } from "@/content/events";
-
-const ZONE = "America/Toronto";
+import { RESTAURANT_TIME_ZONE } from "./pickup";
 
 /** Today's date in Toronto as YYYY-MM-DD, which sorts and compares as a string. */
 export function torontoToday(now: Date = new Date()): string {
-  return new Intl.DateTimeFormat("en-CA", { timeZone: ZONE }).format(now);
+  return new Intl.DateTimeFormat("en-CA", { timeZone: RESTAURANT_TIME_ZONE }).format(now);
 }
 
 /**

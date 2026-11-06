@@ -10,15 +10,7 @@ type PhotoSlotProps = {
   className?: string;
 };
 
-/**
- * A frame reserved for photography that has not been shot yet.
- *
- * Deliberately looks like a placeholder rather than pretending to be a
- * picture: the layout can be judged now, and nobody mistakes an empty frame
- * for a finished section. Every one of these is a line on the shot list.
- *
- * Replaced by next/image once the shoot lands.
- */
+/** A labelled frame for a photograph not yet taken: plainly a placeholder, never a fake picture. */
 export function PhotoSlot({
   label,
   tone = "bg-brand-deep",

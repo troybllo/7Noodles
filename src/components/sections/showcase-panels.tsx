@@ -32,7 +32,7 @@ const GROUND: Record<
     panel: "bg-brand-deep",
     text: "text-paper",
     sub: "text-paper",
-    shade: "bg-[#5e150c]",
+    shade: "bg-brand-deep",
   },
   bone: {
     panel: "bg-paper",
@@ -73,23 +73,13 @@ export function ShowcasePanels() {
             <button
               type="button"
               aria-expanded={active}
+              aria-label={`${dish.nameEn} ${dish.nameZh}, ${formatCad(dish.priceCents)}`}
               onFocus={() => panelProps(index).onMouseEnter()}
               onClick={() => panelProps(index).onMouseEnter()}
               className="absolute inset-0 flex h-full w-full cursor-pointer flex-col text-left"
             >
-              {/*
-                Photo and colour block are both present at every width, because
-                a collapsed panel is a narrow slice of the same composition
-                rather than a different one.
-
-                Both inner layers are fixed at the open width and clipped by the
-                panel, so narrowing crops them. It never reflows the type or
-                squashes the photograph, which is the thing that makes an
-                accordion look cheap.
-
-                Below the accordion breakpoint every layer is full width and the
-                collapsed label is not rendered at all.
-              */}
+              {/* Both layers are fixed at the open width and clipped by the panel,
+                  so a collapsed panel crops rather than squashes. */}
               <span className="block h-[58%] w-full overflow-hidden">
                 <span className="relative block h-full w-full md:w-[66.6cqw]">
                   {photo ? (
@@ -110,7 +100,7 @@ export function ShowcasePanels() {
                 className={`relative block flex-1 overflow-hidden ${tone.panel} ${tone.text}`}
               >
                 <span
-                  className={`absolute inset-y-0 left-0 flex w-full flex-col justify-end gap-3 p-7 transition-opacity duration-[--duration-base] md:w-[66.6cqw] ${
+                  className={`absolute inset-y-0 left-0 flex w-full flex-col justify-end gap-3 p-7 transition-opacity duration-(--duration-base) md:w-[66.6cqw] ${
                     active ? "md:opacity-100 md:delay-150" : "md:opacity-0"
                   }`}
                 >
@@ -130,7 +120,7 @@ export function ShowcasePanels() {
 
                 <span
                   aria-hidden="true"
-                  className={`absolute inset-y-0 left-0 hidden w-[16.6cqw] items-center justify-center transition-opacity duration-[--duration-base] md:flex ${
+                  className={`absolute inset-y-0 left-0 hidden w-[16.6cqw] items-center justify-center transition-opacity duration-(--duration-base) md:flex ${
                     active ? "opacity-0" : "opacity-100 delay-150"
                   }`}
                 >

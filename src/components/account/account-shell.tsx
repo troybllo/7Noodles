@@ -4,7 +4,7 @@ import { TapedFrame } from "@/components/hand/taped-frame";
 import { PageTransition } from "@/components/motion/page-transition";
 
 /**
- * The frame shared by the account pages: the title and the red panda on one
+ * The frame shared by the account pages: the title and Panda 7 on one
  * side, and the page's content on a sheet of paper taped down on the other.
  */
 export function AccountShell({
@@ -31,7 +31,12 @@ export function AccountShell({
             <p className="text-brand-deep text-lede mt-5 max-w-[34ch] leading-relaxed">
               {lede}
             </p>
-            <Panda7 pose="wave" alt="" className="mt-10 hidden w-48 lg:block" sizes="12rem" />
+            <Panda7
+              pose="wave"
+              alt=""
+              className="mt-10 hidden w-48 lg:block"
+              sizes="12rem"
+            />
           </div>
 
           <TapedFrame tilt={1} className="text-base">

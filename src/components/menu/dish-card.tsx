@@ -31,7 +31,7 @@ export function DishCard({
           {/* A print with a paper border; it lifts and turns a little on hover. */}
           <div
             data-ink
-            className="bg-paper relative p-[0.4rem] shadow-[0_0.3rem_0.8rem_rgb(40_20_10/0.25)] transition-transform duration-[--duration-slow] ease-[--ease-out-expo] group-hover:-translate-y-1 group-hover:-rotate-1"
+            className="bg-paper shadow-lift relative p-[0.4rem] transition-transform duration-(--duration-slow) ease-(--ease-out-expo) group-hover:-translate-y-1 group-hover:-rotate-1"
           >
             <DishMedia
               media={DISH_MEDIA[item.slug]}
@@ -52,7 +52,7 @@ export function DishCard({
         </ViewTransition>
 
         <div className="mt-4 flex items-baseline justify-between gap-4">
-          <h3 className="font-display text-brand decoration-brand-deep text-lg leading-snug underline-offset-4 group-hover:underline md:text-xl">
+          <h3 className="font-display text-brand decoration-brand-deep min-w-0 text-base leading-snug [overflow-wrap:anywhere] underline-offset-4 group-hover:underline sm:text-lg md:text-xl">
             {item.nameEn}
           </h3>
           <p className="text-brand shrink-0 text-base font-semibold tabular-nums">

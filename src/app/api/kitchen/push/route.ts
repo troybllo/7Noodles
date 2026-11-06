@@ -1,8 +1,11 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { savePushSubscription } from "@/lib/orders/repo";
+import { requireKitchen } from "@/lib/orders/require-kitchen";
 
-/** Saves a phone's push subscription so it is alerted to new orders. Behind the PIN (proxy.ts). */
+/** Saves a phone's push subscription so it is alerted to new orders. */
 export async function POST(request: NextRequest) {
+  const denied = await requireKitchen(request);
+  if (denied) return denied;
   const body = (await request.json().catch(() => null)) as {
     subscription?: { endpoint?: string; keys?: { p256dh?: string; auth?: string } };
     label?: string;

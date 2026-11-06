@@ -30,7 +30,7 @@ export const SHOWCASE: ShowcaseDish[] = [
     family: "Traditional Xiaomian",
     priceCents: 1500,
     ground: "ink",
-    shot: "Wanza noodles, overhead, chopsticks lifting",
+    shot: "Wanza noodles, overhead, a fork lifting",
   },
   {
     slug: "wontons-in-red-chili-oil",

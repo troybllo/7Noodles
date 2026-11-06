@@ -4,20 +4,30 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { CONTACT } from "@/content/contact";
 import { clientEnv } from "@/env";
-import { parseLines, priceLines, totals } from "@/lib/cart";
+import { MAX_ITEMS, parseLines, priceLines, totals, withinOrderLimits } from "@/lib/cart";
 import { pickupSlots, slotInstant } from "@/lib/pickup";
 import {
   checkoutSchema,
   fieldErrors,
   type CheckoutState,
 } from "@/lib/orders/checkout-schema";
-import { attachCheckoutSession, createOrder, isOrderingPaused } from "@/lib/orders/repo";
+import { clientIp, hit, LIMITS } from "@/lib/orders/rate-limit";
+import {
+  attachCheckoutSession,
+  createOrder,
+  isOrderingPaused,
+  type Order,
+} from "@/lib/orders/repo";
 import { snapshot } from "@/lib/orders/snapshot";
 import { stripe } from "@/lib/orders/stripe";
 import { stripeLineItems } from "@/lib/orders/stripe-lines";
 
 /** Stripe keeps a checkout page open at least 30 minutes; a minute's grace on top. */
 const CHECKOUT_MINUTES = 31;
+
+const callUs = (lead: string): CheckoutState => ({
+  message: `${lead} Please try again, or call ${CONTACT.phone.display} to order.`,
+});
 
 /**
  * Places an order and sends the diner to Stripe to pay.
@@ -27,6 +37,8 @@ const CHECKOUT_MINUTES = 31;
  * from the menu. The pickup time must still be one we offer, and online
  * ordering must not be paused. The order is saved as `pending_payment`; it
  * reaches the kitchen only when Stripe confirms the payment (the webhook).
+ * Instant methods only (cards, with Apple Pay and Google Pay, and Link):
+ * delayed ones such as bank debits would confirm long after pickup.
  */
 export async function placeOrder(
   _: CheckoutState,
@@ -50,6 +62,11 @@ export async function placeOrder(
   const lines = parseLines(cart);
   const priced = priceLines(lines);
   if (priced.length === 0) return { message: "Your order is empty — add a dish first." };
+  if (!withinOrderLimits(lines)) {
+    return {
+      message: `Online orders take up to ${MAX_ITEMS} dishes. For a bigger order, call ${CONTACT.phone.display}.`,
+    };
+  }
 
   const { pickup } = fields.data;
   if (!pickupSlots(new Date(), CONTACT.hours).some((slot) => slot.value === pickup)) {
@@ -58,20 +75,28 @@ export async function placeOrder(
     };
   }
 
-  if (await isOrderingPaused()) return { paused: true };
-
-  const sum = totals(lines);
-  const order = await createOrder({
-    lines: snapshot(priced),
-    subtotalCents: sum.subtotalCents,
-    taxCents: sum.taxCents,
-    totalCents: sum.totalCents,
-    customerName: fields.data.name,
-    customerPhone: fields.data.phone,
-    customerEmail: fields.data.email,
-    note: fields.data.note ?? null,
-    pickupAt: slotInstant(pickup),
-  });
+  let order: Order;
+  try {
+    if (!(await hit(`order:${await clientIp()}`, LIMITS.checkout))) {
+      return callUs("That's a lot of orders in a few minutes.");
+    }
+    if (await isOrderingPaused()) return { paused: true };
+    const sum = totals(lines);
+    order = await createOrder({
+      lines: snapshot(priced),
+      subtotalCents: sum.subtotalCents,
+      taxCents: sum.taxCents,
+      totalCents: sum.totalCents,
+      customerName: fields.data.name,
+      customerPhone: fields.data.phone,
+      customerEmail: fields.data.email,
+      note: fields.data.note ?? null,
+      pickupAt: slotInstant(pickup),
+    });
+  } catch (error) {
+    console.error("order could not be saved", error);
+    return callUs("We couldn't take your order just now.");
+  }
 
   // Back to whichever address the diner is on (a preview deploy, or the site).
   const origin = (await headers()).get("origin") ?? clientEnv.NEXT_PUBLIC_SITE_URL;
@@ -80,6 +105,7 @@ export async function placeOrder(
   try {
     const session = await stripe().checkout.sessions.create({
       mode: "payment",
+      allowed_payment_method_types: ["card", "link"],
       line_items: stripeLineItems(order.lines, order.taxCents),
       customer_email: order.customerEmail,
       metadata: { orderId: order.id, code: order.code },
@@ -96,10 +122,6 @@ export async function placeOrder(
   } catch (error) {
     console.error("stripe checkout failed", error);
   }
-  if (!url) {
-    return {
-      message: `We couldn't open the payment page. Please try again, or call ${CONTACT.phone.display} to order.`,
-    };
-  }
+  if (!url) return callUs("We couldn't open the payment page.");
   redirect(url);
 }

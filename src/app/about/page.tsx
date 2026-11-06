@@ -22,7 +22,9 @@ export const metadata: Metadata = pageMetadata({
 const { everyday, qia, wanza, roots, welcome } = ABOUT.story;
 
 function Chapter({ n, onRed }: { n: number; onRed?: boolean }) {
-  return <p className={`eyebrow ${onRed ? "text-gold" : "text-brand-deep"}`}>Chapter {n}</p>;
+  return (
+    <p className={`eyebrow ${onRed ? "text-gold" : "text-brand-deep"}`}>Chapter {n}</p>
+  );
 }
 
 /**
@@ -57,8 +59,11 @@ export default function AboutPage() {
             </div>
 
             <div className="flex flex-col items-center gap-6 text-center">
-              <Panda7 pose="eating" priority className="w-60 md:w-80" sizes="20rem" />
-              <p lang="zh" className="font-cjk text-gold text-lg font-bold tracking-[0.1em]">
+              <Panda7 pose="chef" priority className="w-60 md:w-80" sizes="20rem" />
+              <p
+                lang="zh"
+                className="font-cjk text-gold text-lg font-bold tracking-[0.1em]"
+              >
                 {ABOUT.tagline.zh}
               </p>
             </div>
@@ -136,7 +141,7 @@ export default function AboutPage() {
               <TapedFrame
                 tape="top"
                 tilt={-2}
-                className="transition-[rotate] duration-[--duration-slow] ease-[--ease-out-expo] group-hover:!rotate-0"
+                className="transition-[rotate] duration-(--duration-slow) ease-(--ease-out-expo) group-hover:!rotate-0"
               >
                 <span className="relative block aspect-[4/5] w-full">
                   <Image
@@ -222,7 +227,9 @@ export default function AboutPage() {
           className="bg-brand text-paper flex flex-col items-center px-6 py-24 text-center"
         >
           <Panda7 pose="wave" alt="" className="w-44 md:w-56" sizes="14rem" />
-          <p className="font-display text-display mt-8 max-w-[18ch]">{ABOUT.tagline.en}</p>
+          <p className="font-display text-display mt-8 max-w-[18ch]">
+            {ABOUT.tagline.en}
+          </p>
           <div className="mt-10 flex flex-wrap justify-center gap-3">
             <Button href="/order" tone="inverse">
               Order for pickup

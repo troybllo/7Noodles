@@ -8,21 +8,12 @@ import { HERO } from "@/content/hero";
 import { HeroIntro } from "./hero-intro";
 
 /**
- * The hero, after the Bokman reference: SEVEN NOODLES in red capitals across
- * the top, two photographs side by side, the logo set large beneath the right
- * one beside Panda 7, and the site's links in a row underneath.
+ * The hero: SEVEN NOODLES across the top, two photographs, the logo beside
+ * Panda 7, and a row of links. From `md` up it is exactly one screen tall,
+ * the photographs taking whatever height the type leaves.
  *
- * From `md` up it is exactly one screen tall: the name, the Chinese row and
- * the links keep their size (each capped by the screen's height as well as
- * its width), and the photographs take whatever height is left. On phones
- * the photographs stack and it scrolls.
- *
- * On large screens the fixed navigation bar stays hidden while this is on
- * screen (see TopNav), so the row here is the navigation. Below `lg` the bar
- * is always shown and this row is left out.
- *
- * Its arrival is played by HeroIntro, which finds each piece by its `data-`
- * attribute; the markup here is the finished state.
+ * On large screens the nav bar hides while this is on screen (see TopNav), so
+ * its row of links is the navigation. HeroIntro animates the `data-` pieces.
  */
 export function Hero() {
   return (
@@ -32,7 +23,7 @@ export function Hero() {
         data-nav-theme="light"
         className="bg-paper text-brand px-4 pt-24 pb-4 md:flex md:h-svh md:min-h-[36rem] md:flex-col md:px-5 lg:pt-5"
       >
-        <h1 className="font-display shrink-0 text-[clamp(3.25rem,min(12.2vw,21svh),18rem)] leading-[0.8] font-extrabold tracking-[-0.045em]">
+        <h1 className="font-display shrink-0 text-[clamp(3.25rem,min(calc((100vw_-_2.5rem)/9.8),21svh),18rem)] leading-[0.85]">
           <span className="sr-only">{HERO.title}</span>
           <span
             aria-hidden="true"
@@ -84,16 +75,8 @@ export function Hero() {
                   title={`${HERO.nameZh} 7 Noodles`}
                 />
               </span>
-              <span
-                data-seal
-                className="w-[clamp(5rem,min(10vw,17svh),11rem)] shrink-0"
-              >
-                <Panda7
-                  pose="eating"
-                  alt=""
-                  sizes="11rem"
-                  className="w-full"
-                />
+              <span data-seal className="w-[clamp(5rem,min(10vw,17svh),11rem)] shrink-0">
+                <Panda7 pose="chef" alt="" sizes="11rem" className="w-full" />
               </span>
             </div>
           </div>
@@ -102,7 +85,7 @@ export function Hero() {
         {/* The navigation, as a row under the photographs. Desktop only. */}
         <nav
           data-row
-          aria-label="Primary"
+          aria-label="Site"
           className="mt-5 hidden shrink-0 items-center justify-between gap-8 lg:flex"
         >
           <Link href="/" aria-label="Seven Noodles, home">

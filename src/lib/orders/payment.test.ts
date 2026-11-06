@@ -1,6 +1,13 @@
 import Stripe from "stripe";
 import { describe, expect, it } from "vitest";
-import { parseLines, priceLines, totals } from "@/lib/cart";
+import {
+  MAX_ITEMS,
+  MAX_QUANTITY,
+  parseLines,
+  priceLines,
+  totals,
+  withinOrderLimits,
+} from "@/lib/cart";
 import { defaultSelection, findDish } from "@/lib/menu";
 import { snapshot } from "./snapshot";
 import { verifyStripeEvent } from "./stripe-events";
@@ -14,11 +21,19 @@ describe("checkout pricing", () => {
     // A tampered cart: prices and totals the browser has no say in.
     const posted = [
       { slug: wanza.slug, selection: {}, quantity: 2, priceCents: 1, lineTotalCents: 2 },
-      { slug: spicy.slug, selection: defaultSelection(spicy), quantity: 1, totalCents: 0 },
+      {
+        slug: spicy.slug,
+        selection: defaultSelection(spicy),
+        quantity: 1,
+        totalCents: 0,
+      },
     ];
     const lines = parseLines(posted);
     const priced = priceLines(lines);
-    expect(priced.map((l) => l.unitPriceCents)).toEqual([wanza.priceCents, spicy.priceCents]);
+    expect(priced.map((l) => l.unitPriceCents)).toEqual([
+      wanza.priceCents,
+      spicy.priceCents,
+    ]);
     expect(totals(lines).subtotalCents).toBe(wanza.priceCents * 2 + spicy.priceCents);
   });
 
@@ -29,7 +44,10 @@ describe("checkout pricing", () => {
     ]);
     const sum = totals(lines);
     const items = stripeLineItems(snapshot(priceLines(lines)), sum.taxCents);
-    const charged = items.reduce((total, i) => total + i.price_data.unit_amount * i.quantity, 0);
+    const charged = items.reduce(
+      (total, i) => total + i.price_data.unit_amount * i.quantity,
+      0,
+    );
     expect(charged).toBe(sum.totalCents);
     expect(items.at(-1)?.price_data.product_data.name).toBe("HST (13%)");
     expect(items.every((i) => i.price_data.currency === "cad")).toBe(true);
@@ -38,7 +56,12 @@ describe("checkout pricing", () => {
 
 describe("Stripe webhook verification", () => {
   const secret = "whsec_test_secret";
-  const body = JSON.stringify({ id: "evt_1", object: "event", type: "checkout.session.completed", data: { object: {} } });
+  const body = JSON.stringify({
+    id: "evt_1",
+    object: "event",
+    type: "checkout.session.completed",
+    data: { object: {} },
+  });
 
   it("accepts a delivery signed by Stripe", () => {
     const header = Stripe.webhooks.generateTestHeaderString({ payload: body, secret });
@@ -47,8 +70,32 @@ describe("Stripe webhook verification", () => {
 
   it("rejects a forged, altered or unsigned delivery", () => {
     const header = Stripe.webhooks.generateTestHeaderString({ payload: body, secret });
-    expect(() => verifyStripeEvent(body.replace("evt_1", "evt_2"), header, secret)).toThrow();
+    expect(() =>
+      verifyStripeEvent(body.replace("evt_1", "evt_2"), header, secret),
+    ).toThrow();
     expect(() => verifyStripeEvent(body, header, "whsec_other")).toThrow();
     expect(() => verifyStripeEvent(body, null, secret)).toThrow();
+  });
+});
+
+describe("order limits", () => {
+  it("merges repeated lines, so the per-dish cap holds however they are sent", () => {
+    const lines = parseLines(
+      Array.from({ length: 30 }, () => ({ slug: wanza.slug, quantity: 20 })),
+    );
+    expect(lines).toEqual([{ slug: wanza.slug, selection: {}, quantity: MAX_QUANTITY }]);
+  });
+
+  it("refuses an order bigger than a pickup", () => {
+    expect(withinOrderLimits(parseLines([{ slug: wanza.slug, quantity: 20 }]))).toBe(
+      true,
+    );
+    const many = parseLines([
+      { slug: wanza.slug, quantity: 20 },
+      { slug: spicy.slug, selection: defaultSelection(spicy), quantity: 20 },
+      { slug: "zajiang-noodles", quantity: 20 },
+    ]);
+    expect(many.reduce((sum, line) => sum + line.quantity, 0)).toBeGreaterThan(MAX_ITEMS);
+    expect(withinOrderLimits(many)).toBe(false);
   });
 });

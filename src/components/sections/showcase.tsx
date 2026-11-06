@@ -1,13 +1,8 @@
 import { ShowcasePanels } from "./showcase-panels";
 
 /**
- * Fills exactly one screen, and sticks there on larger screens while the
- * categories scroll up over it. On phones the panels stack taller than the
- * screen, so it scrolls normally; stuck, its lower panels would never be seen.
- *
- * The panels are the section — the heading overlays
- * them rather than sitting in a band above, which is what previously left the
- * panels as a strip inside a field of black.
+ * Signature dishes as expanding panels, one screen tall, with the heading laid
+ * over them. Sticks on larger screens while the categories scroll up over it.
  */
 export function Showcase() {
   return (
