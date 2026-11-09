@@ -8,13 +8,20 @@
  * pepper sauce, chef's specials wok-fried to order, pork belly "翻锅50次".
  * Nothing about the restaurant's history is invented. The Chinese needs a
  * native review.
+ *
+ * The photographs are the restaurant's own (content/photos.ts) where one fits;
+ * otherwise a dish photograph from the menu.
  */
+
+import { DISH_MEDIA, type Media } from "./menu-media";
+import { PHOTOS } from "./photos";
+
+const dish = (slug: string): Media => DISH_MEDIA[slug]!.photo!;
 
 export type Step = {
   title: string;
   body: string;
-  /** A dish slug whose photograph illustrates the step (see DISH_MEDIA). */
-  photo: string;
+  photo: Media;
 };
 
 export const HOW_TO_EAT = {
@@ -28,17 +35,17 @@ export const HOW_TO_EAT = {
     {
       title: "Find the sauce",
       body: "Chili oil and our secret sauce sit at the bottom, under the noodles and toppings.",
-      photo: "wanza-noodles",
+      photo: PHOTOS.dryNoodlesUntossed,
     },
     {
       title: "Toss from the bottom",
       body: "Lift the noodles from underneath and fold them over until every strand is red.",
-      photo: "dandan-noodles",
+      photo: dish("dandan-noodles"),
     },
     {
       title: "Eat it while it's hot",
       body: "Dry noodles don't wait. Eat them while the oil is warm and the noodles still have their bite.",
-      photo: "double-cooked-pork-belly-noodles",
+      photo: PHOTOS.servedAtThePass,
     },
   ] satisfies Step[],
 } as const;
@@ -89,7 +96,7 @@ export const NUMBING = {
     "Numbing first, heat second, on purpose. Get it the wrong way round and it is just spicy food.",
   adjust:
     "Want less tingle or less heat? Ask — the chef's specials can be made milder, hotter, or not spicy at all.",
-  photo: "mala-noodle-soup",
+  photo: PHOTOS.seasoningAtThePass,
 } as const;
 
 export const KITCHEN = {
@@ -103,22 +110,22 @@ export const KITCHEN = {
     {
       title: "Noodles, made here",
       body: "Our noodles are made in house, for bite and spring.",
-      photo: "extra-noodles",
+      photo: PHOTOS.noodlesInTheWok,
     },
     {
       title: "A broth of fifteen spices",
       body: "Nearly fifteen spices and our own Sichuan chili paste, with beef, tendon or intestine braised in it until tender.",
-      photo: "extra-braised-beef",
+      photo: PHOTOS.braisedBeefSoup,
     },
     {
       title: "Sauces from scratch",
       body: "Our roasted pepper sauce and chili paste are made in our kitchen.",
-      photo: "extra-roasted-pepper-sauce",
+      photo: PHOTOS.chiliPastePot,
     },
     {
       title: "Wok-fried to order",
       body: "Chef's specials hit a hot wok the moment you order — the pork belly is tossed fifty times.",
-      photo: "double-cooked-pork-belly-noodles",
+      photo: PHOTOS.wokFire,
     },
   ] satisfies Step[],
 } as const;

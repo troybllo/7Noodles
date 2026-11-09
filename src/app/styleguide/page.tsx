@@ -192,12 +192,8 @@ export default function StyleGuidePage() {
           </div>
         </Section>
 
-        <Section title="Mascot" note="Panda 7, from the brand guide.">
-          <div className="flex flex-wrap items-end gap-10">
-            {(["wave", "chef", "spicy", "standing"] as const).map((pose) => (
-              <Panda7 key={pose} pose={pose} className="w-40" sizes="10rem" />
-            ))}
-          </div>
+        <Section title="Mascot" note="Panda 7, the official mascot.">
+          <Panda7 className="w-40" sizes="10rem" />
         </Section>
 
         <Section title="Dish marks" note="Spice, diet and the owner's allergen marks.">

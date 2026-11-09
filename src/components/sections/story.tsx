@@ -1,11 +1,12 @@
 import Image from "next/image";
 import { ScrollRevealText } from "@/components/motion/scroll-reveal-text";
 import { RevealFrame } from "@/components/motion/reveal-frame";
+import { PHOTOS } from "@/content/photos";
 import { STORY } from "@/content/story";
 
 /**
  * The red band: one statement that fills in as it scrolls through, then
- * three photographs opening upward, the last bleeding off the edge.
+ * three diners at the table, opening upward, the last bleeding off the edge.
  */
 export function Story() {
   return (
@@ -29,33 +30,33 @@ export function Story() {
       </div>
 
       <div className="mt-14 grid grid-cols-1 gap-4 md:mt-20 md:grid-cols-[1.5fr_1fr_1.4fr] md:gap-5">
-        <RevealFrame className="aspect-[4/3]">
+        <RevealFrame className="aspect-[4/5]">
           <div className="relative h-full w-full">
             <Image
-              src="/photos/dishes/wontons-in-red-chili-oil.webp"
-              alt="Sichuan wontons in red chili oil with scallion"
+              src={PHOTOS.noodlePullBooth.src}
+              alt={PHOTOS.noodlePullBooth.alt}
               fill
               sizes="(min-width: 768px) 38vw, 100vw"
               className="object-cover"
             />
           </div>
         </RevealFrame>
-        <RevealFrame delay={0.12} className="aspect-[4/3] md:aspect-auto">
+        <RevealFrame delay={0.12} className="aspect-[4/5] md:aspect-auto">
           <div className="relative h-full w-full">
             <Image
-              src="/photos/dishes/chicken-in-chili-oil.webp"
-              alt="Sliced chicken in chili oil and roasted pepper sauce with scallion"
+              src={PHOTOS.noodlePullHigh.src}
+              alt={PHOTOS.noodlePullHigh.alt}
               fill
               sizes="(min-width: 768px) 30vw, 100vw"
               className="object-cover"
             />
           </div>
         </RevealFrame>
-        <RevealFrame delay={0.24} className="aspect-[4/3] md:-mr-[6vw]">
+        <RevealFrame delay={0.24} className="aspect-[4/5] md:-mr-[6vw]">
           <div className="relative h-full w-full">
             <Image
-              src="/photos/dishes/cumin-beef-noodles.webp"
-              alt="Dry noodles with cumin beef, onions, green chilies and cilantro"
+              src={PHOTOS.dinerAtTheTable.src}
+              alt={PHOTOS.dinerAtTheTable.alt}
               fill
               sizes="(min-width: 768px) 40vw, 100vw"
               className="object-cover"

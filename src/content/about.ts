@@ -1,9 +1,7 @@
 /**
- * The brand story, as the restaurant wrote it in its brand guide
- * (data/brand/7 Noodles Brand Guide Line .pdf, page 4). The English is theirs
- * word for word, split into chapters at their paragraph breaks; only a double
- * space was tidied. The Chinese is theirs too, and is not a translation of the
- * English — each stands on its own, so both are shown.
+ * The brand story, in the restaurant's own words (revised November 2026).
+ * The English is theirs, with two typos fixed; the Chinese is theirs too and
+ * is not a translation of the English, so both are shown.
  */
 
 export const ABOUT = {
@@ -13,30 +11,18 @@ export const ABOUT = {
   headingZh: "品牌故事",
   /** The brand's line, in both languages. */
   tagline: {
-    en: "Come for a bowl. Stay for a little warmth.",
+    en: "A taste of Sichuan. A little everyday comfort. A bowl to come back for.",
     zh: "一筷入魂，恰一碗川味人间",
   },
-  lede: "In Sichuan and Chongqing, a bowl of noodles is part of everyday life.",
+  lede: "Our name begins with 恰, a regional expression meaning “to eat.”",
   story: {
-    everyday: {
-      title: "A bowl of everyday life",
-      body: "In Sichuan and Chongqing, a bowl of noodles is part of everyday life. It might be a quick breakfast at a street-side shop or a familiar meal after a long day. The pleasure is simple: bold flavours, a satisfying bowl, and a moment to enjoy it.",
-    },
-    qia: {
+    name: {
       title: "恰 means to eat",
-      body: "That is the spirit we bring to Toronto at 7 Noodles, known in Chinese as 恰小面. “Qia” means “to eat” which is a simple invitation to pull up a chair and share the food we love.",
-    },
-    wanza: {
-      title: "Our signature Wanza",
-      body: "At the heart of our menu is our signature Wanza Noodles: springy noodles topped with soft yellow peas and savoury minced pork sauce, brought together with fragrant chili oil and Sichuan seasonings. Give the bowl a good mix. The peas soften into the sauce, coating the noodles so every bite carries their comforting richness and a gentle, tingling heat.",
+      body: "Our name, 恰小面 (Qia Xiaomian - 7 Noodles), begins with “恰,” a regional expression meaning “to eat,” which has the same pronunciation as 7 in Mandarin. To us, eating noodles is not only about the bold flavours and fragrant chili oil. It is also about slowing down, finding comfort in a familiar bowl, and enjoying life’s simple pleasures.",
     },
     roots: {
-      title: "Our roots",
-      body: "Our inspiration comes from the everyday food culture of Sichuan and Chongqing, the care behind a familiar recipe, the bustle of a neighbourhood noodle shop, and the warmth of welcoming someone to the table. We honour those roots through the flavours we serve and the details we share.",
-    },
-    welcome: {
-      title: "A place at our table",
-      body: "Whether Wanza is a taste of home or your first introduction to Sichuan-style noodles, there is a place for you at our table.",
+      title: "Rooted in Sichuan and Chongqing",
+      body: "Inspired by the food traditions of Sichuan and Chongqing, we keep learning, refining our craft, and staying true to the flavours that brought us here. In Toronto, we look forward to welcoming you to our table.",
     },
   },
   /** The Chinese story, line by line as set in the guide. */

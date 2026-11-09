@@ -3,22 +3,21 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { HandArrow } from "@/components/hand/hand-arrow";
 import { HOW_TO_EAT, KITCHEN, NUMBING, SIGNATURES, type Step } from "@/content/chapters";
-import { DISH_MEDIA } from "@/content/menu-media";
+import { DISH_MEDIA, type Media } from "@/content/menu-media";
 import { findDish } from "@/lib/menu";
 import { CategoriesTrack } from "./categories-track";
 
 const TOTAL = "04";
 
 function Photo({
-  slug,
+  photo,
   sizes,
   className,
 }: {
-  slug: string;
+  photo: Media | undefined;
   sizes: string;
   className?: string;
 }) {
-  const photo = DISH_MEDIA[slug]?.photo;
   return (
     <div className={`bg-brand-soft relative overflow-hidden ${className ?? ""}`}>
       {photo ? (
@@ -121,7 +120,7 @@ function StepCard({
       className={`flex min-h-0 gap-3 ${beside ? "flex-row items-stretch gap-5" : "flex-col"}`}
     >
       <Photo
-        slug={step.photo}
+        photo={step.photo}
         sizes={sizes}
         className={
           beside
@@ -192,7 +191,7 @@ function Signatures() {
                 className="group flex h-full min-h-0 flex-col gap-2"
               >
                 <Photo
-                  slug={slug}
+                  photo={DISH_MEDIA[slug]?.photo}
                   sizes="(min-width: 768px) 20vw, 40vw"
                   className="aspect-[4/3] md:aspect-auto md:min-h-0 md:flex-1"
                 />
@@ -263,7 +262,7 @@ function Numbing() {
           </div>
         </div>
         <Photo
-          slug={NUMBING.photo}
+          photo={NUMBING.photo}
           sizes="(min-width: 768px) 30vw, 80vw"
           className="aspect-[4/5] md:aspect-auto"
         />

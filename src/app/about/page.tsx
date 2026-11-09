@@ -1,25 +1,28 @@
 import type { Metadata } from "next";
-import { pageMetadata } from "@/lib/seo";
 import Image from "next/image";
-import Link from "next/link";
+import { pageMetadata } from "@/lib/seo";
 import { Logo } from "@/components/brand/logo";
 import { Panda7 } from "@/components/brand/panda-7";
 import { TapedFrame } from "@/components/hand/taped-frame";
 import { NoodleLift } from "@/components/hand/noodle-lift";
 import { DrawOn } from "@/components/motion/draw-on";
+import { RevealFrame } from "@/components/motion/reveal-frame";
 import { PageTransition } from "@/components/motion/page-transition";
 import { Button } from "@/components/ui/button";
 import { ABOUT } from "@/content/about";
 import { CONTACT } from "@/content/contact";
+import { PHOTOS } from "@/content/photos";
+import type { Media } from "@/content/menu-media";
+import { SCENERY } from "@/content/scenery";
 
 export const metadata: Metadata = pageMetadata({
   title: "Our Story",
   description:
-    "7 Noodles, known in Chinese as 恰小面: the everyday noodles of Sichuan and Chongqing, brought to Toronto. Come for a bowl. Stay for a little warmth.",
+    "7 Noodles, 恰小面: 恰 means to eat, and sounds like 7 in Mandarin. Sichuan and Chongqing noodles on Yonge Street, Toronto. A bowl to come back for.",
   path: "/about",
 });
 
-const { everyday, qia, wanza, roots, welcome } = ABOUT.story;
+const { name, roots } = ABOUT.story;
 
 function Chapter({ n, onRed }: { n: number; onRed?: boolean }) {
   return (
@@ -27,10 +30,45 @@ function Chapter({ n, onRed }: { n: number; onRed?: boolean }) {
   );
 }
 
+/** A photograph taped onto the page. */
+function Snapshot({
+  photo,
+  tilt,
+  sizes,
+  className,
+}: {
+  photo: Media;
+  tilt: number;
+  sizes: string;
+  className?: string;
+}) {
+  return (
+    <TapedFrame tilt={tilt} className={`text-sm ${className ?? ""}`}>
+      <div className="relative aspect-[4/5]">
+        <Image
+          src={photo.src}
+          alt={photo.alt}
+          fill
+          sizes={sizes}
+          className="object-cover"
+        />
+      </div>
+    </TapedFrame>
+  );
+}
+
+/** The room, in four frames: the door, the tables, the corner, the shelf. */
+const ROOM = [
+  PHOTOS.storefront,
+  PHOTOS.diningRoomBooths,
+  PHOTOS.diningRoomCorner,
+  PHOTOS.kitchenCurtain,
+];
+
 /**
- * The restaurant's story, in its own words (content/about.ts, from the brand
- * guide), set out as chapters at its paragraph breaks, with the Chinese story
- * beside the English rather than under it as a translation.
+ * The restaurant's story in its own words (content/about.ts), in three
+ * chapters, with the Chinese story beside the English rather than under it,
+ * and the restaurant's own photographs between them.
  */
 export default function AboutPage() {
   return (
@@ -59,7 +97,7 @@ export default function AboutPage() {
             </div>
 
             <div className="flex flex-col items-center gap-6 text-center">
-              <Panda7 pose="chef" priority className="w-60 md:w-80" sizes="20rem" />
+              <Panda7 priority className="w-60 md:w-80" sizes="20rem" />
               <p
                 lang="zh"
                 className="font-cjk text-gold text-lg font-bold tracking-[0.1em]"
@@ -70,94 +108,51 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* 1. Everyday life, beside noodles drawn on as the chapter scrolls in. */}
+        {/* 1. 恰: the name, explained, beside the logo. */}
         <section
-          aria-labelledby="chapter-everyday"
+          aria-labelledby="chapter-name"
           data-nav-theme="light"
           className="bg-paper text-brand px-6 py-28 md:px-10"
         >
-          <div className="mx-auto grid max-w-[1100px] items-center gap-12 md:grid-cols-[1fr_auto]">
+          <div className="mx-auto grid max-w-[1100px] items-center gap-14 md:grid-cols-[1fr_minmax(0,22rem)]">
             <div>
+              <Logo variant="stacked" title={null} className="mb-10 w-20 md:w-24" />
               <Chapter n={1} />
-              <h2 id="chapter-everyday" className="font-display text-display mt-4">
-                {everyday.title}
+              <h2 id="chapter-name" className="font-display text-display mt-4">
+                {name.title}
               </h2>
               <p className="text-brand-deep mt-6 max-w-[58ch] text-lg leading-relaxed">
-                {everyday.body}
+                {name.body}
               </p>
             </div>
-            <DrawOn duration={2.4} className="mx-auto w-56 md:w-72">
-              <NoodleLift className="text-brand-deep w-full [--noodle-ground:var(--color-paper)]" />
-            </DrawOn>
+            <Snapshot
+              photo={PHOTOS.birthdayBowl}
+              tilt={2}
+              sizes="(min-width: 768px) 22rem, 90vw"
+            />
           </div>
         </section>
 
-        {/* 2. 恰: the name, explained, beside the logo. */}
-        <section
-          aria-labelledby="chapter-qia"
-          data-nav-theme="dark"
-          className="bg-brand text-paper px-6 py-28 md:px-10"
-        >
-          <div className="mx-auto grid max-w-[1100px] items-center gap-14 md:grid-cols-[auto_1fr]">
-            <Logo variant="stacked" title={null} className="mx-auto w-28 md:w-36" />
-            <div>
-              <Chapter n={2} onRed />
-              <h2 id="chapter-qia" className="font-display text-display mt-4">
-                {qia.title}
-              </h2>
-              <p className="text-paper mt-6 max-w-[52ch] text-lg leading-relaxed">
-                {qia.body}
-              </p>
+        {/* Sichuan, painted: the river the second chapter comes from. */}
+        <figure className="bg-paper text-brand px-6 pb-28 md:px-10">
+          <RevealFrame className="mx-auto aspect-[4/5] max-w-[1400px] sm:aspect-[16/9] lg:aspect-[21/9]">
+            <div className="relative h-full w-full">
+              <Image
+                src={SCENERY.dujiangyan.src}
+                alt={SCENERY.dujiangyan.alt}
+                fill
+                sizes="(min-width: 1400px) 1400px, 100vw"
+                className="object-cover"
+              />
             </div>
-          </div>
-        </section>
+          </RevealFrame>
+          <figcaption className="text-brand-deep mx-auto mt-4 max-w-[1400px] text-sm">
+            Dujiangyan, Sichuan. The Fish Mouth levee has divided the Min River since the
+            third century BC.
+          </figcaption>
+        </figure>
 
-        {/* 3. The signature Wanza, with the bowl itself. */}
-        <section
-          aria-labelledby="chapter-wanza"
-          data-nav-theme="light"
-          className="bg-paper text-brand px-6 py-28 md:px-10"
-        >
-          <div className="mx-auto grid max-w-[1100px] items-center gap-14 md:grid-cols-2">
-            <div>
-              <Chapter n={3} />
-              <h2 id="chapter-wanza" className="font-display text-display mt-4">
-                {wanza.title}
-              </h2>
-              <p className="text-brand-deep mt-6 max-w-[52ch] text-lg leading-relaxed">
-                {wanza.body}
-              </p>
-              <div className="mt-8">
-                <Button href="/menu/traditional-xiaomian/wanza-noodles" tone="outline">
-                  See the Wanza Noodles
-                </Button>
-              </div>
-            </div>
-            <Link
-              href="/menu/traditional-xiaomian/wanza-noodles"
-              className="group focus-visible:outline-brand block outline-offset-8"
-              aria-label="Wanza Noodles on the menu"
-            >
-              <TapedFrame
-                tape="top"
-                tilt={-2}
-                className="transition-[rotate] duration-(--duration-slow) ease-(--ease-out-expo) group-hover:!rotate-0"
-              >
-                <span className="relative block aspect-[4/5] w-full">
-                  <Image
-                    src="/photos/dishes/wanza-noodles.webp"
-                    alt="Wanza noodles: slow-cooked yellow peas and pork sauce over noodles, with preserved greens, peanuts and scallion"
-                    fill
-                    sizes="(min-width: 768px) 32rem, 100vw"
-                    className="object-cover"
-                  />
-                </span>
-              </TapedFrame>
-            </Link>
-          </div>
-        </section>
-
-        {/* 4. The roots, in English and in Chinese. */}
+        {/* 2. The roots, in English and in Chinese, with noodles drawn on. */}
         <section
           aria-labelledby="chapter-roots"
           data-nav-theme="dark"
@@ -165,23 +160,68 @@ export default function AboutPage() {
         >
           <div className="mx-auto grid max-w-[1100px] gap-14 md:grid-cols-2">
             <div>
-              <Chapter n={4} onRed />
-              <h2 id="chapter-roots" className="font-display text-display mt-4">
+              <Chapter n={2} onRed />
+              <h2
+                id="chapter-roots"
+                className="font-display text-title mt-4 max-w-[16ch]"
+              >
                 {roots.title}
               </h2>
               <p className="text-paper mt-6 max-w-[52ch] text-lg leading-relaxed">
                 {roots.body}
               </p>
+              <DrawOn duration={2.4} className="mt-12 w-48 md:w-56">
+                <NoodleLift className="text-paper w-full [--noodle-ground:var(--color-brand)]" />
+              </DrawOn>
             </div>
             <div lang="zh" className="font-cjk flex flex-col gap-5 md:pt-10">
               <p className="text-gold text-2xl font-bold">{ABOUT.storyZh[0]}</p>
               <p className="text-paper text-lg leading-loose">{ABOUT.storyZh[1]}</p>
               <p className="text-gold text-2xl font-bold">{ABOUT.storyZh[2]}</p>
+              <Snapshot
+                photo={PHOTOS.chiliOilOnWontons}
+                tilt={-2}
+                sizes="(min-width: 768px) 20rem, 80vw"
+                className="mt-6 w-[min(100%,20rem)]"
+              />
             </div>
           </div>
         </section>
 
-        {/* 5. A place at the table: the room, and what a diner said about it. */}
+        {/* The room, below street level on Yonge. */}
+        <section
+          aria-labelledby="the-room"
+          data-nav-theme="light"
+          className="bg-paper text-brand px-6 pt-28 md:px-10"
+        >
+          <div className="mx-auto max-w-[1400px]">
+            <h2 id="the-room" className="font-display text-title">
+              {ABOUT.aside.room.title}
+            </h2>
+            <p className="text-brand-deep mt-4 max-w-[48ch] text-lg leading-relaxed">
+              {ABOUT.aside.room.body}
+            </p>
+            <ul className="mt-12 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-5">
+              {ROOM.map((photo, index) => (
+                <li key={photo.src}>
+                  <RevealFrame delay={index * 0.1} className="aspect-[3/4]">
+                    <div className="relative h-full w-full">
+                      <Image
+                        src={photo.src}
+                        alt={photo.alt}
+                        fill
+                        sizes="(min-width: 768px) 25vw, 50vw"
+                        className="object-cover"
+                      />
+                    </div>
+                  </RevealFrame>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        {/* 3. The brand line, the address, and what a diner said about it. */}
         <section
           aria-labelledby="chapter-welcome"
           data-nav-theme="light"
@@ -189,13 +229,13 @@ export default function AboutPage() {
         >
           <div className="mx-auto grid max-w-[1100px] items-center gap-14 md:grid-cols-2">
             <div>
-              <Chapter n={5} />
-              <h2 id="chapter-welcome" className="font-display text-display mt-4">
-                {welcome.title}
+              <Chapter n={3} />
+              <h2
+                id="chapter-welcome"
+                className="font-display text-title mt-4 max-w-[16ch]"
+              >
+                {ABOUT.tagline.en}
               </h2>
-              <p className="text-brand-deep mt-6 max-w-[42ch] text-lg leading-relaxed">
-                {welcome.body}
-              </p>
               <address className="text-brand-deep mt-6 text-sm leading-relaxed not-italic">
                 {CONTACT.address.street}, {CONTACT.address.locality}
                 <br />
@@ -226,10 +266,8 @@ export default function AboutPage() {
           data-nav-theme="dark"
           className="bg-brand text-paper flex flex-col items-center px-6 py-24 text-center"
         >
-          <Panda7 pose="wave" alt="" className="w-44 md:w-56" sizes="14rem" />
-          <p className="font-display text-display mt-8 max-w-[18ch]">
-            {ABOUT.tagline.en}
-          </p>
+          <Panda7 alt="" className="w-44 md:w-56" sizes="14rem" />
+          <p className="font-display text-display mt-8">Come hungry</p>
           <div className="mt-10 flex flex-wrap justify-center gap-3">
             <Button href="/order" tone="inverse">
               Order for pickup

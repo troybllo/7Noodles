@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/logo";
 import Image from "next/image";
-import { DISH_MEDIA } from "@/content/menu-media";
+import { PHOTOS } from "@/content/photos";
 import { TapedFrame } from "@/components/hand/taped-frame";
 import { ABOUT } from "@/content/about";
 
 /**
- * Two bands: the logo over the room, then the brand story. Contact detail
+ * Two bands: the logo over the dining room, then the brand story. Contact detail
  * lives in the footer.
  *
  * The history is three columns. The left one carries the heading and is
@@ -14,32 +14,29 @@ import { ABOUT } from "@/content/about";
  * detail moves past — the reason the column is wide is that it is the anchor,
  * not a margin note.
  */
-/** Behind the logo, under a wash of red. Swap for photographs of the room once it is shot. */
-const BACKDROP = ["dandan-noodles", "signature-braised-beef-noodle-soup"];
+/** The dining room, behind the logo under a wash of red. */
+const BACKDROP = [PHOTOS.diningRoomBooths, PHOTOS.diningRoomCorner];
 
 export function About() {
   return (
     <section id="about" data-nav-theme="dark" className="relative z-10 w-full">
-      {/* The logo over two bowls. */}
+      {/* The logo over the room. */}
       <div className="bg-brand relative isolate flex min-h-[60svh] items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0 grid grid-cols-1 md:grid-cols-2">
-          {BACKDROP.map((slug, index) => {
-            const photo = DISH_MEDIA[slug]?.photo;
-            return photo ? (
-              <div
-                key={slug}
-                className={`relative ${index > 0 ? "hidden md:block" : ""}`}
-              >
-                <Image
-                  src={photo.src}
-                  alt=""
-                  fill
-                  sizes="(min-width: 768px) 50vw, 100vw"
-                  className="object-cover"
-                />
-              </div>
-            ) : null;
-          })}
+          {BACKDROP.map((photo, index) => (
+            <div
+              key={photo.src}
+              className={`relative ${index > 0 ? "hidden md:block" : ""}`}
+            >
+              <Image
+                src={photo.src}
+                alt=""
+                fill
+                sizes="(min-width: 768px) 50vw, 100vw"
+                className="object-cover"
+              />
+            </div>
+          ))}
         </div>
         <div className="bg-brand/75 absolute inset-0 z-0" />
 
@@ -85,7 +82,7 @@ export function About() {
           </div>
 
           <div className="flex flex-col gap-8 lg:col-span-4">
-            {[ABOUT.story.qia, ABOUT.story.wanza, ABOUT.story.roots].map((entry) => (
+            {[ABOUT.story.name, ABOUT.story.roots].map((entry) => (
               <div key={entry.title} className="flex flex-col gap-3">
                 <h3 className="font-display border-paper self-start border-b-2 pb-1 text-xl">
                   {entry.title}

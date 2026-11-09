@@ -75,8 +75,11 @@ export function Hero() {
                   title={`${HERO.nameZh} 7 Noodles`}
                 />
               </span>
-              <span data-seal className="w-[clamp(5rem,min(10vw,17svh),11rem)] shrink-0">
-                <Panda7 pose="chef" alt="" sizes="11rem" className="w-full" />
+              <span
+                data-seal
+                className="w-[clamp(4rem,min(8.5vw,14svh),9.5rem)] shrink-0"
+              >
+                <Panda7 alt="" sizes="9.5rem" className="w-full" />
               </span>
             </div>
           </div>

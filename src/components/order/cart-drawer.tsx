@@ -65,7 +65,7 @@ export function CartDrawer() {
 
         {itemCount === 0 ? (
           <div className="flex flex-1 flex-col items-center justify-center gap-6 text-center">
-            <Panda7 pose="wave" alt="" className="w-36" sizes="9rem" />
+            <Panda7 alt="" className="w-36" sizes="9rem" />
             <Button href="/order" size="lg" onClick={() => setOpen(false)}>
               Start an order
             </Button>

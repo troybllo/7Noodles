@@ -1,10 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { CONTACT } from "@/content/contact";
+import { PHOTOS } from "@/content/photos";
 
 /**
- * Where and when: the address and ways in beside the week's hours, and a
- * photograph. The locations page adds the map. Everything comes from
+ * Where and when: the address and ways in beside the week's hours, and the
+ * storefront. The locations page adds the map. Everything comes from
  * content/contact.ts, so this, the footer and the structured data agree.
  */
 export function Contact({
@@ -80,11 +81,11 @@ export function Contact({
 
         <div className="relative aspect-[4/3] overflow-hidden">
           <Image
-            src="/photos/dishes/biangbiang-noodles.webp"
-            alt="BiangBiang noodles with tomato and egg, minced pork, greens and hot chili oil"
+            src={PHOTOS.storefront.src}
+            alt={PHOTOS.storefront.alt}
             fill
             sizes="(min-width: 1024px) 50vw, 100vw"
-            className="object-cover"
+            className="object-cover object-[50%_40%]"
           />
         </div>
       </div>

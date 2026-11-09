@@ -28,3 +28,16 @@ retired once the shoot arrived; they remain in git history.
 
 The client's originals (~250 MB). Kept out of git and out of deploys — see
 `.gitignore` — since only the converted `dishes/` files are served.
+
+## story/ (November 2026)
+
+The restaurant's own photographs, supplied by the client (originals in the
+gitignored `data/photos-nov/`): the Tezza shoot of the kitchen and tables, and
+the DSC shoot of the dining room and storefront. Resized to 1800px WebP; alt
+text in `src/content/photos.ts`. `birthday-bowl` is cropped to leave out a pair
+of chopsticks. Tezza-0714, -2376 and -3144 are not used because they show
+diners eating with chopsticks, and the client asked for forks.
+
+Update: Tezza-0714, -2376 and -3144 are now used in the home page's red
+story band (`diner-at-the-table`, `noodle-pull-booth`, `noodle-pull-high`),
+approved despite the chopsticks.

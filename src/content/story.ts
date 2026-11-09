@@ -7,6 +7,6 @@ export const STORY = {
   /** 麻辣鲜香, from the Chinese brand story. */
   vertical: "麻辣鲜香",
   quote:
-    "In Sichuan and Chongqing, a bowl of noodles is part of everyday life. The pleasure is simple: bold flavours, a satisfying bowl, and a moment to enjoy it.",
+    "To us, eating noodles is not only about the bold flavours and fragrant chili oil. It is also about slowing down, finding comfort in a familiar bowl, and enjoying life’s simple pleasures.",
   cta: { label: "Read our story", href: "/about" },
 } as const;

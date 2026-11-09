@@ -59,7 +59,7 @@ export function CheckoutForm() {
   if (priced.length === 0) {
     return (
       <div className="flex flex-col items-center gap-6 py-16 text-center">
-        <Panda7 pose="wave" alt="" className="w-40" sizes="10rem" />
+        <Panda7 alt="" className="w-40" sizes="10rem" />
         <p className="font-display text-2xl">Your order is empty.</p>
         <Button href="/order" size="lg">
           Start an order

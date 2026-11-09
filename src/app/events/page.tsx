@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { JsonLd } from "@/components/seo/json-ld";
 import { eventsJsonLd, pageMetadata } from "@/lib/seo";
 import { Panda7 } from "@/components/brand/panda-7";
 import { EventCard } from "@/components/events/event-card";
+import { TapedFrame } from "@/components/hand/taped-frame";
 import { PageTransition } from "@/components/motion/page-transition";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { CONTACT } from "@/content/contact";
+import { SCENERY } from "@/content/scenery";
 import { splitEvents } from "@/lib/events";
 
 export const metadata: Metadata = pageMetadata({
@@ -33,21 +36,36 @@ export default function EventsPage() {
       >
         {upcoming.length > 0 ? <JsonLd data={eventsJsonLd(upcoming)} /> : null}
         <div className="mx-auto max-w-[1200px] px-6 md:px-10">
-          <SectionHeading as="h1" eyebrow="Events" zh="活动">
-            What&rsquo;s on at 7 Noodles
-          </SectionHeading>
-          <p className="text-brand-deep text-lede mt-6 max-w-[48ch] leading-relaxed">
-            Tastings, festival menus and the odd night of something new. Follow{" "}
-            <a
-              href={CONTACT.instagram.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="decoration-brand-deep underline decoration-2 underline-offset-[0.3em]"
-            >
-              {CONTACT.instagram.handle}
-            </a>{" "}
-            to hear first.
-          </p>
+          <div className="grid items-center gap-12 lg:grid-cols-[1fr_minmax(0,34rem)]">
+            <div>
+              <SectionHeading as="h1" eyebrow="Events" zh="活动">
+                What&rsquo;s on at 7 Noodles
+              </SectionHeading>
+              <p className="text-brand-deep text-lede mt-6 max-w-[48ch] leading-relaxed">
+                Tastings, festival menus and the odd night of something new. Follow{" "}
+                <a
+                  href={CONTACT.instagram.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="decoration-brand-deep underline decoration-2 underline-offset-[0.3em]"
+                >
+                  {CONTACT.instagram.handle}
+                </a>{" "}
+                to hear first.
+              </p>
+            </div>
+            <TapedFrame tilt={1.5} className="text-sm">
+              <Image
+                src={SCENERY.shadowTheatre.src}
+                width={SCENERY.shadowTheatre.width}
+                height={SCENERY.shadowTheatre.height}
+                alt={SCENERY.shadowTheatre.alt}
+                sizes="(min-width: 1024px) 34rem, 100vw"
+                preload
+                className="block h-auto w-full"
+              />
+            </TapedFrame>
+          </div>
 
           <section
             id="upcoming"
@@ -61,7 +79,7 @@ export default function EventsPage() {
               upcoming.map((event) => <EventCard key={event.slug} event={event} />)
             ) : (
               <div className="border-brand/10 flex flex-col items-center gap-6 border-t py-16 text-center">
-                <Panda7 pose="wave" alt="" className="w-40" />
+                <Panda7 alt="" className="w-40" sizes="10rem" />
                 <p className="font-display text-2xl">Nothing on the calendar just yet.</p>
                 <p className="text-brand-deep max-w-[40ch]">
                   We announce new events on Instagram first. Check back soon.

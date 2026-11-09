@@ -44,6 +44,7 @@ const nextConfig: NextConfig = {
       { pathname: "/artwork/**", search: "" },
       { pathname: "/ornaments/**", search: "" },
       { pathname: "/textures/**", search: "" },
+      { pathname: "/scenery/**", search: "" },
     ],
   },
   async redirects() {

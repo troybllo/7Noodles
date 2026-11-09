@@ -12,7 +12,7 @@ export default function NotFound() {
       data-nav-theme="light"
       className="bg-paper text-brand relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden px-6 pt-28 pb-20 text-center"
     >
-      <Panda7 pose="spicy" alt="" className="w-44 md:w-56" />
+      <Panda7 alt="" className="w-44 md:w-56" />
       <h1 className="font-display mt-6 text-[clamp(5rem,16vw,11rem)] leading-none tracking-[-0.05em]">
         404
       </h1>

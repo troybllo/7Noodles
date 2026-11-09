@@ -32,7 +32,6 @@ export function AccountShell({
               {lede}
             </p>
             <Panda7
-              pose="wave"
               alt=""
               className="mt-10 hidden w-48 lg:block"
               sizes="12rem"
