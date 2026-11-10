@@ -5,8 +5,7 @@ import { CATEGORY_COVERS } from "@/content/menu-media";
 import { notFound } from "next/navigation";
 import { AllergyNotice } from "@/components/menu/allergy-notice";
 import { CategoryTabs } from "@/components/menu/category-tabs";
-import { DishCard } from "@/components/menu/dish-card";
-import { InkRevealGrid } from "@/components/menu/ink-reveal-grid";
+import { CategoryDishes } from "@/components/menu/category-dishes";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { getCategories, getCategory } from "@/lib/menu";
 import { formatCad } from "@/lib/money";
@@ -82,11 +81,7 @@ export default async function CategoryPage({ params }: PageProps<"/menu/[categor
             className="mt-8 md:mt-12"
           />
 
-          <InkRevealGrid className="mt-8 grid grid-cols-2 gap-x-4 gap-y-12 md:mt-12 md:gap-x-6 lg:grid-cols-4">
-            {category.items.map((item) => (
-              <DishCard key={item.slug} item={item} categorySlug={category.slug} />
-            ))}
-          </InkRevealGrid>
+          <CategoryDishes category={category} className="mt-8 md:mt-12" />
         </div>
       </main>
     </PageTransition>

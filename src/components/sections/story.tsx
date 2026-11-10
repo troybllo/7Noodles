@@ -48,8 +48,8 @@ export function Story() {
         >
           <div className="relative h-full w-full">
             <Image
-              src={PHOTOS.noodlePullHigh.src}
-              alt={PHOTOS.noodlePullHigh.alt}
+              src={PHOTOS.bowlHeldUp.src}
+              alt={PHOTOS.bowlHeldUp.alt}
               fill
               sizes="(min-width: 768px) 30vw, 80vw"
               className="object-cover"

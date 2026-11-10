@@ -15,12 +15,26 @@ import { DishTags } from "./dish-tags";
 export function DishCard({
   item,
   categorySlug,
+  feature,
+  className = "",
 }: {
   item: MenuItem;
   categorySlug: string;
+  /**
+   * Leads its grid so no row is left with a lone card: `wide` spans both
+   * columns below `lg`; `hero` also takes two columns and two rows at `lg`.
+   */
+  feature?: "wide" | "hero" | undefined;
+  className?: string;
 }) {
+  const span =
+    feature === "hero"
+      ? "col-span-2 lg:row-span-2"
+      : feature === "wide"
+        ? "col-span-2 lg:col-span-1"
+        : "";
   return (
-    <article className="relative">
+    <article className={`relative ${span} ${className}`}>
       <Link
         href={`/menu/${categorySlug}/${item.slug}`}
         className="group focus-visible:outline-brand flex flex-col outline-offset-4"
@@ -36,6 +50,15 @@ export function DishCard({
                 media={DISH_MEDIA[item.slug]}
                 label={item.nameEn}
                 zh={item.nameZh}
+                {...(feature
+                  ? {
+                      aspect: "aspect-[4/3] lg:aspect-[4/5]",
+                      sizes:
+                        feature === "hero"
+                          ? "(min-width: 1024px) 46vw, 100vw"
+                          : "(min-width: 1024px) 23vw, 100vw",
+                    }
+                  : {})}
               />
             </div>
             {item.signature ? (
@@ -52,7 +75,9 @@ export function DishCard({
         </ViewTransition>
 
         <div className="mt-4 flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
-          <h3 className="font-display text-brand decoration-brand-deep min-w-0 text-base leading-snug break-words hyphens-auto underline-offset-4 group-hover:underline sm:text-lg md:text-xl">
+          <h3
+            className={`font-display text-brand decoration-brand-deep min-w-0 leading-snug break-words hyphens-auto underline-offset-4 group-hover:underline ${feature === "hero" ? "text-lg sm:text-xl md:text-2xl lg:text-3xl" : "text-base sm:text-lg md:text-xl"}`}
+          >
             {item.nameEn}
           </h3>
           <p className="text-brand shrink-0 text-base font-semibold tabular-nums">

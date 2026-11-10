@@ -63,10 +63,15 @@ export function getMoreDishes(
   category: MenuCategory,
   item: MenuItem,
   count = 3,
+  /** Dishes to suggest first (those with a photograph); the rest fill in after. */
+  prefer: (candidate: MenuItem) => boolean = () => true,
 ): MenuItem[] {
   const index = category.items.findIndex((candidate) => candidate.slug === item.slug);
   const others = [...category.items.slice(index + 1), ...category.items.slice(0, index)];
-  return others.slice(0, count);
+  return [...others.filter(prefer), ...others.filter((other) => !prefer(other))].slice(
+    0,
+    count,
+  );
 }
 
 /** Any dish on the menu by its slug, which is unique across the whole menu. */

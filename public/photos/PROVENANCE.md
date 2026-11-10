@@ -6,9 +6,10 @@ The restaurant's own shoot, supplied by the client in `7noodle websize/`
 (3456 × 5184 JPEGs, each labelled with the dish in Chinese and English).
 
 Every photograph was checked against the menu before use — all labels were
-correct. One shot was chosen per dish, resized to 1200 px wide and converted
-to WebP (quality 78), about 95 KB each. The source file for each is recorded in
-the commit that added it, and `src/content/menu-media.ts` maps slug to file.
+correct. One shot was chosen per dish. Re-exported in November 2026 from the
+originals at 2400 px on the long side, lightly sharpened, WebP quality 84
+(the first pass, at 1200 px and quality 78, looked soft on large and retina
+screens). `src/content/menu-media.ts` maps slug to file.
 
 The skewers were only photographed as mixed platters, so the skewer section
 uses platter shots (`leshan-skewers-*.webp`) captioned with what is visible,
@@ -47,3 +48,7 @@ Update (November 2026, second batch): `bowl-held-up` (Tezza-9036) and
 (-9977), `birthday-table` (-2047) and `wok-to-bowl` (-0103) fill the home
 chapters' side columns; `the-team` (-0443) and `friends-at-the-table`
 (-0803) are on Our Story; `lucky-cat-shelf` (-6928) is in the footer strip.
+
+Update (November 2026, third pass): the home hero's left photograph is now
+`noodle-pull-high` (Tezza-3144, re-exported at 2400px); `bowl-held-up` moved
+into the red story band in its place.

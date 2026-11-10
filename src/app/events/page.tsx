@@ -6,6 +6,9 @@ import { Panda7 } from "@/components/brand/panda-7";
 import { EventCard } from "@/components/events/event-card";
 import { TapedFrame } from "@/components/hand/taped-frame";
 import { PinUp } from "@/components/motion/pin-up";
+import { RevealFrame } from "@/components/motion/reveal-frame";
+import { Button } from "@/components/ui/button";
+import { PHOTOS } from "@/content/photos";
 import { PageTransition } from "@/components/motion/page-transition";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { CONTACT } from "@/content/contact";
@@ -81,20 +84,92 @@ export default function EventsPage() {
             {upcoming.length > 0 ? (
               upcoming.map((event) => <EventCard key={event.slug} event={event} />)
             ) : (
-              <div className="border-brand/10 flex flex-col items-center gap-6 border-t py-16 text-center">
-                <Panda7 alt="" className="w-40" sizes="10rem" />
-                <p className="font-display text-2xl">Nothing on the calendar just yet.</p>
-                <p className="text-brand-deep max-w-[40ch]">
-                  We announce new events on Instagram first. Check back soon.
-                </p>
+              <div className="border-brand/15 flex flex-col gap-6 border-t py-10 sm:flex-row sm:items-center sm:gap-10">
+                <Panda7 alt="" className="w-24 shrink-0 sm:w-28" sizes="7rem" />
+                <div className="flex-1">
+                  <p className="font-display text-2xl md:text-3xl">
+                    The next one is being planned.
+                  </p>
+                  <p className="text-brand-deep mt-2 max-w-[48ch] leading-relaxed">
+                    New events are announced on Instagram first, then posted here.
+                  </p>
+                </div>
+                <Button
+                  href={CONTACT.instagram.href}
+                  tone="outline"
+                  className="self-start sm:self-center"
+                >
+                  Follow {CONTACT.instagram.handle}
+                </Button>
               </div>
             )}
           </section>
 
           <section
+            aria-labelledby="gather-heading"
+            className="bg-brand text-paper relative -mx-6 mt-20 overflow-hidden px-6 py-16 md:-mx-10 md:mt-28 md:px-10 md:py-24"
+          >
+            <div className="grid items-center gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-20">
+              <div>
+                <p className="eyebrow text-paper/80">
+                  Birthdays &amp; get-togethers{" "}
+                  <span lang="zh" className="font-cjk ml-2 tracking-[0.2em]">
+                    聚会
+                  </span>
+                </p>
+                <h2
+                  id="gather-heading"
+                  className="font-display text-title mt-4 max-w-[14ch] leading-[0.95]"
+                >
+                  Bring the whole table
+                </h2>
+                <p className="text-paper/85 mt-6 max-w-[46ch] leading-relaxed">
+                  Birthdays, team dinners and long catch-ups over bowls of noodles: the
+                  booths and the big tables were made for them. Coming with a group? Call
+                  ahead so we can set the tables together.
+                </p>
+                <div className="mt-8 flex flex-wrap gap-3">
+                  <Button href={CONTACT.phone.href} tone="inverse">
+                    Call {CONTACT.phone.display}
+                  </Button>
+                  <Button href="/menu" tone="outline">
+                    See the menu
+                  </Button>
+                </div>
+              </div>
+              <div className="relative pb-16 sm:pb-24">
+                <RevealFrame className="bg-paper p-[0.4rem]">
+                  <div className="relative aspect-[4/3] overflow-hidden">
+                    <Image
+                      src={PHOTOS.diningRoomBooths.src}
+                      alt={PHOTOS.diningRoomBooths.alt}
+                      fill
+                      sizes="(min-width: 1024px) 40vw, 100vw"
+                      className="object-cover"
+                    />
+                  </div>
+                </RevealFrame>
+                <PinUp className="absolute right-[-4%] bottom-0 w-[46%] sm:right-[-6%]">
+                  <TapedFrame tilt={-3} className="text-xs">
+                    <div className="relative aspect-[4/5] overflow-hidden">
+                      <Image
+                        src={PHOTOS.birthdayTable.src}
+                        alt={PHOTOS.birthdayTable.alt}
+                        fill
+                        sizes="(min-width: 1024px) 20vw, 46vw"
+                        className="object-cover"
+                      />
+                    </div>
+                  </TapedFrame>
+                </PinUp>
+              </div>
+            </div>
+          </section>
+
+          <section
             id="past"
             aria-labelledby="past-heading"
-            className="mt-20 scroll-mt-28"
+            className="mt-16 scroll-mt-28"
           >
             {past.length > 0 ? (
               <details className="group">

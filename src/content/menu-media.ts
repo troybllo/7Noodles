@@ -1,7 +1,7 @@
 /**
  * Dish photography, keyed by slug: the restaurant's shoot, one shot per dish,
- * 1200px WebP in public/photos/dishes. A dish without an entry shows its
- * Chinese name as a tile.
+ * 2400px WebP in public/photos/dishes. A dish without an entry is listed
+ * as a line under the photographs (see category-dishes.tsx).
  */
 
 export type Media = { src: string; alt: string };

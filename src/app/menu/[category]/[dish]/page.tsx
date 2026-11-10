@@ -48,7 +48,12 @@ export default async function DishPage({ params }: PageProps<"/menu/[category]/[
   const found = getDish(categorySlug, dishSlug);
   if (!found) notFound();
   const { category, item } = found;
-  const more = getMoreDishes(category, item);
+  const more = getMoreDishes(
+    category,
+    item,
+    3,
+    (dish) => DISH_MEDIA[dish.slug]?.photo !== undefined,
+  );
 
   return (
     <PageTransition id={`menu/${category.slug}/${item.slug}`}>

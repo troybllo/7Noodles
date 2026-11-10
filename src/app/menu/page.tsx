@@ -3,8 +3,7 @@ import { JsonLd } from "@/components/seo/json-ld";
 import { menuJsonLd, pageMetadata } from "@/lib/seo";
 import { AllergyNotice } from "@/components/menu/allergy-notice";
 import { CategoryTabs } from "@/components/menu/category-tabs";
-import { DishCard } from "@/components/menu/dish-card";
-import { InkRevealGrid } from "@/components/menu/ink-reveal-grid";
+import { CategoryDishes } from "@/components/menu/category-dishes";
 import { MenuMargins } from "@/components/menu/menu-margins";
 import { PageTransition } from "@/components/motion/page-transition";
 import { Button } from "@/components/ui/button";
@@ -75,11 +74,7 @@ export default function MenuPage() {
                   ) : null}
                 </header>
 
-                <InkRevealGrid className="grid grid-cols-2 gap-x-4 gap-y-12 md:gap-x-6 lg:grid-cols-4">
-                  {category.items.map((item) => (
-                    <DishCard key={item.slug} item={item} categorySlug={category.slug} />
-                  ))}
-                </InkRevealGrid>
+                <CategoryDishes category={category} />
               </section>
             ))}
           </div>
