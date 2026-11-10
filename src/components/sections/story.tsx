@@ -30,7 +30,7 @@ export function Story() {
       </div>
 
       {/* Phones: a row to swipe through, the next photograph peeking in. */}
-      <div className="mt-12 flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto overscroll-x-contain px-4 [scrollbar-width:none] md:mt-20 md:grid md:grid-cols-[1.5fr_1fr_1.4fr] md:gap-5 md:overflow-visible md:px-0 [&::-webkit-scrollbar]:hidden">
+      <div className="mt-12 flex snap-x snap-mandatory scroll-px-4 [scrollbar-width:none] gap-3 overflow-x-auto overscroll-x-contain px-4 md:mt-20 md:grid md:grid-cols-[1.5fr_1fr_1.4fr] md:gap-5 md:overflow-visible md:px-0 [&::-webkit-scrollbar]:hidden">
         <RevealFrame className="aspect-[4/5] w-[78%] shrink-0 snap-start md:w-auto">
           <div className="relative h-full w-full">
             <Image
@@ -42,7 +42,10 @@ export function Story() {
             />
           </div>
         </RevealFrame>
-        <RevealFrame delay={0.12} className="aspect-[4/5] w-[78%] shrink-0 snap-start md:aspect-auto md:w-auto">
+        <RevealFrame
+          delay={0.12}
+          className="aspect-[4/5] w-[78%] shrink-0 snap-start md:aspect-auto md:w-auto"
+        >
           <div className="relative h-full w-full">
             <Image
               src={PHOTOS.noodlePullHigh.src}
@@ -53,7 +56,10 @@ export function Story() {
             />
           </div>
         </RevealFrame>
-        <RevealFrame delay={0.24} className="aspect-[4/5] w-[78%] shrink-0 snap-start md:-mr-[6vw] md:w-auto">
+        <RevealFrame
+          delay={0.24}
+          className="aspect-[4/5] w-[78%] shrink-0 snap-start md:-mr-[6vw] md:w-auto"
+        >
           <div className="relative h-full w-full">
             <Image
               src={PHOTOS.dinerAtTheTable.src}

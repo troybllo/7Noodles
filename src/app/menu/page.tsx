@@ -26,7 +26,7 @@ export default function MenuPage() {
       <main
         id="main"
         data-nav-theme="light"
-        className="bg-paper text-brand relative min-h-svh px-6 pt-24 md:pt-32 pb-28 md:px-10"
+        className="bg-paper text-brand relative min-h-svh px-6 pt-24 pb-28 md:px-10 md:pt-32"
       >
         <JsonLd data={menuJsonLd()} />
         <MenuMargins />

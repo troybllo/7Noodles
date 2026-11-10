@@ -76,7 +76,8 @@ export function CartButton({ className }: { className?: string }) {
       {itemCount > 0 ? (
         <span
           key={itemCount}
-          className="bg-paper text-brand absolute top-1 right-0 flex motion-safe:animate-[badge-pop_420ms_var(--ease-pop)] h-[1.15rem] min-w-[1.15rem] items-center justify-center rounded-full px-1 text-[0.65rem] leading-none font-bold">
+          className="bg-paper text-brand absolute top-1 right-0 flex h-[1.15rem] min-w-[1.15rem] items-center justify-center rounded-full px-1 text-[0.65rem] leading-none font-bold motion-safe:animate-[badge-pop_420ms_var(--ease-pop)]"
+        >
           {itemCount}
         </span>
       ) : null}

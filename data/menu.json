@@ -54,9 +54,7 @@
           "nameZh": "糯糯豌豆面",
           "priceCents": 1300,
           "spiceLevel": 2,
-          "tags": [
-            "vegetarian"
-          ],
+          "tags": ["vegetarian"],
           "allergens": {
             "nuts": "removable"
           },
@@ -88,9 +86,7 @@
           "nameZh": "番茄鸡蛋拌面",
           "priceCents": 1500,
           "spiceLevel": 0,
-          "tags": [
-            "vegetarian"
-          ],
+          "tags": ["vegetarian"],
           "allergens": {},
           "spiceAdjustable": false,
           "available": true,
@@ -103,10 +99,7 @@
           "nameZh": "麻辣小面",
           "priceCents": 1000,
           "spiceLevel": 2,
-          "tags": [
-            "vegan",
-            "vegetarian"
-          ],
+          "tags": ["vegan", "vegetarian"],
           "allergens": {
             "nuts": "removable"
           },
@@ -122,9 +115,7 @@
           "nameZh": "万州凉面",
           "priceCents": 1200,
           "spiceLevel": 2,
-          "tags": [
-            "vegetarian"
-          ],
+          "tags": ["vegetarian"],
           "allergens": {
             "nuts": "removable"
           },
@@ -751,9 +742,7 @@
           "nameZh": "港式云吞面",
           "priceCents": 1500,
           "spiceLevel": 0,
-          "tags": [
-            "seafood"
-          ],
+          "tags": ["seafood"],
           "allergens": {},
           "spiceAdjustable": false,
           "available": true,
@@ -774,9 +763,7 @@
           "nameZh": "海鲜沙茶浓汤面",
           "priceCents": 2200,
           "spiceLevel": 0,
-          "tags": [
-            "seafood"
-          ],
+          "tags": ["seafood"],
           "allergens": {},
           "spiceAdjustable": false,
           "available": true,
@@ -789,9 +776,7 @@
           "nameZh": "陕西油泼面",
           "priceCents": 1000,
           "spiceLevel": 1,
-          "tags": [
-            "vegetarian"
-          ],
+          "tags": ["vegetarian"],
           "allergens": {},
           "spiceAdjustable": false,
           "available": true,
@@ -1217,9 +1202,7 @@
           "nameZh": "花枝丸",
           "priceCents": 500,
           "spiceLevel": 1,
-          "tags": [
-            "seafood"
-          ],
+          "tags": ["seafood"],
           "allergens": {
             "nuts": "contains"
           },

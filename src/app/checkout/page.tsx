@@ -16,7 +16,7 @@ export default function CheckoutPage() {
       <main
         id="main"
         data-nav-theme="light"
-        className="bg-paper text-brand min-h-[80dvh] px-6 pt-24 md:pt-32 pb-24 md:px-10"
+        className="bg-paper text-brand min-h-[80dvh] px-6 pt-24 pb-24 md:px-10 md:pt-32"
       >
         <div className="mx-auto max-w-[1100px]">
           <SectionHeading as="h1" zh="结账">

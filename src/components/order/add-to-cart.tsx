@@ -74,7 +74,8 @@ export function AddToCart({ item, variant = "button", tone = "ink" }: AddToCartP
           {quantity > 0 ? (
             <span
               key={quantity}
-              className="bg-paper text-brand absolute -top-1 -right-1 flex size-5 motion-safe:animate-[badge-pop_420ms_var(--ease-pop)] items-center justify-center rounded-full text-[0.7rem] font-semibold">
+              className="bg-paper text-brand absolute -top-1 -right-1 flex size-5 items-center justify-center rounded-full text-[0.7rem] font-semibold motion-safe:animate-[badge-pop_420ms_var(--ease-pop)]"
+            >
               {quantity}
             </span>
           ) : null}
@@ -104,9 +105,7 @@ export function AddToCart({ item, variant = "button", tone = "ink" }: AddToCartP
       >
         {hasOptions ? "Choose & add" : "Add to order"}
         {hasOptions && quantity > 0 ? (
-          <span className="bg-paper text-brand px-2 text-xs">
-            {quantity}
-          </span>
+          <span className="bg-paper text-brand px-2 text-xs">{quantity}</span>
         ) : null}
       </Button>
       {options}

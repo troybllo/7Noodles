@@ -29,14 +29,15 @@ export function RevealFrame({ children, className, delay = 0 }: RevealFrameProps
 
     const wait = window.matchMedia("(min-width: 48rem)").matches ? delay : 0;
     const scrollTrigger = { trigger: element, start: "top 88%", once: true };
-    const reveal = { duration: DURATION.reveal, delay: wait, ease: EASE.out, scrollTrigger };
+    const reveal = {
+      duration: DURATION.reveal,
+      delay: wait,
+      ease: EASE.out,
+      scrollTrigger,
+    };
 
     gsap.fromTo(wipe, { yPercent: 100 }, { yPercent: 0, ...reveal });
-    gsap.fromTo(
-      inner,
-      { yPercent: -100, scale: 1.18 },
-      { yPercent: 0, ...reveal },
-    );
+    gsap.fromTo(inner, { yPercent: -100, scale: 1.18 }, { yPercent: 0, ...reveal });
     gsap.to(inner, {
       scale: 1,
       duration: DURATION.zoom,

@@ -21,7 +21,11 @@ type CategoryTabsProps = {
 export function CategoryTabs({ categories, ...rest }: CategoryTabsProps) {
   return (
     <CategoryRail
-      categories={categories.map(({ slug, nameEn, nameZh }) => ({ slug, nameEn, nameZh }))}
+      categories={categories.map(({ slug, nameEn, nameZh }) => ({
+        slug,
+        nameEn,
+        nameZh,
+      }))}
       {...rest}
     />
   );

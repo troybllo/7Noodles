@@ -32,7 +32,7 @@ export default function OrderPage() {
       <main
         id="main"
         data-nav-theme="light"
-        className="bg-paper text-brand relative px-6 pt-24 md:pt-32 pb-28 md:px-10"
+        className="bg-paper text-brand relative px-6 pt-24 pb-28 md:px-10 md:pt-32"
       >
         <MenuMargins />
         <div className="relative z-10 mx-auto max-w-[1200px]">

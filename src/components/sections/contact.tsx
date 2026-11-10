@@ -56,7 +56,7 @@ export function Contact({
             </Button>
           </div>
 
-          <div className="mt-10 grid lg:mt-16 gap-10 text-[0.95rem] leading-snug sm:grid-cols-[1fr_1.4fr]">
+          <div className="mt-10 grid gap-10 text-[0.95rem] leading-snug sm:grid-cols-[1fr_1.4fr] lg:mt-16">
             <div className="flex flex-col gap-5">
               <p>
                 Walk-ins welcome. Or{" "}

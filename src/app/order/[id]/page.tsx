@@ -21,7 +21,7 @@ export default async function OrderPage({ params }: PageProps<"/order/[id]">) {
     <main
       id="main"
       data-nav-theme="light"
-      className="bg-paper text-brand px-6 pt-24 md:pt-32 pb-24 md:px-10"
+      className="bg-paper text-brand px-6 pt-24 pb-24 md:px-10 md:pt-32"
     >
       <div className="mx-auto grid max-w-[1000px] gap-12 lg:grid-cols-[1fr_22rem]">
         <div>

@@ -36,9 +36,15 @@ export function SectionHeading({
     <div
       className={`flex gap-4 sm:gap-6 ${align === "center" ? "justify-center text-center" : ""} ${className ?? ""}`}
     >
-      <div className={`min-w-0 ${align === "center" ? "flex flex-col items-center" : ""}`}>
+      <div
+        className={`min-w-0 ${align === "center" ? "flex flex-col items-center" : ""}`}
+      >
         {eyebrow ? <p className="eyebrow mb-4">{eyebrow}</p> : null}
-        <Tag className={`font-display break-words text-balance hyphens-auto ${SIZE[size]}`}>{children}</Tag>
+        <Tag
+          className={`font-display text-balance break-words hyphens-auto ${SIZE[size]}`}
+        >
+          {children}
+        </Tag>
       </div>
       {zh ? (
         <span

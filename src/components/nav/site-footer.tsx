@@ -38,7 +38,8 @@ function FooterLink({
   label: string;
   external?: boolean;
 }) {
-  const className = "inline-flex min-h-11 items-center underline-offset-4 hover:underline";
+  const className =
+    "inline-flex min-h-11 items-center underline-offset-4 hover:underline";
   return external ? (
     <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
       {label}

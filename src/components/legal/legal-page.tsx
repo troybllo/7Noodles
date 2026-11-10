@@ -40,7 +40,7 @@ export function LegalPage({
   return (
     <PageTransition id={id}>
       <main id="main" data-nav-theme="light" className="bg-paper text-brand">
-        <header className="px-6 pt-24 md:pt-32 pb-12 md:px-10">
+        <header className="px-6 pt-24 pb-12 md:px-10 md:pt-32">
           <div className="mx-auto grid max-w-[1100px] items-center gap-10 md:grid-cols-[1fr_auto]">
             <div>
               <SectionHeading as="h1" zh={zh}>

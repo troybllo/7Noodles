@@ -104,7 +104,7 @@ export function ShowcasePanels() {
                 </span>
                 <span
                   aria-hidden="true"
-                  className="border-current/40 flex size-11 shrink-0 items-center justify-center border transition-transform duration-(--duration-fast) group-active:translate-x-1"
+                  className="flex size-11 shrink-0 items-center justify-center border border-current/40 transition-transform duration-(--duration-fast) group-active:translate-x-1"
                 >
                   →
                 </span>

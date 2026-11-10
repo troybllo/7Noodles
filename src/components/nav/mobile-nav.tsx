@@ -73,7 +73,11 @@ export function MobileNav({ open, onClose }: { open: boolean; onClose: () => voi
         </button>
       </div>
 
-      <div data-rise style={{ "--i": 0 } as CSSProperties} className="mt-6 flex flex-col gap-2">
+      <div
+        data-rise
+        style={{ "--i": 0 } as CSSProperties}
+        className="mt-6 flex flex-col gap-2"
+      >
         <Link
           href="/order"
           className="bg-paper text-brand flex h-14 items-center justify-between px-5 text-sm font-semibold tracking-[0.14em] uppercase transition-transform duration-(--duration-fast) ease-(--ease-out-soft) active:scale-[0.98]"

@@ -55,7 +55,7 @@ export default async function DishPage({ params }: PageProps<"/menu/[category]/[
       <main
         id="main"
         data-nav-theme="light"
-        className="bg-paper text-brand relative min-h-svh px-6 pt-24 md:pt-32 pb-28 md:px-10"
+        className="bg-paper text-brand relative min-h-svh px-6 pt-24 pb-28 md:px-10 md:pt-32"
       >
         <JsonLd
           data={[
@@ -99,7 +99,7 @@ export default async function DishPage({ params }: PageProps<"/menu/[category]/[
 
               <p
                 lang="zh"
-                className="font-cjk text-brand-deep mt-6 text-2xl lg:mt-10 leading-none font-bold tracking-[0.08em]"
+                className="font-cjk text-brand-deep mt-6 text-2xl leading-none font-bold tracking-[0.08em] lg:mt-10"
               >
                 {item.nameZh}
               </p>
