@@ -126,7 +126,7 @@ export function AccountForm({ mode }: { mode: Mode }) {
 
       <button
         type="submit"
-        className="bg-brand text-paper hover:bg-brand-deep mt-2 h-13 rounded-full text-base font-semibold transition-colors"
+        className="bg-brand text-paper hover:bg-brand-deep mt-2 h-13 text-base font-semibold transition-colors"
       >
         {register ? "Create account" : "Sign in"}
       </button>
@@ -156,7 +156,7 @@ export function AccountForm({ mode }: { mode: Mode }) {
               </p>
               <Link
                 href="/order"
-                className="bg-brand-deep text-paper inline-flex h-11 items-center self-start rounded-full px-6 text-sm font-semibold"
+                className="bg-brand-deep text-paper inline-flex h-11 items-center self-start px-6 text-sm font-semibold"
               >
                 Order for pickup
               </Link>

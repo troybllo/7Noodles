@@ -38,7 +38,7 @@ const TILTS = [-2, 1.5, -1, 2.5, -1.5, 1, -2.5, 2] as const;
  */
 function Card({ review, index }: { review: Review; index: number }) {
   return (
-    <li className="w-[21rem] shrink-0 py-6">
+    <li className="w-[min(21rem,82vw)] shrink-0 py-6">
       <TapedFrame tape="top" tilt={TILTS[index % TILTS.length] ?? 0} className="text-sm">
         <div className="bg-paper text-brand flex h-[22rem] flex-col justify-between p-7">
           <Stars rating={review.rating} />

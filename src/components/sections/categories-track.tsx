@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { DURATION } from "@/components/motion/motion-tokens";
 import { useGsap } from "@/components/motion/use-gsap";
 import { ACCORDION_QUERY } from "@/components/motion/use-expanding-panels";
 
@@ -12,7 +13,7 @@ const HANDOVER_SCROLL = 0.6;
  * before, which drifts left and dims, so only one is ever fully in view. The
  * timeline is scrubbed, so scrolling back reverses it.
  *
- * The markup is normal flow (a swiping row on phones); GSAP adds the stacking
+ * The markup is normal flow (stacked one after another on phones); GSAP adds the stacking
  * only when it runs, so reduced motion still shows every panel.
  */
 export function CategoriesTrack({ children }: { children: ReactNode }) {
@@ -42,7 +43,7 @@ export function CategoriesTrack({ children }: { children: ReactNode }) {
           start: "top top",
           end: () => `+=${handovers * window.innerHeight * HANDOVER_SCROLL}`,
           pin: true,
-          scrub: 0.7,
+          scrub: DURATION.settle,
           anticipatePin: 1,
           invalidateOnRefresh: true,
         },
@@ -73,14 +74,10 @@ export function CategoriesTrack({ children }: { children: ReactNode }) {
   return (
     <div
       ref={scope}
-      // On phones the categories sit side by side and swipe, each snapping into
-      // place with the next one peeking in, so the run costs one screen of
-      // scrolling rather than four. From the accordion breakpoint up, the
-      // pinned overlap above takes over.
-      tabIndex={0}
-      role="region"
-      aria-label="Categories, swipe to see more"
-      className="relative flex w-full snap-x snap-mandatory [scrollbar-width:none] gap-3 overflow-x-auto overscroll-x-contain md:block md:overflow-visible md:focus-visible:outline-none"
+      // On phones the chapters simply follow one another, each as tall as its
+      // own content. From the accordion breakpoint up, the pinned overlap
+      // above takes over.
+      className="relative flex w-full flex-col md:block"
     >
       {children}
     </div>

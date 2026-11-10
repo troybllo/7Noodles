@@ -31,7 +31,7 @@ export function Badge({
   const { label, className } = BADGE[kind];
   return (
     <span
-      className={`bg-paper rounded-full border px-2.5 py-0.5 text-[0.7rem] leading-5 font-semibold tracking-[0.06em] uppercase ${className}`}
+      className={`bg-paper border px-2.5 py-0.5 text-[0.7rem] leading-5 font-semibold tracking-[0.06em] uppercase ${className}`}
     >
       {label}
       {note ? (
@@ -81,7 +81,7 @@ export function DishTags({
     <div className={`flex flex-wrap items-center gap-x-2 gap-y-2 ${className ?? ""}`}>
       {item.spiceLevel > 0 ? (
         <span
-          className="bg-paper mr-1 flex items-center rounded-full px-2 py-1"
+          className="bg-paper mr-1 flex items-center px-2 py-1"
           role="img"
           aria-label={`${SPICE_LABEL[item.spiceLevel]} (${item.spiceLevel} of 3)`}
           title={SPICE_LABEL[item.spiceLevel]}

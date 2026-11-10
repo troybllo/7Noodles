@@ -31,7 +31,7 @@ export function SignInForm() {
       <button
         type="submit"
         disabled={pending}
-        className="bg-paper text-brand h-14 rounded-full text-sm font-bold tracking-[0.14em] uppercase disabled:opacity-60"
+        className="bg-paper text-brand h-14 text-sm font-bold tracking-[0.14em] uppercase disabled:opacity-60"
       >
         {pending ? "Checking…" : "Open the board"}
       </button>

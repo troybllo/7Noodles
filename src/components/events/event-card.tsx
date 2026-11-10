@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { RevealFrame } from "@/components/motion/reveal-frame";
 import type { RestaurantEvent } from "@/content/events";
 import { dateParts, formatEventDate } from "@/lib/events";
 
@@ -18,7 +19,7 @@ export function EventCard({
   return (
     <article
       id={event.slug}
-      className={`border-brand/10 grid gap-6 border-t py-10 md:grid-cols-[7rem_1fr_minmax(0,22rem)] md:gap-10 ${past ? "opacity-70" : ""}`}
+      className={`border-brand/10 grid scroll-mt-24 gap-6 border-t py-10 md:grid-cols-[7rem_1fr_minmax(0,22rem)] md:gap-10 ${past ? "opacity-70" : ""}`}
     >
       <div className="flex items-baseline gap-3 md:flex-col md:gap-1">
         <span className={`eyebrow ${past ? "text-brand-deep" : "text-brand-deep"}`}>
@@ -62,15 +63,17 @@ export function EventCard({
       </div>
 
       {event.image ? (
-        <div className="relative aspect-[4/3] overflow-hidden rounded-3xl">
-          <Image
-            src={event.image.src}
-            alt={event.image.alt}
-            fill
-            sizes="(min-width: 768px) 22rem, 100vw"
-            className="object-cover"
-          />
-        </div>
+        <RevealFrame className="aspect-[4/3]">
+          <div className="relative h-full w-full">
+            <Image
+              src={event.image.src}
+              alt={event.image.alt}
+              fill
+              sizes="(min-width: 768px) 22rem, 100vw"
+              className="object-cover"
+            />
+          </div>
+        </RevealFrame>
       ) : null}
     </article>
   );

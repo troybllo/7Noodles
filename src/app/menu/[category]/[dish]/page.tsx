@@ -55,7 +55,7 @@ export default async function DishPage({ params }: PageProps<"/menu/[category]/[
       <main
         id="main"
         data-nav-theme="light"
-        className="bg-paper text-brand relative min-h-svh px-6 pt-32 pb-28 md:px-10"
+        className="bg-paper text-brand relative min-h-svh px-6 pt-24 md:pt-32 pb-28 md:px-10"
       >
         <JsonLd
           data={[
@@ -71,7 +71,7 @@ export default async function DishPage({ params }: PageProps<"/menu/[category]/[
           <article className="grid items-center gap-10 lg:grid-cols-2 lg:gap-20">
             {/* Held to a width whose 4:5 height still fits a laptop screen with the
                 details beside it. */}
-            <div className="w-full lg:max-w-[36rem] lg:justify-self-end">
+            <div className="mx-auto w-[min(100%,calc(54svh*0.8))] lg:mx-0 lg:w-full lg:max-w-[36rem] lg:justify-self-end">
               {/* Shares its name with the dish's card, so opening a card flies
                   its photograph into this place. */}
               <ViewTransition name={`dish-${item.slug}`} share="morph" default="none">
@@ -88,7 +88,7 @@ export default async function DishPage({ params }: PageProps<"/menu/[category]/[
             <div className="flex flex-col items-start">
               <Link
                 href={`/menu/${category.slug}`}
-                className="eyebrow text-brand-deep hover:text-brand flex items-baseline gap-2 transition-colors"
+                className="eyebrow text-brand-deep hover:text-brand -my-3 flex min-h-11 items-center gap-2 transition-colors"
               >
                 <span aria-hidden="true">←</span>
                 {category.nameEn}
@@ -99,7 +99,7 @@ export default async function DishPage({ params }: PageProps<"/menu/[category]/[
 
               <p
                 lang="zh"
-                className="font-cjk text-brand-deep mt-10 text-2xl leading-none font-bold tracking-[0.08em]"
+                className="font-cjk text-brand-deep mt-6 text-2xl lg:mt-10 leading-none font-bold tracking-[0.08em]"
               >
                 {item.nameZh}
               </p>
@@ -115,7 +115,17 @@ export default async function DishPage({ params }: PageProps<"/menu/[category]/[
                 ) : null}
               </p>
 
-              <DishTags item={item} className="mt-6" />
+              {/* The action straight after the price: on a phone it is on the
+                  first screen, not below the description. */}
+              <div className="mt-6">
+                <AddToCart item={item} />
+              </div>
+              <p className="text-brand-deep mt-3 text-sm">
+                Pickup at {CONTACT.address.street}, {CONTACT.address.locality}.{" "}
+                {CONTACT.hoursSummary}.
+              </p>
+
+              <DishTags item={item} className="mt-8" />
 
               {item.description ? (
                 <p className="text-brand-deep mt-8 max-w-prose text-base leading-relaxed">
@@ -152,13 +162,6 @@ export default async function DishPage({ params }: PageProps<"/menu/[category]/[
                 </p>
               ) : null}
 
-              <div className="mt-8">
-                <AddToCart item={item} />
-              </div>
-              <p className="text-brand-deep mt-4 text-sm">
-                Pickup at {CONTACT.address.street}, {CONTACT.address.locality}.{" "}
-                {CONTACT.hoursSummary}.
-              </p>
               <AllergyNotice legend={false} className="mt-8 max-w-xl" />
             </div>
           </article>

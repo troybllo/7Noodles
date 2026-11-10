@@ -35,7 +35,7 @@ export function AddToCart({ item, variant = "button", tone = "ink" }: AddToCartP
 
   if (!item.available) {
     return variant === "plus" ? null : (
-      <span className="border-brand/25 text-brand-deep inline-flex h-11 items-center rounded-full border px-5 text-sm">
+      <span className="border-brand/25 text-brand-deep inline-flex h-11 items-center border px-5 text-sm">
         Coming soon
       </span>
     );
@@ -68,11 +68,13 @@ export function AddToCart({ item, variant = "button", tone = "ink" }: AddToCartP
               ? `Add another ${name} (${quantity} in your order)`
               : `Add ${name} to your order`
           }
-          className="bg-brand text-paper shadow-float relative flex size-11 items-center justify-center rounded-full text-xl transition-transform duration-(--duration-fast) hover:scale-105 active:scale-95"
+          className="bg-brand text-paper shadow-float relative flex size-11 items-center justify-center rounded-full text-xl transition-transform duration-(--duration-fast) ease-(--ease-out-soft) hover:scale-105 active:scale-90"
         >
           +
           {quantity > 0 ? (
-            <span className="bg-paper text-brand absolute -top-1 -right-1 flex size-5 items-center justify-center rounded-full text-[0.7rem] font-semibold">
+            <span
+              key={quantity}
+              className="bg-paper text-brand absolute -top-1 -right-1 flex size-5 motion-safe:animate-[badge-pop_420ms_var(--ease-pop)] items-center justify-center rounded-full text-[0.7rem] font-semibold">
               {quantity}
             </span>
           ) : null}
@@ -102,7 +104,7 @@ export function AddToCart({ item, variant = "button", tone = "ink" }: AddToCartP
       >
         {hasOptions ? "Choose & add" : "Add to order"}
         {hasOptions && quantity > 0 ? (
-          <span className="bg-paper text-brand rounded-full px-2 text-xs">
+          <span className="bg-paper text-brand px-2 text-xs">
             {quantity}
           </span>
         ) : null}
@@ -140,12 +142,12 @@ function OptionSheet({
         // A click on the backdrop lands on the dialog itself.
         if (event.target === event.currentTarget) event.currentTarget.close();
       }}
-      className="bg-paper text-brand backdrop:bg-brand/60 m-auto w-[min(28rem,calc(100vw-2rem))] rotate-[-0.6deg] rounded-sm p-0 shadow-2xl backdrop:backdrop-blur-sm"
+      className="option-sheet bg-paper text-brand backdrop:bg-brand/60 m-auto w-[min(28rem,calc(100vw-2rem))] rotate-[-0.6deg] p-0 shadow-2xl max-sm:mb-0 max-sm:w-full max-sm:max-w-none max-sm:rotate-0 sm:backdrop:backdrop-blur-sm"
     >
       <form
         method="dialog"
         onSubmit={() => onAdd(selection)}
-        className="flex flex-col gap-6 p-6 sm:p-8"
+        className="flex flex-col gap-6 p-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] sm:p-8"
       >
         <header>
           <h2 id={titleId} className="font-display text-2xl leading-tight">
@@ -165,7 +167,7 @@ function OptionSheet({
               {option.choices.map((choice) => (
                 <label
                   key={choice.id}
-                  className="border-brand/20 has-[:checked]:border-brand has-[:checked]:bg-brand has-[:checked]:text-paper has-[:focus-visible]:outline-brand cursor-pointer rounded-full border px-4 py-2 text-sm transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2"
+                  className="border-brand/20 has-[:checked]:border-brand has-[:checked]:bg-brand has-[:checked]:text-paper has-[:focus-visible]:outline-brand flex min-h-11 cursor-pointer items-center border px-4 text-sm transition-[background-color,border-color,color,scale] duration-(--duration-fast) ease-(--ease-out-soft) active:scale-[0.97] has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2"
                 >
                   <input
                     type="radio"
@@ -191,11 +193,13 @@ function OptionSheet({
           <button
             type="button"
             onClick={(event) => event.currentTarget.closest("dialog")?.close()}
-            className="text-brand-deep text-sm underline underline-offset-4"
+            className="text-brand-deep -ml-2 min-h-11 px-2 text-sm underline underline-offset-4"
           >
             Cancel
           </button>
-          <Button type="submit">Add · {formatCad(item.priceCents + delta)}</Button>
+          <Button type="submit" size="lg" className="max-sm:flex-1">
+            Add · {formatCad(item.priceCents + delta)}
+          </Button>
         </div>
       </form>
     </dialog>

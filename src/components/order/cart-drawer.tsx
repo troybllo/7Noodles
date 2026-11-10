@@ -42,9 +42,9 @@ export function CartDrawer() {
       onClick={(event) => {
         if (event.target === event.currentTarget) setOpen(false);
       }}
-      className="bg-paper text-brand backdrop:bg-brand/55 shadow-drawer m-0 ml-auto h-dvh max-h-none w-full max-w-md p-0 backdrop:backdrop-blur-sm open:flex"
+      className="cart-drawer bg-paper text-brand backdrop:bg-brand/55 shadow-drawer m-0 ml-auto h-dvh max-h-none w-full max-w-md p-0 open:flex lg:backdrop:backdrop-blur-sm"
     >
-      <div className="flex w-full flex-col px-6 pt-6 pb-8">
+      <div className="flex w-full flex-col px-6 pt-[max(1.5rem,env(safe-area-inset-top))] pb-[max(2rem,env(safe-area-inset-bottom))]">
         <div className="flex items-center justify-between">
           <h2 id="cart-title" className="font-display text-3xl">
             Your order
@@ -52,7 +52,7 @@ export function CartDrawer() {
           <button
             type="button"
             onClick={() => setOpen(false)}
-            className="text-sm font-semibold underline underline-offset-4"
+            className="-mr-2 min-h-11 px-2 text-sm font-semibold underline underline-offset-4"
           >
             Close
           </button>

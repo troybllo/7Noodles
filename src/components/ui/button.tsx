@@ -9,7 +9,7 @@ const TONE = {
 
 const SIZE = {
   sm: "h-8 px-5 text-[0.6875rem]",
-  md: "h-10 px-6 text-[0.75rem]",
+  md: "h-11 px-6 text-[0.75rem]",
   lg: "h-12 px-8 text-[0.8125rem]",
   /** The one action that finishes a step: checkout, pay. */
   xl: "h-14 px-10 text-sm",
@@ -44,7 +44,7 @@ export function buttonClass({
   size = "md",
   className,
 }: Pick<Look, "tone" | "size" | "className"> = {}): string {
-  return `group inline-flex items-center justify-center gap-2.5 rounded-full font-medium tracking-[0.14em] uppercase tabular-nums transition-[background-color,transform,opacity] duration-(--duration-fast) ease-(--ease-out-soft) active:scale-[0.98] disabled:pointer-events-none disabled:opacity-60 ${TONE[tone]} ${SIZE[size]} ${className ?? ""}`;
+  return `group inline-flex items-center justify-center gap-2.5 font-medium tracking-[0.14em] uppercase tabular-nums transition-[background-color,transform,opacity] duration-(--duration-fast) ease-(--ease-out-soft) active:scale-[0.98] disabled:pointer-events-none disabled:opacity-60 ${TONE[tone]} ${SIZE[size]} ${className ?? ""}`;
 }
 
 function Arrow() {

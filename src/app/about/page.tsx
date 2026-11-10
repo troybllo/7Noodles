@@ -6,6 +6,7 @@ import { Panda7 } from "@/components/brand/panda-7";
 import { TapedFrame } from "@/components/hand/taped-frame";
 import { NoodleLift } from "@/components/hand/noodle-lift";
 import { DrawOn } from "@/components/motion/draw-on";
+import { PinUp } from "@/components/motion/pin-up";
 import { RevealFrame } from "@/components/motion/reveal-frame";
 import { PageTransition } from "@/components/motion/page-transition";
 import { Button } from "@/components/ui/button";
@@ -43,17 +44,19 @@ function Snapshot({
   className?: string;
 }) {
   return (
-    <TapedFrame tilt={tilt} className={`text-sm ${className ?? ""}`}>
-      <div className="relative aspect-[4/5]">
-        <Image
-          src={photo.src}
-          alt={photo.alt}
-          fill
-          sizes={sizes}
-          className="object-cover"
-        />
-      </div>
-    </TapedFrame>
+    <PinUp turn={tilt > 0 ? 5 : -5} className={className}>
+      <TapedFrame tilt={tilt} className="text-sm">
+        <div className="relative aspect-[4/5]">
+          <Image
+            src={photo.src}
+            alt={photo.alt}
+            fill
+            sizes={sizes}
+            className="object-cover"
+          />
+        </div>
+      </TapedFrame>
+    </PinUp>
   );
 }
 
@@ -77,7 +80,7 @@ export default function AboutPage() {
         {/* The opening: the name, and Panda 7 at the table. */}
         <section
           data-nav-theme="dark"
-          className="bg-brand text-paper relative overflow-hidden px-6 pt-36 pb-24 md:px-10"
+          className="bg-brand text-paper relative overflow-hidden px-6 pt-28 pb-20 md:px-10 md:pt-36 md:pb-24"
         >
           <div className="mx-auto grid max-w-[1200px] items-center gap-12 lg:grid-cols-[1.2fr_1fr]">
             <div>
@@ -248,16 +251,18 @@ export default function AboutPage() {
               </div>
             </div>
 
-            <TapedFrame tilt={-1.5} className="text-sm">
-              <figure className="bg-paper text-brand flex flex-col gap-5 p-8">
-                <blockquote className="text-2xl leading-snug">
-                  &ldquo;{ABOUT.aside.quote.text}&rdquo;
-                </blockquote>
-                <figcaption className="eyebrow text-brand-deep">
-                  {ABOUT.aside.quote.author} · {ABOUT.aside.quote.date}
-                </figcaption>
-              </figure>
-            </TapedFrame>
+            <PinUp turn={-4}>
+              <TapedFrame tilt={-1.5} className="text-sm">
+                <figure className="bg-paper text-brand flex flex-col gap-5 p-8">
+                  <blockquote className="text-2xl leading-snug">
+                    &ldquo;{ABOUT.aside.quote.text}&rdquo;
+                  </blockquote>
+                  <figcaption className="eyebrow text-brand-deep">
+                    {ABOUT.aside.quote.author} · {ABOUT.aside.quote.date}
+                  </figcaption>
+                </figure>
+              </TapedFrame>
+            </PinUp>
           </div>
         </section>
 

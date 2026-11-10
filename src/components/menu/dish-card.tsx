@@ -23,36 +23,36 @@ export function DishCard({
     <article className="relative">
       <Link
         href={`/menu/${categorySlug}/${item.slug}`}
-        className="group focus-visible:outline-brand flex flex-col rounded-2xl outline-offset-4"
+        className="group focus-visible:outline-brand flex flex-col outline-offset-4"
       >
         {/* Shares its name with the dish page's hero, so the photograph flies
             into place when the card is opened. */}
         <ViewTransition name={`dish-${item.slug}`} share="morph" default="none">
           {/* A print with a paper border; it lifts and turns a little on hover. */}
-          <div
-            data-ink
-            className="bg-paper shadow-lift relative p-[0.4rem] transition-transform duration-(--duration-slow) ease-(--ease-out-expo) group-hover:-translate-y-1 group-hover:-rotate-1"
-          >
-            <DishMedia
-              media={DISH_MEDIA[item.slug]}
-              label={item.nameEn}
-              zh={item.nameZh}
-            />
+          <div className="bg-paper shadow-lift relative p-[0.4rem] transition-transform duration-(--duration-slow) ease-(--ease-out-expo) group-hover:-translate-y-1 group-hover:-rotate-1 group-active:scale-[0.98]">
+            {/* Only the photograph inks in; the paper and its shadow stay put. */}
+            <div data-ink>
+              <DishMedia
+                media={DISH_MEDIA[item.slug]}
+                label={item.nameEn}
+                zh={item.nameZh}
+              />
+            </div>
             {item.signature ? (
-              <span className="bg-brand-deep text-paper absolute top-4 left-4 rotate-[-3deg] rounded-full px-3 py-1 text-[0.65rem] font-bold tracking-[0.14em] uppercase backdrop-blur">
+              <span className="bg-brand-deep text-paper absolute bottom-3 left-3 rotate-[-3deg] px-2 py-1 text-[0.6rem] font-bold tracking-[0.14em] uppercase sm:bottom-4 sm:left-4 sm:px-3 sm:text-[0.65rem]">
                 Signature
               </span>
             ) : null}
             {!item.available ? (
-              <span className="bg-brand-deep text-paper absolute inset-x-4 bottom-4 rounded-full py-2 text-center text-xs font-semibold tracking-[0.1em] uppercase">
+              <span className="bg-brand-deep text-paper absolute inset-x-4 bottom-4 py-2 text-center text-xs font-semibold tracking-[0.1em] uppercase">
                 Coming soon
               </span>
             ) : null}
           </div>
         </ViewTransition>
 
-        <div className="mt-4 flex items-baseline justify-between gap-4">
-          <h3 className="font-display text-brand decoration-brand-deep min-w-0 text-base leading-snug [overflow-wrap:anywhere] underline-offset-4 group-hover:underline sm:text-lg md:text-xl">
+        <div className="mt-4 flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
+          <h3 className="font-display text-brand decoration-brand-deep min-w-0 text-base leading-snug break-words hyphens-auto underline-offset-4 group-hover:underline sm:text-lg md:text-xl">
             {item.nameEn}
           </h3>
           <p className="text-brand shrink-0 text-base font-semibold tabular-nums">

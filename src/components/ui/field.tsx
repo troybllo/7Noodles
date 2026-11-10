@@ -37,4 +37,4 @@ export function Field({
 }
 
 export const INPUT =
-  "border-brand/25 bg-paper h-12 rounded-xl border px-4 text-base transition-colors focus-visible:border-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand aria-[invalid=true]:border-2 aria-[invalid=true]:border-brand";
+  "border-brand/25 bg-paper h-12 border px-4 text-base transition-colors focus-visible:border-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand aria-[invalid=true]:border-2 aria-[invalid=true]:border-brand";

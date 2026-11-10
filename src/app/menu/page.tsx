@@ -26,12 +26,12 @@ export default function MenuPage() {
       <main
         id="main"
         data-nav-theme="light"
-        className="bg-paper text-brand relative min-h-svh px-6 pt-32 pb-28 md:px-10"
+        className="bg-paper text-brand relative min-h-svh px-6 pt-24 md:pt-32 pb-28 md:px-10"
       >
         <JsonLd data={menuJsonLd()} />
         <MenuMargins />
         <div className="relative z-10 mx-auto max-w-[1400px]">
-          <div className="grid gap-10 lg:grid-cols-[1fr_minmax(0,30rem)] lg:items-end">
+          <div className="grid gap-6 md:gap-10 lg:grid-cols-[1fr_minmax(0,30rem)] lg:items-end">
             <SectionHeading as="h1" eyebrow="Our menu" zh="菜单">
               Noodles, wontons &amp; skewers
             </SectionHeading>
@@ -43,7 +43,7 @@ export default function MenuPage() {
             </div>
           </div>
 
-          <CategoryTabs categories={categories} anchors className="mt-14" />
+          <CategoryTabs categories={categories} anchors className="mt-8 md:mt-14" />
 
           <div className="mt-10 flex flex-col gap-28 md:gap-36">
             {categories.map((category) => (
@@ -51,7 +51,7 @@ export default function MenuPage() {
                 key={category.slug}
                 id={category.slug}
                 aria-labelledby={`${category.slug}-title`}
-                className="scroll-mt-36"
+                className="scroll-mt-rail"
               >
                 <header className="border-brand/15 mb-10 flex flex-col gap-3 border-t pt-8 md:flex-row md:items-end md:justify-between">
                   <div>

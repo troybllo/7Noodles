@@ -23,7 +23,7 @@ export function AccountShell({
       <main
         id="main"
         data-nav-theme="light"
-        className="bg-paper text-brand relative overflow-hidden px-6 pt-32 pb-24 md:px-10"
+        className="bg-paper text-brand relative overflow-hidden px-6 pt-24 md:pt-32 pb-24 md:px-10"
       >
         <div className="mx-auto grid max-w-[1200px] items-center gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
           <div>

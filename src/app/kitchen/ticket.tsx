@@ -9,7 +9,7 @@ const BACK: Partial<Record<OrderStatus, OrderStatus>> = {
   ready: "preparing",
 };
 
-const OUTLINE = "border-brand h-14 rounded-full border px-4 text-sm font-semibold";
+const OUTLINE = "border-brand h-14 border px-4 text-sm font-semibold";
 
 /** One order on the board, as a ticket: when, who, what, and the next step. */
 export function Ticket({
@@ -85,7 +85,7 @@ export function Ticket({
           <button
             type="button"
             onClick={() => onMove(order, next.to)}
-            className="bg-brand text-paper h-14 flex-1 rounded-full px-6 text-base font-extrabold tracking-[0.06em] uppercase"
+            className="bg-brand text-paper h-14 flex-1 px-6 text-base font-extrabold tracking-[0.06em] uppercase"
           >
             {next.label}
           </button>

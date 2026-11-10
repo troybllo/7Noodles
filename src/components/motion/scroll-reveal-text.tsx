@@ -34,7 +34,8 @@ export function ScrollRevealText({
         ease: "none",
         stagger: 1,
         scrollTrigger: {
-          trigger: element,
+          // The wrapper is display: contents and has no box to measure.
+          trigger: element.firstElementChild ?? element,
           start: "top 82%",
           end: "bottom 55%",
           scrub: 0.5,

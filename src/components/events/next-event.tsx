@@ -39,7 +39,7 @@ export function NextEvent() {
             </p>
           </div>
         </div>
-        <span className="border-paper/30 group-hover:bg-paper group-hover:text-brand inline-flex h-12 shrink-0 items-center gap-2 self-start rounded-full border px-6 text-sm font-semibold transition-colors md:self-auto">
+        <span className="border-paper/30 group-hover:bg-paper group-hover:text-brand inline-flex h-12 shrink-0 items-center gap-2 self-start border px-6 text-sm font-semibold transition-colors md:self-auto">
           All events <span aria-hidden="true">→</span>
         </span>
       </Link>

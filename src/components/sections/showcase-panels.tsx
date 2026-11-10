@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { formatCad } from "@/lib/money";
 import { PhotoSlot } from "@/components/media/photo-slot";
 import { CATEGORY_COVERS, DISH_MEDIA } from "@/content/menu-media";
@@ -60,6 +61,7 @@ export function ShowcasePanels() {
         // The dish's own photograph, or its category's where it has none (the
         // skewers are photographed only as a platter).
         const category = findDish(dish.slug)?.category.slug;
+        const href = category ? `/menu/${category}/${dish.slug}` : "/menu";
         const photo =
           DISH_MEDIA[dish.slug]?.photo ??
           (category ? CATEGORY_COVERS[category] : undefined);
@@ -68,15 +70,54 @@ export function ShowcasePanels() {
           <li
             key={dish.slug}
             {...panelProps(index)}
-            className={`relative h-[46svh] overflow-hidden md:h-auto ${panelProps(index).className}`}
+            className={`relative overflow-hidden ${panelProps(index).className}`}
           >
+            {/* Phones: a plain card that opens the dish, text never clipped. */}
+            <Link
+              href={href}
+              className={`group flex flex-col md:hidden ${tone.panel} ${tone.text}`}
+            >
+              <span className="relative block aspect-[4/3] w-full overflow-hidden">
+                {photo ? (
+                  <Image
+                    src={photo.src}
+                    alt={photo.alt}
+                    fill
+                    sizes="100vw"
+                    className="object-cover transition-transform duration-(--duration-slow) ease-(--ease-out-expo) group-active:scale-[1.03]"
+                  />
+                ) : (
+                  <PhotoSlot label={dish.shot} tone={tone.shade} />
+                )}
+              </span>
+              <span className="flex items-end justify-between gap-4 px-5 pt-5 pb-7">
+                <span className="flex flex-col gap-1.5">
+                  <span lang="zh" className="font-cjk text-xl leading-none font-bold">
+                    {dish.nameZh}
+                  </span>
+                  <span className="font-display text-2xl leading-tight">
+                    {dish.nameEn}
+                  </span>
+                  <span className={`eyebrow ${tone.sub}`}>
+                    {dish.family} · {formatCad(dish.priceCents)}
+                  </span>
+                </span>
+                <span
+                  aria-hidden="true"
+                  className="border-current/40 flex size-11 shrink-0 items-center justify-center border transition-transform duration-(--duration-fast) group-active:translate-x-1"
+                >
+                  →
+                </span>
+              </span>
+            </Link>
+
             <button
               type="button"
               aria-expanded={active}
               aria-label={`${dish.nameEn} ${dish.nameZh}, ${formatCad(dish.priceCents)}`}
               onFocus={() => panelProps(index).onMouseEnter()}
               onClick={() => panelProps(index).onMouseEnter()}
-              className="absolute inset-0 flex h-full w-full cursor-pointer flex-col text-left"
+              className="absolute inset-0 hidden h-full w-full cursor-pointer flex-col text-left md:flex"
             >
               {/* Both layers are fixed at the open width and clipped by the panel,
                   so a collapsed panel crops rather than squashes. */}

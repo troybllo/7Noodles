@@ -29,36 +29,37 @@ export function Story() {
         </p>
       </div>
 
-      <div className="mt-14 grid grid-cols-1 gap-4 md:mt-20 md:grid-cols-[1.5fr_1fr_1.4fr] md:gap-5">
-        <RevealFrame className="aspect-[4/5]">
+      {/* Phones: a row to swipe through, the next photograph peeking in. */}
+      <div className="mt-12 flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto overscroll-x-contain px-4 [scrollbar-width:none] md:mt-20 md:grid md:grid-cols-[1.5fr_1fr_1.4fr] md:gap-5 md:overflow-visible md:px-0 [&::-webkit-scrollbar]:hidden">
+        <RevealFrame className="aspect-[4/5] w-[78%] shrink-0 snap-start md:w-auto">
           <div className="relative h-full w-full">
             <Image
               src={PHOTOS.noodlePullBooth.src}
               alt={PHOTOS.noodlePullBooth.alt}
               fill
-              sizes="(min-width: 768px) 38vw, 100vw"
+              sizes="(min-width: 768px) 38vw, 80vw"
               className="object-cover"
             />
           </div>
         </RevealFrame>
-        <RevealFrame delay={0.12} className="aspect-[4/5] md:aspect-auto">
+        <RevealFrame delay={0.12} className="aspect-[4/5] w-[78%] shrink-0 snap-start md:aspect-auto md:w-auto">
           <div className="relative h-full w-full">
             <Image
               src={PHOTOS.noodlePullHigh.src}
               alt={PHOTOS.noodlePullHigh.alt}
               fill
-              sizes="(min-width: 768px) 30vw, 100vw"
+              sizes="(min-width: 768px) 30vw, 80vw"
               className="object-cover"
             />
           </div>
         </RevealFrame>
-        <RevealFrame delay={0.24} className="aspect-[4/5] md:-mr-[6vw]">
+        <RevealFrame delay={0.24} className="aspect-[4/5] w-[78%] shrink-0 snap-start md:-mr-[6vw] md:w-auto">
           <div className="relative h-full w-full">
             <Image
               src={PHOTOS.dinerAtTheTable.src}
               alt={PHOTOS.dinerAtTheTable.alt}
               fill
-              sizes="(min-width: 768px) 40vw, 100vw"
+              sizes="(min-width: 768px) 40vw, 80vw"
               className="object-cover"
             />
           </div>

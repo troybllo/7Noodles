@@ -98,7 +98,7 @@ export function CheckoutForm() {
       : {};
 
   return (
-    <div className="grid gap-12 lg:grid-cols-[1fr_24rem]">
+    <div className="grid gap-8 lg:grid-cols-[1fr_24rem] lg:gap-12">
       <form noValidate onSubmit={onSubmit} className="flex flex-col gap-6">
         <Field id={`${id}-pickup`} label="Pickup time" error={errors.pickup}>
           <select
@@ -219,9 +219,30 @@ export function CheckoutForm() {
         </div>
       </form>
 
-      <aside aria-label="Order summary" className="lg:order-last">
+      <aside aria-label="Order summary" className="order-first lg:order-last">
+        {/* Phones: what is being paid for, folded above the form. */}
+        <details className="group border-brand/20 border lg:hidden">
+          <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 px-5 text-sm font-semibold [&::-webkit-details-marker]:hidden">
+            <span>
+              Your order · {sum.itemCount} {sum.itemCount === 1 ? "dish" : "dishes"}
+            </span>
+            <span className="flex items-center gap-3 tabular-nums">
+              {formatCad(sum.totalCents)}
+              <span
+                aria-hidden="true"
+                className="transition-transform duration-(--duration-base) ease-(--ease-out-expo) group-open:rotate-90"
+              >
+                →
+              </span>
+            </span>
+          </summary>
+          <div className="border-brand/15 border-t px-5 pb-5">
+            <CartLines />
+          </div>
+        </details>
+
         {/* The order on a slip of paper taped to the page, slightly askew. */}
-        <div className="lg:sticky lg:top-28">
+        <div className="hidden lg:sticky lg:top-28 lg:block">
           <TapedFrame tape="top" tilt={1.5} className="text-sm">
             <div className="bg-paper px-6 py-7">
               <h2 className="font-display text-3xl">Your order</h2>

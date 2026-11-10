@@ -56,7 +56,7 @@ export function CartButton({ className }: { className?: string }) {
           ? "Your order, empty"
           : `Your order, ${itemCount} ${itemCount === 1 ? "dish" : "dishes"}`
       }
-      className={`relative flex items-center ${className ?? ""}`}
+      className={`relative -m-2.5 flex size-11 items-center justify-center transition-transform duration-(--duration-fast) ease-(--ease-out-soft) active:scale-90 ${className ?? ""}`}
       style={{ color: "var(--bar-label)" }}
     >
       <svg
@@ -67,14 +67,16 @@ export function CartButton({ className }: { className?: string }) {
         strokeWidth={2}
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="h-full w-auto"
+        className="size-6"
       >
         {BOWL.map((d) => (
           <path key={d} d={d} />
         ))}
       </svg>
       {itemCount > 0 ? (
-        <span className="bg-paper text-brand absolute -top-1.5 -right-2.5 flex h-[1.15rem] min-w-[1.15rem] items-center justify-center rounded-full px-1 text-[0.65rem] leading-none font-bold">
+        <span
+          key={itemCount}
+          className="bg-paper text-brand absolute top-1 right-0 flex motion-safe:animate-[badge-pop_420ms_var(--ease-pop)] h-[1.15rem] min-w-[1.15rem] items-center justify-center rounded-full px-1 text-[0.65rem] leading-none font-bold">
           {itemCount}
         </span>
       ) : null}

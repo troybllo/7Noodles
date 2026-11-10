@@ -32,11 +32,11 @@ export default function OrderPage() {
       <main
         id="main"
         data-nav-theme="light"
-        className="bg-paper text-brand relative px-6 pt-32 pb-28 md:px-10"
+        className="bg-paper text-brand relative px-6 pt-24 md:pt-32 pb-28 md:px-10"
       >
         <MenuMargins />
         <div className="relative z-10 mx-auto max-w-[1200px]">
-          <div className="grid gap-10 lg:grid-cols-[1fr_minmax(0,28rem)] lg:items-end">
+          <div className="grid gap-6 md:gap-10 lg:grid-cols-[1fr_minmax(0,28rem)] lg:items-end">
             <div>
               <SectionHeading as="h1" eyebrow="Order online" zh="到店自取">
                 Order for pickup
@@ -49,7 +49,7 @@ export default function OrderPage() {
             <AllergyNotice />
           </div>
 
-          <CategoryTabs categories={categories} anchors className="mt-12" />
+          <CategoryTabs categories={categories} anchors className="mt-8 md:mt-12" />
 
           <div className="mt-10 grid gap-12 lg:grid-cols-[1fr_20rem]">
             <div className="flex flex-col gap-16">
@@ -58,7 +58,7 @@ export default function OrderPage() {
                   key={category.slug}
                   id={category.slug}
                   aria-labelledby={`order-${category.slug}`}
-                  className="scroll-mt-36"
+                  className="scroll-mt-rail"
                 >
                   <h2
                     id={`order-${category.slug}`}
@@ -89,7 +89,7 @@ export default function OrderPage() {
                         <div className="min-w-0 basis-full sm:flex-1 sm:basis-auto">
                           <Link
                             href={`/menu/${category.slug}/${item.slug}`}
-                            className="font-display decoration-brand-deep text-lg leading-snug underline-offset-4 hover:underline"
+                            className="font-display decoration-brand-deep -my-2.5 inline-block py-2.5 text-lg leading-snug underline-offset-4 hover:underline"
                           >
                             {item.nameEn}
                           </Link>

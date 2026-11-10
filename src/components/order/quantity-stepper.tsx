@@ -10,7 +10,7 @@ type QuantityStepperProps = {
 };
 
 /**
- * Minus, the count, plus, in a pill. Going below one asks
+ * Minus, the count, plus, in a box. Going below one asks
  * the parent to remove the dish; the parent decides what that means.
  */
 export function QuantityStepper({
@@ -21,32 +21,38 @@ export function QuantityStepper({
   tone = "ink",
 }: QuantityStepperProps) {
   const ring = tone === "ink" ? "border-brand text-brand" : "border-paper text-paper";
-  const box = size === "sm" ? "h-9 text-sm" : "h-11 text-base";
-  const button = size === "sm" ? "w-9" : "w-11";
+  // The small size stays a full thumb's width on phones.
+  const box = size === "sm" ? "h-11 text-sm sm:h-9" : "h-11 text-base";
+  const button = size === "sm" ? "w-11 sm:w-9" : "w-11";
 
   return (
     <div
       role="group"
       aria-label={`Quantity of ${label}`}
-      className={`inline-flex items-center rounded-full border font-semibold ${ring} ${box}`}
+      className={`inline-flex items-center border font-semibold ${ring} ${box}`}
     >
       <button
         type="button"
         onClick={() => onChange(quantity - 1)}
         aria-label={quantity > 1 ? `Remove one ${label}` : `Remove ${label}`}
-        className={`${button} h-full rounded-l-full transition-colors hover:bg-current/10 focus-visible:outline-offset-[-3px]`}
+        className={`${button} h-full transition-[background-color,scale] duration-(--duration-fast) ease-(--ease-out-soft) hover:bg-current/10 focus-visible:outline-offset-[-3px] active:scale-90`}
       >
         −
       </button>
       <span aria-live="polite" className="min-w-8 text-center tabular-nums">
-        {quantity}
+        <span
+          key={quantity}
+          className="inline-block motion-safe:animate-[badge-pop_320ms_var(--ease-pop)]"
+        >
+          {quantity}
+        </span>
       </span>
       <button
         type="button"
         onClick={() => onChange(quantity + 1)}
         disabled={quantity >= MAX_QUANTITY}
         aria-label={`Add one more ${label}`}
-        className={`${button} h-full rounded-r-full transition-colors hover:bg-current/10 focus-visible:outline-offset-[-3px] disabled:opacity-40`}
+        className={`${button} h-full transition-[background-color,scale] duration-(--duration-fast) ease-(--ease-out-soft) hover:bg-current/10 focus-visible:outline-offset-[-3px] active:scale-90 disabled:opacity-40`}
       >
         +
       </button>

@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { gsap } from "gsap";
 import { useGsap } from "./use-gsap";
-import { EASE } from "@/components/motion/motion-tokens";
+import { DURATION, EASE } from "@/components/motion/motion-tokens";
 import { useReducedMotion } from "./use-reduced-motion";
 
 /** The accordion only exists from this width up. Below it panels stack. */
@@ -44,7 +44,7 @@ export function useExpandingPanels<T extends HTMLElement = HTMLLIElement>(
       if (!panel) return;
       gsap.to(panel, {
         flexGrow: i === index ? openGrow : closedGrow,
-        duration: 0.7,
+        duration: DURATION.settle,
         ease: EASE.inOut,
         overwrite: "auto",
       });

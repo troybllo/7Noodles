@@ -5,6 +5,7 @@ import { eventsJsonLd, pageMetadata } from "@/lib/seo";
 import { Panda7 } from "@/components/brand/panda-7";
 import { EventCard } from "@/components/events/event-card";
 import { TapedFrame } from "@/components/hand/taped-frame";
+import { PinUp } from "@/components/motion/pin-up";
 import { PageTransition } from "@/components/motion/page-transition";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { CONTACT } from "@/content/contact";
@@ -32,7 +33,7 @@ export default function EventsPage() {
       <main
         id="main"
         data-nav-theme="light"
-        className="bg-paper text-brand min-h-svh pt-32 pb-24"
+        className="bg-paper text-brand min-h-svh pt-24 pb-24 md:pt-32"
       >
         {upcoming.length > 0 ? <JsonLd data={eventsJsonLd(upcoming)} /> : null}
         <div className="mx-auto max-w-[1200px] px-6 md:px-10">
@@ -54,17 +55,19 @@ export default function EventsPage() {
                 to hear first.
               </p>
             </div>
-            <TapedFrame tilt={1.5} className="text-sm">
-              <Image
-                src={SCENERY.shadowTheatre.src}
-                width={SCENERY.shadowTheatre.width}
-                height={SCENERY.shadowTheatre.height}
-                alt={SCENERY.shadowTheatre.alt}
-                sizes="(min-width: 1024px) 34rem, 100vw"
-                preload
-                className="block h-auto w-full"
-              />
-            </TapedFrame>
+            <PinUp fade={false}>
+              <TapedFrame tilt={1.5} className="text-sm">
+                <Image
+                  src={SCENERY.shadowTheatre.src}
+                  width={SCENERY.shadowTheatre.width}
+                  height={SCENERY.shadowTheatre.height}
+                  alt={SCENERY.shadowTheatre.alt}
+                  sizes="(min-width: 1024px) 34rem, 100vw"
+                  preload
+                  className="block h-auto w-full"
+                />
+              </TapedFrame>
+            </PinUp>
           </div>
 
           <section
@@ -95,11 +98,11 @@ export default function EventsPage() {
           >
             {past.length > 0 ? (
               <details className="group">
-                <summary className="eyebrow text-brand-deep flex cursor-pointer list-none items-center gap-2">
+                <summary className="eyebrow text-brand-deep flex min-h-11 cursor-pointer list-none items-center gap-2 [&::-webkit-details-marker]:hidden">
                   <span id="past-heading">Past events ({past.length})</span>
                   <span
                     aria-hidden="true"
-                    className="transition-transform group-open:rotate-90"
+                    className="transition-transform duration-(--duration-base) ease-(--ease-out-expo) group-open:rotate-90"
                   >
                     →
                   </span>

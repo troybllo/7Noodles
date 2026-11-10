@@ -3,6 +3,7 @@ import { Logo } from "@/components/brand/logo";
 import Image from "next/image";
 import { PHOTOS } from "@/content/photos";
 import { TapedFrame } from "@/components/hand/taped-frame";
+import { PinUp } from "@/components/motion/pin-up";
 import { ABOUT } from "@/content/about";
 
 /**
@@ -75,7 +76,7 @@ export function About() {
             <p className="text-brand mt-6 max-w-sm text-xl leading-snug">{ABOUT.lede}</p>
             <Link
               href="/about"
-              className="eyebrow mt-8 inline-block underline underline-offset-4"
+              className="eyebrow mt-5 inline-block py-3.5 underline underline-offset-4"
             >
               Read our story
             </Link>
@@ -104,16 +105,18 @@ export function About() {
               </p>
             </div>
 
-            <TapedFrame tape="top" tilt={-1.5} className="mt-4 text-sm">
-              <figure className="bg-paper flex flex-col gap-4 p-6">
-                <blockquote className="text-brand text-lg leading-snug">
-                  “{ABOUT.aside.quote.text}”
-                </blockquote>
-                <figcaption className="eyebrow text-brand-deep">
-                  {ABOUT.aside.quote.author} · {ABOUT.aside.quote.date}
-                </figcaption>
-              </figure>
-            </TapedFrame>
+            <PinUp turn={-4} className="mt-4">
+              <TapedFrame tape="top" tilt={-1.5} className="text-sm">
+                <figure className="bg-paper flex flex-col gap-4 p-6">
+                  <blockquote className="text-brand text-lg leading-snug">
+                    “{ABOUT.aside.quote.text}”
+                  </blockquote>
+                  <figcaption className="eyebrow text-brand-deep">
+                    {ABOUT.aside.quote.author} · {ABOUT.aside.quote.date}
+                  </figcaption>
+                </figure>
+              </TapedFrame>
+            </PinUp>
           </div>
         </div>
       </div>

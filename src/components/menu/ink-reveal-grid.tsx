@@ -28,9 +28,11 @@ export function InkRevealGrid({
   className?: string;
 }) {
   const scope = useGsap<HTMLDivElement>(({ gsap, scope: element }) => {
-    const photos = gsap.utils.toArray<HTMLElement>(
-      element.querySelectorAll("[data-ink]"),
-    );
+    // Photographs already on screen were shown by the page transition (or
+    // flew in from a dish page); inking them again would make them blink.
+    const photos = gsap.utils
+      .toArray<HTMLElement>(element.querySelectorAll("[data-ink]"))
+      .filter((photo) => photo.getBoundingClientRect().top > window.innerHeight);
     if (photos.length === 0) return;
 
     // gsap.set rather than writing style directly, so the context reverts it.

@@ -4,13 +4,16 @@ import { Logo } from "@/components/brand/logo";
 import { Panda7 } from "@/components/brand/panda-7";
 import { NAV_ITEMS } from "@/components/nav/nav-items";
 import { CartButton } from "@/components/order/cart-button";
+import { Button } from "@/components/ui/button";
 import { HERO } from "@/content/hero";
 import { HeroIntro } from "./hero-intro";
 
 /**
  * The hero: SEVEN NOODLES across the top, two photographs, the logo beside
  * Panda 7, and a row of links. From `md` up it is exactly one screen tall,
- * the photographs taking whatever height the type leaves.
+ * the photographs taking whatever height the type leaves. On phones the
+ * photographs sit side by side and Order and Menu buttons follow, so the way
+ * to a bowl is on the first screen.
  *
  * On large screens the nav bar hides while this is on screen (see TopNav), so
  * its row of links is the navigation. HeroIntro animates the `data-` pieces.
@@ -39,10 +42,10 @@ export function Hero() {
           </span>
         </h1>
 
-        <div className="mt-4 grid gap-4 md:mt-5 md:min-h-0 md:flex-1 md:grid-cols-2 md:grid-rows-[minmax(0,1fr)] md:gap-5">
+        <div className="mt-4 grid grid-cols-2 gap-2 md:mt-5 md:min-h-0 md:flex-1 md:grid-rows-[minmax(0,1fr)] md:gap-5">
           <div
             data-photo
-            className="relative aspect-[4/5] overflow-hidden md:aspect-auto"
+            className="relative aspect-[3/4] overflow-hidden md:aspect-auto"
           >
             <Image
               src={HERO.photos.primary.src}
@@ -54,10 +57,10 @@ export function Hero() {
             />
           </div>
 
-          <div className="flex flex-col gap-4 md:min-h-0 md:gap-5">
+          <div className="contents md:flex md:min-h-0 md:flex-col md:gap-5">
             <div
               data-photo
-              className="relative aspect-[4/3] overflow-hidden md:aspect-auto md:min-h-0 md:flex-1"
+              className="relative aspect-[3/4] overflow-hidden md:aspect-auto md:min-h-0 md:flex-1"
             >
               <Image
                 src={HERO.photos.secondary.src}
@@ -68,7 +71,7 @@ export function Hero() {
                 className="object-cover"
               />
             </div>
-            <div className="flex shrink-0 items-end justify-between gap-4">
+            <div className="col-span-2 mt-2 flex shrink-0 items-end justify-between gap-4 md:col-span-1 md:mt-0">
               <span data-stamp className="block min-w-0">
                 <Logo
                   className="h-[clamp(4.5rem,min(10vw,16svh),13rem)] w-auto max-w-full"
@@ -83,6 +86,27 @@ export function Hero() {
               </span>
             </div>
           </div>
+        </div>
+
+        {/* The first step, on phones and tablets. */}
+        <div data-row className="mt-5 grid grid-cols-2 gap-2 lg:hidden">
+          <Button
+            href={HERO.action.href}
+            size="lg"
+            arrow={false}
+            className="px-3 whitespace-nowrap"
+          >
+            Order pickup
+          </Button>
+          <Button
+            href="/menu"
+            tone="outline"
+            size="lg"
+            arrow={false}
+            className="px-3 whitespace-nowrap"
+          >
+            See the menu
+          </Button>
         </div>
 
         {/* The navigation, as a row under the photographs. Desktop only. */}
@@ -106,11 +130,11 @@ export function Hero() {
           <div className="flex items-center gap-5">
             <Link
               href={HERO.action.href}
-              className="border-brand hover:bg-brand hover:text-paper inline-flex h-8 items-center rounded-full border px-6 text-[0.75rem] tracking-[0.14em] uppercase transition-colors"
+              className="border-brand hover:bg-brand hover:text-paper inline-flex h-8 items-center border px-6 text-[0.75rem] tracking-[0.14em] uppercase transition-colors"
             >
               {HERO.action.label}
             </Link>
-            <CartButton className="h-6" />
+            <CartButton />
           </div>
         </nav>
       </section>

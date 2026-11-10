@@ -58,7 +58,7 @@ function ChapterPanel({
   return (
     <section
       aria-labelledby={`chapter-${id}`}
-      className="bg-paper relative flex w-[86%] shrink-0 snap-start flex-col px-6 pt-20 pb-12 md:h-svh md:w-full md:px-10 md:pt-28 md:pb-8"
+      className="bg-paper border-brand/10 relative flex w-full flex-col border-t px-5 pt-14 pb-14 first:border-t-0 md:h-svh md:border-t-0 md:px-10 md:pt-28 md:pb-8"
     >
       <div
         data-panel-dim
@@ -117,7 +117,7 @@ function StepCard({
 }) {
   return (
     <li
-      className={`flex min-h-0 gap-3 ${beside ? "flex-row items-stretch gap-5" : "flex-col"}`}
+      className={`flex min-h-0 flex-row items-stretch gap-4 ${beside ? "md:gap-5" : "md:flex-col md:gap-3"}`}
     >
       <Photo
         photo={step.photo}
@@ -125,11 +125,11 @@ function StepCard({
         className={
           beside
             ? "aspect-square w-[42%] shrink-0 md:aspect-auto"
-            : "aspect-[4/3] md:aspect-auto md:min-h-0 md:flex-1"
+            : "aspect-square w-[42%] shrink-0 md:aspect-auto md:min-h-0 md:w-auto md:flex-1"
         }
       />
       <div
-        className={`flex gap-3 ${beside ? "flex-col justify-center" : "min-h-[5.5rem]"}`}
+        className={`flex flex-col justify-center gap-3 ${beside ? "" : "md:min-h-[5.5rem] md:flex-row md:justify-start"}`}
       >
         <span className="font-display text-brand text-3xl leading-none tabular-nums">
           {String(number).padStart(2, "0")}

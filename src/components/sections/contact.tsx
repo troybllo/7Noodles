@@ -1,5 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
+import { RevealFrame } from "@/components/motion/reveal-frame";
+import { Button } from "@/components/ui/button";
 import { CONTACT } from "@/content/contact";
 import { PHOTOS } from "@/content/photos";
 
@@ -35,7 +37,26 @@ export function Contact({
             &amp; opening hours
           </Heading>
 
-          <div className="mt-16 grid gap-10 text-[0.95rem] leading-snug sm:grid-cols-[1fr_1.4fr]">
+          {/* Phones: the three ways in, as buttons a thumb can find. */}
+          <div className="mt-8 grid grid-cols-2 gap-2 lg:hidden">
+            <Button href="/order" size="lg" className="col-span-2">
+              Order for pickup
+            </Button>
+            <Button href={CONTACT.phone.href} tone="outline" size="lg" arrow={false}>
+              Call
+            </Button>
+            <Button
+              href={CONTACT.map.directionsHref}
+              external
+              tone="outline"
+              size="lg"
+              arrow={false}
+            >
+              Directions
+            </Button>
+          </div>
+
+          <div className="mt-10 grid lg:mt-16 gap-10 text-[0.95rem] leading-snug sm:grid-cols-[1fr_1.4fr]">
             <div className="flex flex-col gap-5">
               <p>
                 Walk-ins welcome. Or{" "}
@@ -45,7 +66,10 @@ export function Contact({
                 for pickup.
               </p>
               <address className="not-italic">
-                <a href={CONTACT.phone.href} className="underline underline-offset-2">
+                <a
+                  href={CONTACT.phone.href}
+                  className="-my-3 inline-block py-3 underline underline-offset-2"
+                >
                   {CONTACT.phone.display}
                 </a>
                 <br />
@@ -60,7 +84,7 @@ export function Contact({
                 href={CONTACT.map.directionsHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline underline-offset-2"
+                className="-my-3 self-start py-3 underline underline-offset-2"
               >
                 Get directions<span className="sr-only"> (opens in a new tab)</span>
               </a>
@@ -79,15 +103,17 @@ export function Contact({
           </div>
         </div>
 
-        <div className="relative aspect-[4/3] overflow-hidden">
-          <Image
-            src={PHOTOS.storefront.src}
-            alt={PHOTOS.storefront.alt}
-            fill
-            sizes="(min-width: 1024px) 50vw, 100vw"
-            className="object-cover object-[50%_40%]"
-          />
-        </div>
+        <RevealFrame className="aspect-[4/3]">
+          <div className="relative h-full w-full">
+            <Image
+              src={PHOTOS.storefront.src}
+              alt={PHOTOS.storefront.alt}
+              fill
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              className="object-cover object-[50%_40%]"
+            />
+          </div>
+        </RevealFrame>
       </div>
 
       {map ? (

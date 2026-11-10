@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { Wordmark } from "@/components/brand/wordmark";
 import { CartButton } from "@/components/order/cart-button";
 import { useMediaQuery } from "@/lib/use-media-query";
@@ -64,20 +64,37 @@ function useScrolled(): boolean {
  * has scrolled out from under the bar. True on the server so the bar is
  * hidden in the home page's static HTML rather than flashing over the hero.
  */
+let heroShowing = true;
+
 function useHeroInView(active: boolean): boolean {
-  return useSyncExternalStore(
-    subscribeToScroll,
-    () => {
-      if (!active) return false;
-      const hero = document.getElementById("hero");
-      return hero ? hero.getBoundingClientRect().bottom > 80 : false;
+  // Watched with an observer rather than measured on every scroll, which
+  // would force a layout per frame.
+  const subscribe = useCallback(
+    (onChange: () => void) => {
+      const hero = active ? document.getElementById("hero") : null;
+      if (!hero) return () => {};
+      heroShowing = true;
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          heroShowing = entry?.isIntersecting ?? false;
+          onChange();
+        },
+        { rootMargin: "-80px 0px 0px 0px" },
+      );
+      observer.observe(hero);
+      return () => observer.disconnect();
     },
+    [active],
+  );
+  return useSyncExternalStore(
+    subscribe,
+    () => active && heroShowing,
     () => active,
   );
 }
 
 /** Eases every size change between the large and compact bar. */
-const SETTLE = "duration-500 ease-(--ease-out-expo)";
+const SETTLE = "duration-(--duration-slow) ease-(--ease-out-expo)";
 
 const LABEL = "relative flex items-center gap-1.5 uppercase";
 
@@ -198,7 +215,7 @@ export function TopNav() {
     <>
       <a
         href="#main"
-        className="bg-brand text-paper sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[60] focus:rounded-full focus:px-4 focus:py-2 focus:text-sm"
+        className="bg-brand text-paper sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[60] focus:px-4 focus:py-2 focus:text-sm"
       >
         Skip to content
       </a>
@@ -211,28 +228,28 @@ export function TopNav() {
         // and the hero's own row of links is a desktop layout. Hidden, it is
         // also inert, so keyboard focus never lands on links out of sight.
         inert={hidden && large}
-        className={`group/nav fixed inset-x-0 top-0 z-50 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${hidden ? "lg:pointer-events-none lg:-translate-y-full" : ""}`}
+        className={`group/nav fixed inset-x-0 top-0 z-50 transition-transform duration-(--duration-slow) ease-(--ease-out-expo) ${hidden ? "lg:pointer-events-none lg:-translate-y-full" : ""}`}
         // Named so page transitions leave the bar in place; see globals.css.
         style={{ viewTransitionName: "site-nav" }}
       >
         {/* The compact bar's surface, faded in once the page has scrolled. */}
         <div
           aria-hidden="true"
-          className={`pointer-events-none absolute inset-0 opacity-0 backdrop-blur-md transition-opacity group-data-[compact=true]/nav:opacity-100 ${SETTLE}`}
+          className={`pointer-events-none absolute inset-0 opacity-0 transition-opacity lg:backdrop-blur-md group-data-[compact=true]/nav:opacity-100 ${SETTLE}`}
           style={{ background: "var(--bar-surface)", boxShadow: "var(--bar-edge)" }}
         />
 
         <div
           ref={barRow}
           data-nav-bar
-          className={`relative mx-auto flex h-20 max-w-[1400px] items-center justify-between gap-8 px-6 transition-[height] group-data-[compact=true]/nav:h-16 md:px-10 lg:h-24 ${SETTLE}`}
+          className={`relative mx-auto flex h-16 max-w-[1400px] items-center justify-between gap-4 px-[max(1.25rem,env(safe-area-inset-left))] md:px-10 lg:h-24 lg:gap-8 lg:transition-[height] lg:group-data-[compact=true]/nav:h-16 ${SETTLE}`}
           style={{ color: "var(--bar-label)" }}
         >
           <Link
             href="/"
 
             onClick={closeAll}
-            className={`shrink-0 text-[1.6rem] transition-[font-size] group-data-[compact=true]/nav:text-[1.35rem] lg:text-[1.9rem] ${SETTLE}`}
+            className={`flex min-h-11 shrink-0 origin-left items-center text-[1.35rem] transition-transform lg:scale-[1.4] lg:group-data-[compact=true]/nav:scale-100 ${SETTLE}`}
           >
             <Wordmark />
           </Link>
@@ -307,22 +324,22 @@ export function TopNav() {
             </ul>
           </nav>
 
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-3 lg:gap-5">
             <Link
               href="/order"
               onClick={closeAll}
-              className="hidden h-8 items-center rounded-full border border-current px-5 text-[0.75rem] tracking-[0.14em] uppercase transition-colors hover:bg-[var(--bar-label)] hover:text-[var(--bar-surface)] lg:inline-flex"
+              className="inline-flex h-11 items-center border border-current px-3.5 text-[0.6875rem] tracking-[0.14em] uppercase transition-[background-color,color,scale] duration-(--duration-fast) ease-(--ease-out-soft) hover:bg-[var(--bar-label)] hover:text-[var(--bar-surface)] active:scale-95 lg:h-8 lg:px-5 lg:text-[0.75rem]"
             >
-              Order now
+              Order<span className="hidden lg:inline">&nbsp;now</span>
             </Link>
-            <CartButton className="h-6" />
+            <CartButton />
 
             <button
               type="button"
               onClick={() => setMobileOpenOn(pathname)}
               aria-expanded={mobileOpen}
               aria-controls="mobile-nav"
-              className="text-sm font-semibold tracking-[0.08em] uppercase lg:hidden"
+              className="-mr-2 inline-flex min-h-11 items-center px-2 text-sm font-semibold tracking-[0.08em] uppercase lg:hidden"
             >
               Menu
             </button>

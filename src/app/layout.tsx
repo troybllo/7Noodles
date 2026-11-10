@@ -4,6 +4,7 @@ import { InkOrigin } from "@/components/motion/ink-origin";
 import { SmoothScroll } from "@/components/motion/smooth-scroll";
 import { AddedNote } from "@/components/order/added-note";
 import { CartDrawer } from "@/components/order/cart-drawer";
+import { MobileActionBar } from "@/components/order/mobile-action-bar";
 import { CartProvider } from "@/lib/cart-store";
 import { SiteFooter } from "@/components/nav/site-footer";
 import { SiteOnly } from "@/components/nav/site-only";
@@ -42,6 +43,9 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: "#862218",
+  // Lets the page run under the notch and home indicator; fixed bars pad
+  // themselves with env(safe-area-inset-*).
+  viewportFit: "cover",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -55,6 +59,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         .join(" ")}
     >
       <head>
+        {/* The page-transition mask: loaded early so the first transition never blanks. */}
+        <link rel="preload" as="image" href="/brushes/ink-bloom.png" />
         {/* Before first paint: lets CSS hide what the hero is about to animate in (globals.css, html.js). */}
         <script
           dangerouslySetInnerHTML={{
@@ -72,6 +78,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <div className="flex min-h-full flex-col">{children}</div>
           <SiteOnly>
             <SiteFooter />
+            <MobileActionBar />
             <CartDrawer />
             <AddedNote />
           </SiteOnly>

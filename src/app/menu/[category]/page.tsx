@@ -45,7 +45,7 @@ export default async function CategoryPage({ params }: PageProps<"/menu/[categor
       <main
         id="main"
         data-nav-theme="light"
-        className="bg-paper text-brand relative min-h-svh px-6 pt-32 pb-28 md:px-10"
+        className="bg-paper text-brand relative min-h-svh px-6 pt-24 md:pt-32 pb-28 md:px-10"
       >
         <JsonLd
           data={[
@@ -58,7 +58,7 @@ export default async function CategoryPage({ params }: PageProps<"/menu/[categor
         />
         <MenuMargins category={category.slug} />
         <div className="relative z-10 mx-auto max-w-[1400px]">
-          <div className="grid gap-10 lg:grid-cols-[1fr_minmax(0,30rem)] lg:items-end">
+          <div className="grid gap-6 md:gap-10 lg:grid-cols-[1fr_minmax(0,30rem)] lg:items-end">
             <div>
               <SectionHeading
                 as="h1"
@@ -79,10 +79,10 @@ export default async function CategoryPage({ params }: PageProps<"/menu/[categor
           <CategoryTabs
             categories={getCategories()}
             active={category.slug}
-            className="mt-12"
+            className="mt-8 md:mt-12"
           />
 
-          <InkRevealGrid className="mt-12 grid grid-cols-2 gap-x-4 gap-y-12 md:gap-x-6 lg:grid-cols-4">
+          <InkRevealGrid className="mt-8 grid md:mt-12 grid-cols-2 gap-x-4 gap-y-12 md:gap-x-6 lg:grid-cols-4">
             {category.items.map((item) => (
               <DishCard key={item.slug} item={item} categorySlug={category.slug} />
             ))}

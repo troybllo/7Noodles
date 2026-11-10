@@ -40,7 +40,7 @@ export function LegalPage({
   return (
     <PageTransition id={id}>
       <main id="main" data-nav-theme="light" className="bg-paper text-brand">
-        <header className="px-6 pt-32 pb-12 md:px-10">
+        <header className="px-6 pt-24 md:pt-32 pb-12 md:px-10">
           <div className="mx-auto grid max-w-[1100px] items-center gap-10 md:grid-cols-[1fr_auto]">
             <div>
               <SectionHeading as="h1" zh={zh}>
@@ -58,12 +58,12 @@ export function LegalPage({
           <div className="mx-auto grid max-w-[1100px] gap-12 md:grid-cols-[14rem_1fr]">
             <nav aria-label="On this page" className="md:sticky md:top-28 md:self-start">
               <p className="eyebrow text-brand-deep">On this page</p>
-              <ol className="mt-3 flex flex-col gap-2">
+              <ol className="mt-2 flex flex-col">
                 {sections.map((section, index) => (
                   <li key={section.id}>
                     <a
                       href={`#${section.id}`}
-                      className="decoration-brand-deep text-sm underline-offset-4 hover:underline"
+                      className="decoration-brand-deep inline-block py-2.5 text-sm underline-offset-4 hover:underline"
                     >
                       <span className="text-brand-deep tabular-nums">{index + 1}.</span>{" "}
                       {section.title}

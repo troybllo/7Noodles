@@ -33,7 +33,7 @@ const PUSH_LABEL: Record<PushState, string> = {
   failed: "Alerts failed — try again",
 };
 
-const HEADER_BUTTON = "h-11 rounded-full px-5 text-sm font-bold uppercase";
+const HEADER_BUTTON = "h-11 px-5 text-sm font-bold uppercase";
 
 /**
  * The kitchen's order board, for a tablet propped by the pass. A new order
@@ -155,7 +155,7 @@ export function Board({ vapidKey }: { vapidKey: string }) {
           <button
             type="button"
             onClick={startShift}
-            className="bg-brand text-paper h-20 rounded-full px-12 text-xl font-extrabold tracking-[0.08em] uppercase"
+            className="bg-brand text-paper h-20 px-12 text-xl font-extrabold tracking-[0.08em] uppercase"
           >
             Start shift
           </button>
