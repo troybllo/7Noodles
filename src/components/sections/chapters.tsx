@@ -2,12 +2,25 @@ import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { HandArrow } from "@/components/hand/hand-arrow";
+import { Button } from "@/components/ui/button";
 import { HOW_TO_EAT, KITCHEN, NUMBING, SIGNATURES, type Step } from "@/content/chapters";
+import { PHOTOS } from "@/content/photos";
 import { DISH_MEDIA, type Media } from "@/content/menu-media";
 import { findDish } from "@/lib/menu";
 import { CategoriesTrack } from "./categories-track";
 
 const TOTAL = "04";
+
+/** A photograph that fills the column under a chapter's intro; desktop only. */
+function AsidePhoto({ photo }: { photo: Media }) {
+  return (
+    <Photo
+      photo={photo}
+      sizes="(min-width: 768px) 26vw, 0px"
+      className="hidden md:block md:min-h-0 md:flex-1"
+    />
+  );
+}
 
 function Photo({
   photo,
@@ -45,6 +58,7 @@ function ChapterPanel({
   title,
   titleZh,
   intro,
+  aside,
   children,
 }: {
   id: string;
@@ -53,6 +67,8 @@ function ChapterPanel({
   title: string;
   titleZh: string;
   intro: string;
+  /** Fills the column under the intro on larger screens (a photograph, an action). */
+  aside?: ReactNode;
   children: ReactNode;
 }) {
   return (
@@ -80,7 +96,7 @@ function ChapterPanel({
       </div>
 
       <div className="mt-6 flex flex-col gap-8 md:min-h-0 md:flex-1 md:flex-row md:gap-10">
-        <header className="md:w-[30%] md:shrink-0">
+        <header className="md:flex md:min-h-0 md:w-[30%] md:shrink-0 md:flex-col">
           <h3
             id={`chapter-${id}`}
             className="font-display text-brand text-[clamp(2.25rem,4.2vw,4.25rem)] leading-[0.95]"
@@ -93,6 +109,9 @@ function ChapterPanel({
           <p className="text-brand-deep mt-5 max-w-[36ch] text-[0.95rem] leading-relaxed">
             {intro}
           </p>
+          {aside ? (
+            <div className="mt-8 flex min-h-0 flex-col gap-5 md:flex-1">{aside}</div>
+          ) : null}
         </header>
         <div className="md:min-h-0 md:flex-1">{children}</div>
       </div>
@@ -145,7 +164,11 @@ function StepCard({
 
 function HowToEat() {
   return (
-    <ChapterPanel id="how-to-eat" {...HOW_TO_EAT}>
+    <ChapterPanel
+      id="how-to-eat"
+      {...HOW_TO_EAT}
+      aside={<AsidePhoto photo={PHOTOS.noodleSlurp} />}
+    >
       <ol className="relative grid h-full gap-6 md:grid-cols-3 md:gap-8">
         {HOW_TO_EAT.steps.map((step, index) => (
           <StepCard
@@ -178,7 +201,21 @@ function HowToEat() {
 
 function Signatures() {
   return (
-    <ChapterPanel id="signatures" {...SIGNATURES}>
+    <ChapterPanel
+      id="signatures"
+      {...SIGNATURES}
+      aside={
+        <>
+          <AsidePhoto photo={PHOTOS.birthdayTable} />
+          <div className="flex flex-wrap gap-2">
+            <Button href="/menu">See the full menu</Button>
+            <Button href="/order" tone="outline">
+              Order pickup
+            </Button>
+          </div>
+        </>
+      }
+    >
       <ul className="grid h-full grid-cols-2 gap-x-4 gap-y-5 md:grid-cols-3 md:grid-rows-2 md:gap-x-6">
         {SIGNATURES.dishes.map(({ slug, line }) => {
           const found = findDish(slug);
@@ -273,7 +310,11 @@ function Numbing() {
 
 function Kitchen() {
   return (
-    <ChapterPanel id="kitchen" {...KITCHEN}>
+    <ChapterPanel
+      id="kitchen"
+      {...KITCHEN}
+      aside={<AsidePhoto photo={PHOTOS.wokToBowl} />}
+    >
       <ol className="grid h-full gap-5 md:grid-cols-2 md:grid-rows-2 md:gap-6">
         {KITCHEN.steps.map((step, index) => (
           <StepCard

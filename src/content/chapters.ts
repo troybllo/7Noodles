@@ -55,7 +55,8 @@ export const SIGNATURES = {
   label: "Signature",
   title: "Signature dishes",
   titleZh: "招牌",
-  intro: "The bowls the kitchen is proudest of. Start here.",
+  intro:
+    "The bowls the kitchen is proudest of, and the best place to start a first visit. Each one is built on our own noodles and sauces, made in house, and the chef's specials go into a hot wok the moment you order.",
   /** One line each, written from the owner's descriptions. Order is the owner's. */
   dishes: [
     {

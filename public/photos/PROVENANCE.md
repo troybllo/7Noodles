@@ -41,3 +41,9 @@ diners eating with chopsticks, and the client asked for forks.
 Update: Tezza-0714, -2376 and -3144 are now used in the home page's red
 story band (`diner-at-the-table`, `noodle-pull-booth`, `noodle-pull-high`),
 approved despite the chopsticks.
+
+Update (November 2026, second batch): `bowl-held-up` (Tezza-9036) and
+`wok-flame` (Tezza-6885) are the home hero, at 2400px; `noodle-slurp`
+(-9977), `birthday-table` (-2047) and `wok-to-bowl` (-0103) fill the home
+chapters' side columns; `the-team` (-0443) and `friends-at-the-table`
+(-0803) are on Our Story; `lucky-cat-shelf` (-6928) is in the footer strip.

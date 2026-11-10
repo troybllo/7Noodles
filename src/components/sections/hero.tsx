@@ -52,8 +52,9 @@ export function Hero() {
               alt={HERO.photos.primary.alt}
               fill
               preload
-              sizes="(min-width: 768px) 50vw, 100vw"
+              sizes="50vw"
               className="object-cover"
+              style={{ objectPosition: HERO.photos.primary.focus }}
             />
           </div>
 
@@ -67,8 +68,9 @@ export function Hero() {
                 alt={HERO.photos.secondary.alt}
                 fill
                 preload
-                sizes="(min-width: 768px) 50vw, 100vw"
+                sizes="50vw"
                 className="object-cover"
+                style={{ objectPosition: HERO.photos.secondary.focus }}
               />
             </div>
             <div className="col-span-2 mt-2 flex shrink-0 items-end justify-between gap-4 md:col-span-1 md:mt-0">

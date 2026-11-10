@@ -19,7 +19,7 @@ const LEFT = [
 const SNAPSHOTS = [
   PHOTOS.chiliOilOnWontons,
   PHOTOS.birthdayBowl,
-  PHOTOS.kitchenCurtain,
+  PHOTOS.luckyCatShelf,
   PHOTOS.vitasoy,
 ];
 

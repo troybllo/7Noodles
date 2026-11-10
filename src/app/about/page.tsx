@@ -129,7 +129,7 @@ export default function AboutPage() {
               </p>
             </div>
             <Snapshot
-              photo={PHOTOS.birthdayBowl}
+              photo={PHOTOS.friendsAtTheTable}
               tilt={2}
               sizes="(min-width: 768px) 22rem, 90vw"
             />
@@ -224,7 +224,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* 3. The brand line, the address, and what a diner said about it. */}
+        {/* 3. The brand line, the address, the team and what a diner said. */}
         <section
           aria-labelledby="chapter-welcome"
           data-nav-theme="light"
@@ -251,18 +251,27 @@ export default function AboutPage() {
               </div>
             </div>
 
-            <PinUp turn={-4}>
-              <TapedFrame tilt={-1.5} className="text-sm">
-                <figure className="bg-paper text-brand flex flex-col gap-5 p-8">
-                  <blockquote className="text-2xl leading-snug">
-                    &ldquo;{ABOUT.aside.quote.text}&rdquo;
-                  </blockquote>
-                  <figcaption className="eyebrow text-brand-deep">
-                    {ABOUT.aside.quote.author} · {ABOUT.aside.quote.date}
-                  </figcaption>
-                </figure>
-              </TapedFrame>
-            </PinUp>
+            {/* The people who will welcome you, and what one diner said. */}
+            <div className="flex flex-col items-center gap-10 md:items-stretch">
+              <Snapshot
+                photo={PHOTOS.theTeam}
+                tilt={1.5}
+                sizes="(min-width: 768px) 24rem, 85vw"
+                className="w-[min(100%,24rem)] md:ml-auto"
+              />
+              <PinUp turn={-4} className="md:-mt-24 md:mr-16 md:w-[85%]">
+                <TapedFrame tilt={-1.5} className="text-sm">
+                  <figure className="bg-paper text-brand flex flex-col gap-5 p-8">
+                    <blockquote className="text-2xl leading-snug">
+                      &ldquo;{ABOUT.aside.quote.text}&rdquo;
+                    </blockquote>
+                    <figcaption className="eyebrow text-brand-deep">
+                      {ABOUT.aside.quote.author} · {ABOUT.aside.quote.date}
+                    </figcaption>
+                  </figure>
+                </TapedFrame>
+              </PinUp>
+            </div>
           </div>
         </section>
 

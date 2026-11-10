@@ -63,6 +63,38 @@ export const PHOTOS = {
     "diner-at-the-table",
     "A diner at a wooden table lifting noodles from his bowl, a cold beer beside him",
   ),
+  bowlHeldUp: photo(
+    "bowl-held-up",
+    "A smiling diner holding up a bowl of dry noodles with peppers, pork and sesame",
+  ),
+  wokFlame: photo(
+    "wok-flame",
+    "Flames leaping from a wok of vegetables over the burner in the kitchen",
+  ),
+  noodleSlurp: photo(
+    "noodle-slurp",
+    "A diner in a booth slurping a long pull of noodles from an orange bowl",
+  ),
+  wokToBowl: photo(
+    "wok-to-bowl",
+    "A cook tipping a dish from the wok into a waiting bowl at the pass",
+  ),
+  theTeam: photo(
+    "the-team",
+    "Three of the 7 Noodles team in aprons and party hats, holding bowls of noodles under the shop's red sign",
+  ),
+  friendsAtTheTable: photo(
+    "friends-at-the-table",
+    "Two friends sharing a meal of noodles at a wooden table",
+  ),
+  luckyCatShelf: photo(
+    "lucky-cat-shelf",
+    "Lucky cat figurines on glowing orange shelves in the dining room",
+  ),
+  birthdayTable: photo(
+    "birthday-table",
+    "A birthday table from above: wanza noodles and a noodle soup among party hats and streamers",
+  ),
   storefront: photo(
     "storefront",
     "The Seven Noodles storefront: a red 恰小面 sign over the stairs down to the door",
