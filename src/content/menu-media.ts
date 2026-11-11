@@ -264,4 +264,34 @@ export const DISH_MEDIA: Partial<Record<string, DishMedia>> = {
       alt: "A bowl of house-made noodles",
     },
   },
+  "pickled-pepper-pork-liver-noodles": {
+    photo: {
+      src: "/photos/dishes/pickled-pepper-pork-liver-noodles.webp",
+      alt: "Dry noodles topped with stir-fried pork liver, green garlic stems and red pickled peppers",
+    },
+  },
+  "wontons-in-chicken-soup": {
+    photo: {
+      src: "/photos/dishes/wontons-in-chicken-soup.webp",
+      alt: "Sichuan dumplings in a pale chicken soup with seaweed and scallion",
+    },
+  },
+  "beef-skewers": {
+    photo: {
+      src: "/photos/dishes/beef-skewers.webp",
+      alt: "Spiced fried beef skewers on a red-rimmed enamel plate, scattered with scallion",
+    },
+  },
+  "chicken-winglet-skewers": {
+    photo: {
+      src: "/photos/dishes/chicken-winglet-skewers.webp",
+      alt: "Fried chicken winglets on skewers, on a red-rimmed enamel plate",
+    },
+  },
+  "ham-sausage-skewers": {
+    photo: {
+      src: "/photos/dishes/ham-sausage-skewers.webp",
+      alt: "Long fried ham sausages on skewers, scored across and resting on an enamel plate",
+    },
+  },
 };

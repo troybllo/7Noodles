@@ -42,4 +42,9 @@ export const DISH_PHOTO_ASPECT: Record<string, number> = {
   "/photos/dishes/wontons-in-sesame-sauce.webp": 1.5,
   "/photos/dishes/yellow-pea-noodles.webp": 1.49068,
   "/photos/dishes/zajiang-noodles.webp": 1.49068,
+  "/photos/dishes/pickled-pepper-pork-liver-noodles.webp": 0.666667,
+  "/photos/dishes/wontons-in-chicken-soup.webp": 0.666667,
+  "/photos/dishes/beef-skewers.webp": 0.666667,
+  "/photos/dishes/chicken-winglet-skewers.webp": 0.666667,
+  "/photos/dishes/ham-sausage-skewers.webp": 0.666667,
 };

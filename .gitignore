@@ -48,3 +48,4 @@ next-env.d.ts
 # optimised copies from public/brand/.
 /data/brand/
 /data/photos-nov/
+/data/photos-drive/

@@ -30,6 +30,18 @@ export function SmoothScroll() {
     gsap.registerPlugin(ScrollTrigger);
     ScrollTrigger.config({ ignoreMobileResize: true });
     void document.fonts.ready.then(() => ScrollTrigger.refresh());
+    // ScrollTrigger re-measures on window resize only; a page that grows as it
+    // loads (images, a new route) would leave triggers at stale positions.
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const grow = new ResizeObserver(() => {
+      clearTimeout(timer);
+      timer = setTimeout(() => ScrollTrigger.refresh(), 250);
+    });
+    grow.observe(document.body);
+    return () => {
+      clearTimeout(timer);
+      grow.disconnect();
+    };
   }, []);
 
   useEffect(() => {
@@ -56,11 +68,17 @@ export function SmoothScroll() {
         else lenis.start();
       });
       hold.observe(document.body, { subtree: true, attributeFilter: ["open"] });
+      // Lenis watches <html>, which is held to the viewport's height (`h-full`),
+      // so it never sees a longer page arrive after navigating from a shorter
+      // one and keeps the old scroll limit. <body> grows with the page.
+      const grow = new ResizeObserver(() => lenis.resize());
+      grow.observe(document.body);
       const tick = (time: number) => lenis.raf(time * 1000);
       gsap.ticker.add(tick);
       gsap.ticker.lagSmoothing(0);
       cleanup = () => {
         hold.disconnect();
+        grow.disconnect();
         gsap.ticker.remove(tick);
         gsap.ticker.lagSmoothing(500, 33);
         lenis.destroy();

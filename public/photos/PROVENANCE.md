@@ -52,3 +52,12 @@ chapters' side columns; `the-team` (-0443) and `friends-at-the-table`
 Update (November 2026, third pass): the home hero's left photograph is now
 `noodle-pull-high` (Tezza-3144, re-exported at 2400px); `bowl-held-up` moved
 into the red story band in its place.
+
+Update (November 2026, Google Drive): five dishes come from the client's 2025
+shoot on a dark wood table (`Creatives > Professional Photo`; originals in the
+gitignored `data/photos-drive/`), exported the same way as the rest of
+`dishes/`. Named for the dish in Drive: `pickled-pepper-pork-liver-noodles`
+(泡椒猪肝拌面), `beef-skewers` (牛肉（8串）), `chicken-winglet-skewers`
+(鸡中翅（2串）). Identified by appearance and awaiting the client's
+confirmation: `wontons-in-chicken-soup` (DSC06519) and `ham-sausage-skewers`
+(DSC06649, which could be the sweet sausage).
