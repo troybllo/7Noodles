@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Logo } from "@/components/brand/logo";
 import type { OrderStatus } from "@/lib/orders/status";
 import { signOut } from "./actions";
 import { chime } from "./chime";
@@ -100,8 +101,11 @@ export function Board({ vapidKey }: { vapidKey: string }) {
   return (
     <main className="bg-paper text-brand min-h-svh">
       <header className="bg-brand text-paper flex flex-wrap items-center gap-3 px-5 py-3 print:hidden">
-        <p className="mr-auto text-xl font-extrabold tracking-[-0.02em] uppercase">
-          Kitchen <span className="font-normal opacity-80">· Seven Noodles</span>
+        <p className="mr-auto flex items-center gap-4">
+          <Logo variant="lockup" title="Seven Noodles 恰小面" className="h-11 w-auto" />
+          <span className="border-paper/40 border-l pl-4 text-xl font-extrabold tracking-[-0.02em] uppercase">
+            Kitchen
+          </span>
         </p>
         {board.offline ? (
           <span className="bg-paper text-brand rounded-full px-3 py-1 text-xs font-bold uppercase">
